@@ -1,0 +1,20 @@
+{
+  "manifestVersion": 1,
+  "id": "temporizador-foco",
+  "name": "Temporizador de foco",
+  "version": "1.0.0",
+  "description": "Um temporizador Pomodoro simples para organizar períodos de foco e pausa durante o trabalho.",
+  "author": "ANOTADO",
+  "category": "produtividade",
+  "tags": [
+    "foco",
+    "pomodoro",
+    "tempo",
+    "produtividade"
+  ],
+  "apiVersion": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "entry": "script.js",
+  "readme": "README.md",
+  "permissions": []
+}
