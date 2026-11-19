@@ -1,0 +1,9 @@
+{
+  "catalogVersion": 1,
+  "plugins": [
+    {
+      "id": "temporizador-foco",
+      "manifest": "plugins/temporizador-foco/manifest.json"
+    }
+  ]
+}
