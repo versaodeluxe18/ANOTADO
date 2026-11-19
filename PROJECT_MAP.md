@@ -27,6 +27,8 @@ O aplicativo permanece concentrado em `index.html`. Isso é intencional nesta et
 
 Não foi identificado um backend ou serviço de sincronização remota no código atual. Os dados persistidos pelo aplicativo ficam no navegador do usuário; exportação/importação JSON é o mecanismo disponível para transportar cópias.
 
+A pasta `plugin-store/` contém o catálogo e os arquivos de extensões estáticas. Ela ainda não está conectada ao `index.html`: o carregador da loja e a instalação de plugins dependem de uma integração manual futura.
+
 ## Mapa funcional
 
 | Área | Responsabilidade | Onde procurar |
