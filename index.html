@@ -308,6 +308,7 @@
         #deadlines-drag-handle:hover,
         #undo-drag-handle:hover,
         #db-reset-modal button:hover,
+        #plugin-uninstall-modal button:hover,
         #deadline-modal button:hover,
         #save-modal button:hover,
         #db-inspect-modal button:hover,
@@ -323,6 +324,7 @@
         #deadlines-drag-handle,
         #undo-drag-handle,
         #db-reset-modal button,
+        #plugin-uninstall-modal button,
         #deadline-modal button,
         #save-modal button,
         #db-inspect-modal button,
@@ -332,6 +334,7 @@
         }
         .cozy-floating-panel button.bg-primary:hover,
         #db-reset-modal button.bg-primary:hover,
+        #plugin-uninstall-modal button.bg-primary:hover,
         #deadline-modal button.bg-primary:hover,
         #save-modal button.bg-slate-900:hover,
         #db-inspect-modal button.bg-primary:hover,
@@ -616,6 +619,14 @@
             touch-action: manipulation;
             animation: noteColorShift 8s ease-in-out infinite;
         }
+        .plugin-update-btn {
+            user-select: none;
+            touch-action: manipulation;
+            animation: noteColorShift 8s ease-in-out infinite;
+        }
+        .cozy-floating-panel button.plugin-update-btn:hover {
+            color: #000000;
+        }
 
         /* Centered smoked-glass Undo notification (no background strip) */
         @keyframes undoBannerToastEnter {
@@ -718,26 +729,32 @@
             animation: undoBannerReinforce 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Slide-up / Slide-down Reset Confirmation Window */
-        #db-reset-modal #db-reset-backdrop {
+        /* Slide-up / Slide-down Reset & Uninstall Confirmation Windows */
+        #db-reset-modal #db-reset-backdrop,
+        #plugin-uninstall-modal #plugin-uninstall-backdrop {
             transition: opacity 0.28s ease;
         }
-        #db-reset-modal #db-reset-card {
+        #db-reset-modal #db-reset-card,
+        #plugin-uninstall-modal #plugin-uninstall-card {
             transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
             transform: translateY(100vh);
             opacity: 0;
         }
-        #db-reset-modal.reset-open #db-reset-backdrop {
+        #db-reset-modal.reset-open #db-reset-backdrop,
+        #plugin-uninstall-modal.uninstall-open #plugin-uninstall-backdrop {
             opacity: 1;
         }
-        #db-reset-modal.reset-open #db-reset-card {
+        #db-reset-modal.reset-open #db-reset-card,
+        #plugin-uninstall-modal.uninstall-open #plugin-uninstall-card {
             transform: translateY(0);
             opacity: 1;
         }
-        #db-reset-modal.reset-closing #db-reset-backdrop {
+        #db-reset-modal.reset-closing #db-reset-backdrop,
+        #plugin-uninstall-modal.uninstall-closing #plugin-uninstall-backdrop {
             opacity: 0;
         }
-        #db-reset-modal.reset-closing #db-reset-card {
+        #db-reset-modal.reset-closing #db-reset-card,
+        #plugin-uninstall-modal.uninstall-closing #plugin-uninstall-card {
             transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.24s ease;
             transform: translateY(100vh);
             opacity: 0;
@@ -1022,109 +1039,69 @@
             <div class="text-outline mr-1 cursor-grab active:cursor-grabbing select-none touch-none" id="toolbar-drag-handle" title="Arrastar barra">
                 <span class="material-symbols-outlined text-base">drag_indicator</span>
             </div>
-            
-            <!-- New Note Button -->
-            <button id="add-note-btn" class="icon-button" title="Adicionar nova folha/nota">
-                <span class="material-symbols-outlined text-[20px]">add_box</span>
-            </button>
-            
-            <!-- Add Sticky Note -->
-            <button id="add-sticky-btn" class="icon-button" title="Adicionar Nota Adesiva (Post-it)">
-                <span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
-            </button>
-            
-            <div class="w-px h-5 bg-outline-variant mx-1"></div>
-            
-            <!-- Note Format / Size Dropdown -->
-            <div class="relative">
-                <button id="note-size-btn" class="icon-button" title="Formato da Folha">
-                    <span class="material-symbols-outlined text-[20px]">aspect_ratio</span>
-                </button>
-                <div class="toolbar-dropdown" id="note-size-dropdown">
-                    <button class="toolbar-dropdown-item" data-size="800x1050">
-                        <span class="material-symbols-outlined text-sm">article</span>
-                        <span>A4 Vertical (800 × 1050)</span>
-                    </button>
-                    <button class="toolbar-dropdown-item" data-size="600x600">
-                        <span class="material-symbols-outlined text-sm">crop_square</span>
-                        <span>Bloco Quadrado (600 × 600)</span>
-                    </button>
-                    <button class="toolbar-dropdown-item" data-size="1050x700">
-                        <span class="material-symbols-outlined text-sm">table_chart</span>
-                        <span>Paisagem / Amplo (1050 × 700)</span>
-                    </button>
-                    <button class="toolbar-dropdown-item" data-size="450x650">
-                        <span class="material-symbols-outlined text-sm">sticky_note_2</span>
-                        <span>Caderneta Pocket (450 × 650)</span>
-                    </button>
-                    <button class="toolbar-dropdown-item" data-size="custom">
-                        <span class="material-symbols-outlined text-sm">tune</span>
-                        <span>Personalizado...</span>
-                    </button>
-                </div>
-            </div>
 
-            <!-- Note Paper Style Dropdown -->
-            <div class="relative">
-                <button id="paper-style-btn" class="icon-button" title="Estilo do Papel">
-                    <span class="material-symbols-outlined text-[20px]">grid_4x4</span>
-                </button>
-                <div class="toolbar-dropdown" id="paper-style-dropdown">
-                    <button class="toolbar-dropdown-item" data-pattern="paper-blank">
-                        <span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
-                        <span>Papel Liso</span>
-                    </button>
-                    <button class="toolbar-dropdown-item" data-pattern="paper-lined">
-                        <span class="material-symbols-outlined text-sm">format_align_left</span>
-                        <span>Pautado (Linhas)</span>
-                    </button>
-                    <button class="toolbar-dropdown-item" data-pattern="paper-grid">
-                        <span class="material-symbols-outlined text-sm">grid_view</span>
-                        <span>Quadriculado</span>
-                    </button>
-                    <button class="toolbar-dropdown-item" data-pattern="paper-dots">
-                        <span class="material-symbols-outlined text-sm">grain</span>
-                        <span>Pontilhado (Bullet)</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="w-px h-5 bg-outline-variant mx-1"></div>
-
-            <!-- Draw / Pen tool -->
-            <button id="draw-btn" class="icon-button" title="Desenhar / Caneta">
-                <span class="material-symbols-outlined text-[20px]">edit</span>
-            </button>
-
-            <!-- Color Picker -->
-            <div class="relative flex items-center">
-                <button id="color-btn" class="icon-button relative" title="Cor do traço / caneta">
-                    <div id="color-preview" class="w-4.5 h-4.5 rounded-sm border border-outline-variant bg-black"></div>
-                    <input id="color-input" type="color" value="#000000" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer">
-                </button>
-            </div>
-
-            <div class="w-px h-5 bg-outline-variant mx-1"></div>
-
-            <!-- Zoom button & slider -->
-            <div class="relative flex items-center">
-                <button id="zoom-btn" class="icon-button" title="Controle de Zoom">
-                    <span class="material-symbols-outlined text-[20px]">zoom_in</span>
-                </button>
-                <div id="zoom-slider-container" class="hidden items-center gap-2 pl-2 pr-1 py-1">
-                    <input id="zoom-control" class="w-20 accent-black cursor-pointer" type="range" min="20" max="150" value="60">
-                    <span id="zoom-value-badge" class="text-[11px] font-medium text-on-surface-variant min-w-[32px]">60%</span>
-                </div>
-            </div>
-
-            <div class="w-px h-5 bg-outline-variant mx-1"></div>
-
-            <!-- Export / Save Modal Trigger -->
-            <button id="save-notes-btn" class="icon-button bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed" title="Salvar e Exportar Anotações">
-                <span class="material-symbols-outlined text-[18px]">download</span>
+            <!-- Loja de Extensões -->
+            <button id="plugin-store-btn" class="icon-button" title="Loja de Extensões">
+                <span class="material-symbols-outlined text-[20px]">extension</span>
             </button>
         </div>
     </div>
+
+    <!-- Extension Right-Click Context Menu -->
+    <div id="plugin-context-menu" class="cozy-floating-panel hidden fixed z-[95] min-w-[148px] bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-xl shadow-2xl p-1.5 flex-col gap-0.5 select-none text-on-surface">
+        <button id="plugin-ctx-enable-btn" type="button" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-on-surface transition-colors w-full text-left cursor-pointer">
+            <span class="material-symbols-outlined text-[15px]">check_circle</span>
+            <span>ATIVAR</span>
+        </button>
+        <button id="plugin-ctx-disable-btn" type="button" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-on-surface transition-colors w-full text-left cursor-pointer">
+            <span class="material-symbols-outlined text-[15px]">pause_circle</span>
+            <span>DESATIVAR</span>
+        </button>
+        <div class="h-px bg-outline-variant/30 my-0.5"></div>
+        <button id="plugin-ctx-uninstall-btn" type="button" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-on-surface hover:text-error transition-colors w-full text-left cursor-pointer">
+            <span class="material-symbols-outlined text-[15px]">delete</span>
+            <span>DESINSTALAR</span>
+        </button>
+    </div>
+
+    <!-- Loja de Extensões Floating Panel -->
+    <div id="plugin-store-modal" class="cozy-floating-panel hidden fixed z-[70] w-[420px] max-w-[calc(100vw-32px)] bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-3.5 flex-col gap-3 select-none max-h-[85vh]">
+        <div class="flex items-center justify-between gap-1 border-b border-outline-variant/30 pb-1.5">
+            <button id="plugin-store-refresh-btn" type="button" class="text-outline hover:text-on-surface h-6 w-6 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Atualizar catálogo">
+                <span class="material-symbols-outlined text-[16px]">refresh</span>
+            </button>
+            <div id="plugin-store-drag-handle" class="flex-1 text-outline cursor-grab active:cursor-grabbing h-6 px-1 hover:text-on-surface rounded hover:bg-surface-variant transition-colors flex items-center justify-center gap-1.5" title="Arrastar loja">
+                <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
+            </div>
+            <button id="close-plugin-store-btn" type="button" class="text-outline hover:text-on-surface h-6 w-6 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Fechar">
+                <span class="material-symbols-outlined text-[17px]">close</span>
+            </button>
+        </div>
+
+        <!-- Lista de Extensões do Catálogo -->
+        <div id="plugin-store-list-view" class="flex flex-col gap-2 flex-1 min-h-0">
+            <div id="plugin-store-list" class="flex flex-col gap-2 max-h-[58vh] overflow-y-auto pr-1">
+                <!-- Extensões carregadas dinamicamente -->
+            </div>
+        </div>
+
+        <!-- Visualização do README.md da Extensão -->
+        <div id="plugin-store-readme-view" class="hidden flex-col gap-2.5 flex-1 min-h-0">
+            <div class="flex items-center justify-between gap-2 pb-1.5 border-b border-outline-variant/30">
+                <button id="plugin-store-readme-back-btn" type="button" class="flex items-center gap-1 py-1 px-2 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-[15px]">arrow_back</span>
+                    <span>Voltar</span>
+                </button>
+                <span id="plugin-store-readme-title" class="text-xs font-semibold text-on-surface truncate">Documentação</span>
+            </div>
+            <div id="plugin-store-readme-content" class="max-h-[55vh] overflow-y-auto pr-1 text-xs leading-relaxed text-on-surface select-text space-y-2">
+                <!-- Conteúdo da documentação -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Container para Extensões Montadas -->
+    <div id="plugin-host-container" class="fixed bottom-24 right-8 z-[45] flex flex-col gap-3 items-end pointer-events-none"></div>
 
     <!-- Cozy Property Inspector Window (Floating & Draggable) -->
     <div id="cozy-inspector" class="cozy-window cozy-closed fixed bottom-10 right-8 z-50 w-72 max-w-[calc(100vw-32px)] bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-3.5 flex flex-col gap-3 select-none">
@@ -1503,6 +1480,43 @@
         </div>
     </div>
 
+    <!-- Plugin Uninstall Confirmation Slide-Up Window (Matches Reset & Panel Style) -->
+    <div id="plugin-uninstall-modal" class="fixed inset-0 z-[115] hidden items-center justify-center p-4 select-none">
+        <div id="plugin-uninstall-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-xs opacity-0"></div>
+        <div id="plugin-uninstall-card" class="relative z-10 w-80 max-w-[calc(100vw-32px)] bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-3.5 flex flex-col gap-3 text-on-surface">
+            <div class="flex items-center justify-between gap-1 border-b border-outline-variant/30 pb-1.5">
+                <div class="w-6 h-6 flex items-center justify-center text-outline shrink-0">
+                    <span class="material-symbols-outlined text-[17px]">extension_off</span>
+                </div>
+                <div class="flex-1 h-6 px-1 flex items-center justify-center">
+                    <span class="text-[11px] font-semibold text-on-surface-variant">Desinstalar Extensão</span>
+                </div>
+                <button id="close-plugin-uninstall-btn" type="button" class="text-outline hover:text-on-surface h-6 w-6 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Fechar">
+                    <span class="material-symbols-outlined text-[17px]">close</span>
+                </button>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-1.5 px-0.5">
+                    <p id="plugin-uninstall-title" class="text-xs font-semibold text-on-surface leading-snug">Desinstalar extensão?</p>
+                    <p class="text-[11px] text-on-surface-variant leading-relaxed">
+                        Esta opção remove a extensão e seus arquivos salvos no IndexedDB do navegador. Você poderá instalá-la novamente pela loja de extensões.
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/30">
+                    <button id="cancel-plugin-uninstall-btn" type="button" class="py-1.5 px-3 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs">
+                        Cancelar
+                    </button>
+                    <button id="confirm-plugin-uninstall-btn" type="button" class="py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-neutral-800 text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[14px]">delete</span>
+                        <span>Desinstalar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Application Script -->
     <script>
         // State Management
@@ -1618,22 +1632,34 @@
         const newProjectCancelBtn = document.getElementById('new-project-cancel-btn');
 
         // Toolbar elements
-        const addNoteBtn = document.getElementById('add-note-btn');
-        const addStickyBtn = document.getElementById('add-sticky-btn');
         const quickAddBtn = document.getElementById('quick-add-note');
-        const noteSizeBtn = document.getElementById('note-size-btn');
-        const noteSizeDropdown = document.getElementById('note-size-dropdown');
-        const paperStyleBtn = document.getElementById('paper-style-btn');
-        const paperStyleDropdown = document.getElementById('paper-style-dropdown');
-        const drawBtn = document.getElementById('draw-btn');
-        const colorBtn = document.getElementById('color-btn');
-        const colorInput = document.getElementById('color-input');
-        const colorPreview = document.getElementById('color-preview');
-        const zoomBtn = document.getElementById('zoom-btn');
-        const zoomControl = document.getElementById('zoom-control');
-        const zoomSliderContainer = document.getElementById('zoom-slider-container');
-        const zoomValueBadge = document.getElementById('zoom-value-badge');
-        const saveNotesBtn = document.getElementById('save-notes-btn');
+        const pluginStoreBtn = document.getElementById('plugin-store-btn');
+        const drawBtn = null;
+        const zoomControl = null;
+        const zoomValueBadge = null;
+
+        // Plugin Store Modal Elements
+        const pluginStoreModal = document.getElementById('plugin-store-modal');
+        const pluginStoreDragHandle = document.getElementById('plugin-store-drag-handle');
+        const pluginStoreRefreshBtn = document.getElementById('plugin-store-refresh-btn');
+        const closePluginStoreBtn = document.getElementById('close-plugin-store-btn');
+        const pluginStoreListView = document.getElementById('plugin-store-list-view');
+        const pluginStoreList = document.getElementById('plugin-store-list');
+        const pluginStoreReadmeView = document.getElementById('plugin-store-readme-view');
+        const pluginStoreReadmeBackBtn = document.getElementById('plugin-store-readme-back-btn');
+        const pluginStoreReadmeTitle = document.getElementById('plugin-store-readme-title');
+        const pluginStoreReadmeContent = document.getElementById('plugin-store-readme-content');
+        const pluginHostContainer = document.getElementById('plugin-host-container');
+        const pluginContextMenu = document.getElementById('plugin-context-menu');
+        const pluginCtxEnableBtn = document.getElementById('plugin-ctx-enable-btn');
+        const pluginCtxDisableBtn = document.getElementById('plugin-ctx-disable-btn');
+        const pluginCtxUninstallBtn = document.getElementById('plugin-ctx-uninstall-btn');
+        const pluginUninstallModal = document.getElementById('plugin-uninstall-modal');
+        const pluginUninstallBackdrop = document.getElementById('plugin-uninstall-backdrop');
+        const pluginUninstallTitle = document.getElementById('plugin-uninstall-title');
+        const closePluginUninstallBtn = document.getElementById('close-plugin-uninstall-btn');
+        const cancelPluginUninstallBtn = document.getElementById('cancel-plugin-uninstall-btn');
+        const confirmPluginUninstallBtn = document.getElementById('confirm-plugin-uninstall-btn');
 
         // Cozy Inspector
         const cozyInspector = document.getElementById('cozy-inspector');
@@ -2090,18 +2116,36 @@
             if (!toast) {
                 toast = document.createElement('div');
                 toast.id = 'app-toast';
-                toast.className = 'fixed bottom-6 right-6 z-[999] bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-medium shadow-xl flex items-center gap-2 pointer-events-none transition-all duration-300 opacity-0 translate-y-2';
+                toast.setAttribute('role', 'status');
+                toast.setAttribute('aria-live', 'polite');
+                toast.className = 'fixed bottom-8 right-8 z-[999] max-w-[calc(100vw-32px)] sm:max-w-sm px-3.5 py-2.5 rounded-2xl backdrop-blur-2xl backdrop-saturate-150 shadow-2xl border text-xs font-ui-body font-medium text-on-surface flex items-center gap-2.5 pointer-events-none select-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-0 translate-y-3 scale-95';
                 document.body.appendChild(toast);
             }
-            const iconName = isError ? 'error' : 'check_circle';
-            const iconColor = isError ? 'text-rose-400' : 'text-emerald-400';
-            toast.innerHTML = `<span class="material-symbols-outlined text-[16px] ${iconColor}">${iconName}</span><span>${msg}</span>`;
-            toast.classList.remove('opacity-0', 'translate-y-2');
-            toast.classList.add('opacity-100', 'translate-y-0');
+
+            toast.classList.remove('bg-surface/90', 'border-outline-variant/80', 'bg-surface/95', 'border-error/40');
+            if (isError) {
+                toast.classList.add('bg-surface/95', 'border-error/40');
+            } else {
+                toast.classList.add('bg-surface/90', 'border-outline-variant/80');
+            }
+
+            const iconName = isError ? 'error' : 'check';
+            const iconWrapperClass = isError
+                ? 'w-6 h-6 rounded-full bg-error-container text-error flex items-center justify-center shrink-0'
+                : 'w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-xs';
+
+            toast.innerHTML = `<span class="${iconWrapperClass}"><span class="material-symbols-outlined text-[15px]">${iconName}</span></span><span class="leading-snug text-on-surface"></span>`;
+            const msgSpan = toast.lastElementChild;
+            if (msgSpan) msgSpan.textContent = msg;
+
+            void toast.offsetWidth;
+            toast.classList.remove('opacity-0', 'translate-y-3', 'scale-95');
+            toast.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+
             clearTimeout(toast._timeout);
             toast._timeout = setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'translate-y-2');
+                toast.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
+                toast.classList.add('opacity-0', 'translate-y-3', 'scale-95');
             }, 2500);
         }
 
@@ -4000,13 +4044,6 @@
         }
 
         // Toolbar Buttons & Actions
-        addNoteBtn.onclick = () => {
-            if (state.expandedStageId) {
-                const expStage = state.stages.find(s => s.id === state.expandedStageId);
-                if (expStage) collapseExpandedStage(expStage);
-            }
-            createNote();
-        };
         quickAddBtn.onclick = () => {
             const active = state.expandedStageId ? (state.stages.find(s => s.id === state.expandedStageId) || getActiveStage()) : getActiveStage();
             if (active) {
@@ -4027,140 +4064,13 @@
                 createNote();
             }
         };
-        addStickyBtn.onclick = () => addStickyNote();
 
-        // Dropdown toggle helper
+        // Dropdown toggle helper (kept for compatibility)
         function hideAllDropdowns() {
-            noteSizeDropdown.classList.remove('show');
-            noteSizeBtn.classList.remove('active');
-            paperStyleDropdown.classList.remove('show');
-            paperStyleBtn.classList.remove('active');
-            zoomSliderContainer.classList.add('hidden');
-            zoomSliderContainer.classList.remove('flex');
-            zoomBtn.classList.remove('active');
+            if (typeof closePluginContextMenu === 'function') {
+                closePluginContextMenu();
+            }
         }
-
-        noteSizeBtn.onclick = (e) => {
-            e.stopPropagation();
-            const show = noteSizeDropdown.classList.contains('show');
-            hideAllDropdowns();
-            if (!show) {
-                noteSizeDropdown.classList.add('show');
-                noteSizeBtn.classList.add('active');
-            }
-        };
-
-        paperStyleBtn.onclick = (e) => {
-            e.stopPropagation();
-            const show = paperStyleDropdown.classList.contains('show');
-            hideAllDropdowns();
-            if (!show) {
-                paperStyleDropdown.classList.add('show');
-                paperStyleBtn.classList.add('active');
-            }
-        };
-
-        // Note size change
-        document.querySelectorAll('#note-size-dropdown .toolbar-dropdown-item').forEach(item => {
-            item.onclick = (e) => {
-                e.stopPropagation();
-                const active = getActiveStage();
-                if (!active) return;
-
-                const size = item.dataset.size;
-                if (size === 'custom') {
-                    const w = prompt('Largura da folha (px):', active.width);
-                    const h = prompt('Altura da folha (px):', active.height);
-                    if (w > 0 && h > 0) setStageDimensions(active, parseInt(w), parseInt(h));
-                } else {
-                    const [w, h] = size.split('x').map(Number);
-                    setStageDimensions(active, w, h);
-                }
-                hideAllDropdowns();
-            };
-        });
-
-        function setStageDimensions(stage, w, h) {
-            stage.width = w;
-            stage.height = h;
-            stage.cardEl.style.width = `${w}px`;
-            stage.surfaceEl.style.width = `${w}px`;
-            stage.surfaceEl.style.height = `${h}px`;
-            if (stage.canvasEl) {
-                const prevW = stage.canvasEl.width;
-                const prevH = stage.canvasEl.height;
-                if (prevW > 0 && prevH > 0) {
-                    const temp = document.createElement('canvas');
-                    temp.width = prevW;
-                    temp.height = prevH;
-                    const tempCtx = temp.getContext('2d');
-                    tempCtx.drawImage(stage.canvasEl, 0, 0);
-
-                    stage.canvasEl.width = w;
-                    stage.canvasEl.height = h;
-                    const ctx = stage.canvasEl.getContext('2d');
-                    ctx.drawImage(temp, 0, 0);
-                } else {
-                    stage.canvasEl.width = w;
-                    stage.canvasEl.height = h;
-                }
-            }
-            const badge = stage.cardEl.querySelector('.note-dim-badge');
-            if (badge) badge.textContent = `${w} × ${h}`;
-            updateStageExpandBar(stage);
-            updateStageInfo();
-            autoSave();
-        }
-
-        // Paper Pattern change
-        document.querySelectorAll('#paper-style-dropdown .toolbar-dropdown-item').forEach(item => {
-            item.onclick = (e) => {
-                e.stopPropagation();
-                const active = getActiveStage();
-                if (!active) return;
-
-                const pattern = item.dataset.pattern;
-                active.surfaceEl.className = active.surfaceEl.className.replace(/paper-\w+/g, '').trim() + ` ${pattern}`;
-                active.pattern = pattern;
-                hideAllDropdowns();
-                autoSave();
-            };
-        });
-
-        // Draw tool toggle
-        drawBtn.onclick = () => {
-            if (state.currentTool === 'draw') {
-                state.currentTool = null;
-                drawBtn.classList.remove('active');
-                document.querySelectorAll('.note-surface').forEach(s => s.classList.remove('drawing-active'));
-            } else {
-                state.currentTool = 'draw';
-                drawBtn.classList.add('active');
-                document.querySelectorAll('.note-surface').forEach(s => s.classList.add('drawing-active'));
-            }
-        };
-
-        // Color input
-        colorInput.oninput = (e) => {
-            state.currentColor = e.target.value;
-            colorPreview.style.backgroundColor = state.currentColor;
-        };
-
-        // Zoom button & slider
-        zoomBtn.onclick = (e) => {
-            e.stopPropagation();
-            const isHidden = zoomSliderContainer.classList.contains('hidden');
-            hideAllDropdowns();
-            if (isHidden) {
-                zoomSliderContainer.classList.remove('hidden');
-                zoomSliderContainer.classList.add('flex');
-                zoomBtn.classList.add('active');
-            }
-        };
-        zoomControl.oninput = (e) => {
-            setZoom(e.target.value);
-            autoSave();
-        };
 
         // Wheel Zoom
         workspace.addEventListener('wheel', (e) => {
@@ -4174,7 +4084,7 @@
         window.addEventListener('contextmenu', (e) => e.preventDefault());
         window.addEventListener('pointerdown', (e) => {
             if (e.button !== 1 && e.button !== 2) return;
-            if (e.target.closest('#floating-toolbar') || e.target.closest('#cozy-inspector') || e.target.closest('#save-modal') || e.target.closest('#quick-add-note') || e.target.closest('#collapsed-toolbar-btn') || e.target.closest('#db-manage-modal') || e.target.closest('#db-inspect-modal') || e.target.closest('#db-reset-modal') || e.target.closest('#completed-modal') || e.target.closest('#deadlines-modal') || e.target.closest('#undo-modal')) return;
+            if (e.target.closest('#floating-toolbar') || e.target.closest('#plugin-context-menu') || e.target.closest('#cozy-inspector') || e.target.closest('#save-modal') || e.target.closest('#quick-add-note') || e.target.closest('#collapsed-toolbar-btn') || e.target.closest('#db-manage-modal') || e.target.closest('#db-inspect-modal') || e.target.closest('#db-reset-modal') || e.target.closest('#plugin-uninstall-modal') || e.target.closest('#completed-modal') || e.target.closest('#deadlines-modal') || e.target.closest('#undo-modal') || e.target.closest('#plugin-store-modal') || e.target.closest('#plugin-host-container')) return;
 
             e.preventDefault();
             workspace.classList.add('panning');
@@ -4220,9 +4130,13 @@
             if (target.closest('#db-manage-modal')) return false;
             if (target.closest('#db-inspect-modal')) return false;
             if (target.closest('#db-reset-modal')) return false;
+            if (target.closest('#plugin-uninstall-modal')) return false;
             if (target.closest('#completed-modal')) return false;
             if (target.closest('#deadlines-modal')) return false;
             if (target.closest('#undo-modal')) return false;
+            if (target.closest('#plugin-store-modal')) return false;
+            if (target.closest('#plugin-context-menu')) return false;
+            if (target.closest('#plugin-host-container')) return false;
             if (target.closest('#save-modal')) return false;
             if (target.closest('header')) return false;
             if (target.closest('#topbar-actions-bar')) return false;
@@ -4246,6 +4160,7 @@
             if (saveModal && !saveModal.classList.contains('hidden')) return;
             if (dbInspectModal && !dbInspectModal.classList.contains('hidden')) return;
             if (dbResetModal && !dbResetModal.classList.contains('hidden')) return;
+            if (pluginUninstallModal && !pluginUninstallModal.classList.contains('hidden')) return;
 
             if (document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('sticky-content')) {
                 document.activeElement.blur();
@@ -4607,9 +4522,15 @@
             };
         }
 
+        let tbDragStartX = 0, tbDragStartY = 0, tbHasMoved = false;
+        let lastDragHandleTapTime = 0, lastDragHandleTapX = 0, lastDragHandleTapY = 0;
+
         dragHandle.addEventListener('pointerdown', (e) => {
             if (e.button !== 0 || isAnimatingToolbar) return;
             isDraggingToolbar = true;
+            tbDragStartX = e.clientX;
+            tbDragStartY = e.clientY;
+            tbHasMoved = false;
             dragHandle.classList.add('dragging');
             const rect = toolbar.getBoundingClientRect();
             tbOffsetX = e.clientX - rect.left;
@@ -4628,6 +4549,9 @@
 
         document.addEventListener('pointermove', (e) => {
             if (!isDraggingToolbar || isAnimatingToolbar) return;
+            if (!tbHasMoved && Math.hypot(e.clientX - tbDragStartX, e.clientY - tbDragStartY) > 8) {
+                tbHasMoved = true;
+            }
             const newLeft = e.clientX - tbOffsetX;
             const newTop = e.clientY - tbOffsetY;
             toolbar.style.left = `${newLeft}px`;
@@ -4661,11 +4585,33 @@
             }
 
             if (shouldCollapse) {
+                lastDragHandleTapTime = 0;
                 collapseToolbar();
+            } else if (e.type === 'pointerup' && !tbHasMoved) {
+                const now = performance.now();
+                const isDoubleTap = (now - lastDragHandleTapTime) <= 350 &&
+                    Math.hypot(e.clientX - lastDragHandleTapX, e.clientY - lastDragHandleTapY) <= 24;
+                if (isDoubleTap) {
+                    lastDragHandleTapTime = 0;
+                    collapseToolbar();
+                } else {
+                    lastDragHandleTapTime = now;
+                    lastDragHandleTapX = e.clientX;
+                    lastDragHandleTapY = e.clientY;
+                    clampToolbarToViewport();
+                }
             } else {
+                lastDragHandleTapTime = 0;
                 clampToolbarToViewport();
             }
         }
+
+        dragHandle.addEventListener('dblclick', (e) => {
+            if (isAnimatingToolbar || isDraggingToolbar) return;
+            e.stopPropagation();
+            lastDragHandleTapTime = 0;
+            collapseToolbar();
+        });
 
         document.addEventListener('pointerup', handlePointerUpOrCancel);
         document.addEventListener('pointercancel', handlePointerUpOrCancel);
@@ -5725,6 +5671,22 @@
             });
         }
 
+        // Plugin Store Modal Drag Handle
+        let isDraggingPluginStore = false;
+        let pluginStoreOffX, pluginStoreOffY;
+        if (pluginStoreDragHandle && pluginStoreModal) {
+            pluginStoreDragHandle.addEventListener('pointerdown', (e) => {
+                if (e.button !== 0) return;
+                isDraggingPluginStore = true;
+                const rect = pluginStoreModal.getBoundingClientRect();
+                pluginStoreOffX = e.clientX - rect.left;
+                pluginStoreOffY = e.clientY - rect.top;
+                pluginStoreModal.style.transition = 'none';
+                pluginStoreModal.style.transform = 'none';
+                try { pluginStoreDragHandle.setPointerCapture(e.pointerId); } catch (_) {}
+            });
+        }
+
         window.addEventListener('pointermove', (e) => {
             if (isDraggingCozy) {
                 cozyInspector.style.left = `${e.clientX - cozyOffX}px`;
@@ -5772,6 +5734,16 @@
                 undoModal.style.bottom = 'auto';
                 undoModal.style.right = 'auto';
             }
+            if (isDraggingPluginStore && pluginStoreModal) {
+                const maxL = window.innerWidth - (pluginStoreModal.offsetWidth || 420) - 8;
+                const maxT = window.innerHeight - (pluginStoreModal.offsetHeight || 460) - 8;
+                const curL = Math.max(8, Math.min(maxL, e.clientX - pluginStoreOffX));
+                const curT = Math.max(8, Math.min(maxT, e.clientY - pluginStoreOffY));
+                pluginStoreModal.style.left = `${curL}px`;
+                pluginStoreModal.style.top = `${curT}px`;
+                pluginStoreModal.style.bottom = 'auto';
+                pluginStoreModal.style.right = 'auto';
+            }
         });
 
         window.addEventListener('pointerup', () => {
@@ -5794,6 +5766,10 @@
             if (isDraggingUndo) {
                 isDraggingUndo = false;
                 if (undoModal) undoModal.style.transition = '';
+            }
+            if (isDraggingPluginStore) {
+                isDraggingPluginStore = false;
+                if (pluginStoreModal) pluginStoreModal.style.transition = '';
             }
         });
 
@@ -5886,6 +5862,14 @@
             }
 
             if (e.key === 'Escape') {
+                if (pluginContextMenu && !pluginContextMenu.classList.contains('hidden')) {
+                    closePluginContextMenu();
+                    return;
+                }
+                if (pluginUninstallModal && !pluginUninstallModal.classList.contains('hidden')) {
+                    closePluginUninstallModal();
+                    return;
+                }
                 if (dbResetModal && !dbResetModal.classList.contains('hidden')) {
                     closeDbResetModal();
                     return;
@@ -5911,6 +5895,10 @@
                 if (completedModal && !completedModal.classList.contains('hidden')) {
                     completedModal.classList.add('hidden');
                     completedModal.classList.remove('flex');
+                    return;
+                }
+                if (pluginStoreModal && !pluginStoreModal.classList.contains('hidden')) {
+                    closePluginStoreModal();
                     return;
                 }
                 if (dbManageModal && !dbManageModal.classList.contains('hidden')) {
@@ -5983,12 +5971,14 @@
             });
         }
 
-        saveNotesBtn.onclick = () => {
-            selectedStageIds = new Set(state.stages.map(s => s.id));
-            renderSaveModalList();
-            saveModal.classList.remove('hidden');
-            saveModal.classList.add('flex');
-        };
+        if (typeof saveNotesBtn !== 'undefined' && saveNotesBtn) {
+            saveNotesBtn.onclick = () => {
+                selectedStageIds = new Set(state.stages.map(s => s.id));
+                renderSaveModalList();
+                saveModal.classList.remove('hidden');
+                saveModal.classList.add('flex');
+            };
+        }
 
         closeSaveModal.onclick = () => saveModal.classList.add('hidden');
         cancelSaveModal.onclick = () => saveModal.classList.add('hidden');
@@ -6062,8 +6052,9 @@
         // IndexedDB Multi-Project Persistence ("anotado")
         // ==========================================
         const DB_NAME = 'anotado_db';
-        const DB_VERSION = 1;
+        const DB_VERSION = 2;
         const STORE_NAME = 'projetos';
+        const PLUGINS_STORE_NAME = 'extensoes';
         const STORAGE_ACTIVE_KEY = 'anotado_active_project_id';
 
         let dbInstance = null;
@@ -6076,6 +6067,9 @@
                     const db = e.target.result;
                     if (!db.objectStoreNames.contains(STORE_NAME)) {
                         db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                    }
+                    if (!db.objectStoreNames.contains(PLUGINS_STORE_NAME)) {
+                        db.createObjectStore(PLUGINS_STORE_NAME, { keyPath: 'id' });
                     }
                 };
                 request.onsuccess = (e) => {
@@ -7101,6 +7095,13 @@
                     undoModal.classList.add('hidden');
                     undoModal.classList.remove('flex');
                 }
+                if (pluginStoreModal) {
+                    pluginStoreModal.classList.add('hidden');
+                    pluginStoreModal.classList.remove('flex');
+                }
+                if (typeof unmountAllPlugins === 'function') {
+                    unmountAllPlugins();
+                }
                 if (stageExpandedModal) {
                     stageExpandedModal.classList.add('hidden');
                     stageExpandedModal.classList.remove('flex');
@@ -7301,19 +7302,26 @@
             dbManageModal.classList.add('flex');
         };
 
+        let inspectModalRequestId = 0;
+
         function openDbInspectModal() {
             if (!dbInspectModal || !dbInspectJsonContent) return;
+            inspectModalRequestId++;
             const currentProjectJson = getProjectDataJSON();
             if (dbInspectTitle) {
                 dbInspectTitle.textContent = `${currentProjectJson.name || 'Projeto Atual'} — JSON`;
             }
             dbInspectJsonContent.textContent = JSON.stringify(currentProjectJson, null, 2);
+            if (dbInspectJsonContent.parentElement) {
+                dbInspectJsonContent.parentElement.scrollTop = 0;
+            }
             dbInspectModal.classList.remove('hidden');
             dbInspectModal.classList.add('flex');
         }
 
         function closeDbInspectModal() {
             if (!dbInspectModal) return;
+            inspectModalRequestId++;
             dbInspectModal.classList.add('hidden');
             dbInspectModal.classList.remove('flex');
         }
@@ -7490,6 +7498,1072 @@
                 createNote(null, 1050, 'Anotação 1', 'paper-lined', '');
             }
             updateStageTransform();
+            await loadAndExecuteInstalledPlugins();
+        }
+
+        // ==========================================
+        // Loja de Extensões & IndexedDB Plugin Engine
+        // ==========================================
+        const PLUGIN_CATALOG_URL = 'https://raw.githubusercontent.com/versaodeluxe18/ANOTADO/refs/heads/main/plugin-store/catalog.json';
+        const activePluginInstances = new Map();
+        const pluginStoreCache = {
+            items: [],
+            loading: false,
+            error: null
+        };
+
+        async function getAllInstalledPluginsFromDB() {
+            try {
+                const db = await openDatabase();
+                if (!db.objectStoreNames.contains(PLUGINS_STORE_NAME)) return [];
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(PLUGINS_STORE_NAME, 'readonly');
+                    const store = tx.objectStore(PLUGINS_STORE_NAME);
+                    const req = store.getAll();
+                    req.onsuccess = () => resolve(req.result || []);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.warn('Erro ao listar extensões do IndexedDB:', err);
+                return [];
+            }
+        }
+
+        async function getInstalledPluginFromDB(id) {
+            try {
+                const db = await openDatabase();
+                if (!db.objectStoreNames.contains(PLUGINS_STORE_NAME)) return null;
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(PLUGINS_STORE_NAME, 'readonly');
+                    const store = tx.objectStore(PLUGINS_STORE_NAME);
+                    const req = store.get(id);
+                    req.onsuccess = () => resolve(req.result || null);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.warn('Erro ao obter extensão do IndexedDB:', err);
+                return null;
+            }
+        }
+
+        async function saveInstalledPluginToDB(pluginRecord) {
+            const db = await openDatabase();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(PLUGINS_STORE_NAME, 'readwrite');
+                const store = tx.objectStore(PLUGINS_STORE_NAME);
+                const req = store.put(pluginRecord);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function deleteInstalledPluginFromDB(id) {
+            const db = await openDatabase();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(PLUGINS_STORE_NAME, 'readwrite');
+                const store = tx.objectStore(PLUGINS_STORE_NAME);
+                const req = store.delete(id);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        function escapePluginHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function renderMarkdownSimple(mdText) {
+            const raw = String(mdText || '').replace(/\r\n/g, '\n');
+            const codeBlocks = [];
+            let text = raw.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+                const idx = codeBlocks.length;
+                codeBlocks.push(`<pre class="p-2.5 rounded-xl bg-surface-container border border-outline-variant/60 font-code text-[11px] overflow-x-auto whitespace-pre text-on-surface">${escapePluginHtml(code.trimEnd())}</pre>`);
+                return `@@CODE_BLOCK_${idx}@@`;
+            });
+
+            const lines = text.split('\n');
+            const out = [];
+            let inList = false;
+
+            const formatInline = (s) => {
+                let escaped = escapePluginHtml(s);
+                escaped = escaped.replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 rounded bg-surface-container font-code text-[11px]">$1</code>');
+                escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-on-surface">$1</strong>');
+                return escaped;
+            };
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (/^@@CODE_BLOCK_(\d+)@@$/.test(trimmed)) {
+                    if (inList) { out.push('</ul>'); inList = false; }
+                    const idx = Number(trimmed.match(/^@@CODE_BLOCK_(\d+)@@$/)[1]);
+                    out.push(codeBlocks[idx]);
+                    continue;
+                }
+                if (trimmed.startsWith('### ')) {
+                    if (inList) { out.push('</ul>'); inList = false; }
+                    out.push(`<h4 class="text-xs font-semibold text-on-surface pt-1">${formatInline(trimmed.slice(4))}</h4>`);
+                } else if (trimmed.startsWith('## ')) {
+                    if (inList) { out.push('</ul>'); inList = false; }
+                    out.push(`<h3 class="text-[13px] font-semibold text-on-surface pt-1.5 border-b border-outline-variant/30 pb-0.5">${formatInline(trimmed.slice(3))}</h3>`);
+                } else if (trimmed.startsWith('# ')) {
+                    if (inList) { out.push('</ul>'); inList = false; }
+                    out.push(`<h2 class="text-sm font-bold text-on-surface">${formatInline(trimmed.slice(2))}</h2>`);
+                } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+                    if (!inList) { out.push('<ul class="list-disc pl-4 space-y-1 text-on-surface-variant">'); inList = true; }
+                    out.push(`<li>${formatInline(trimmed.slice(2))}</li>`);
+                } else if (trimmed === '') {
+                    if (inList) { out.push('</ul>'); inList = false; }
+                } else {
+                    if (inList) { out.push('</ul>'); inList = false; }
+                    out.push(`<p class="text-on-surface-variant">${formatInline(trimmed)}</p>`);
+                }
+            }
+            if (inList) out.push('</ul>');
+            return out.join('');
+        }
+
+        function resolvePluginUrls(entry) {
+            const id = String(entry?.id || '').trim();
+            const rawUrl = String(entry?.manifest || entry?.script || entry?.url || '').trim();
+            if (!rawUrl) {
+                return { id, scriptUrl: '', manifestUrl: '', readmeUrl: '', baseUrl: '' };
+            }
+            const cleanUrl = rawUrl.split('?')[0];
+            const baseUrl = cleanUrl.replace(/\/[^/]+$/, '');
+            let scriptUrl = rawUrl;
+            let manifestUrl = `${baseUrl}/manifest.json`;
+            const readmeUrl = `${baseUrl}/README.md`;
+
+            if (cleanUrl.endsWith('.json')) {
+                manifestUrl = rawUrl;
+                scriptUrl = `${baseUrl}/script.js`;
+            }
+            return { id, scriptUrl, manifestUrl, readmeUrl, baseUrl };
+        }
+
+        function normalizePluginIcon(rawIcon, manifestUrl) {
+            const val = String(rawIcon || '').trim();
+            if (!val) return '';
+            if (/^data:/i.test(val) || /^blob:/i.test(val)) return val;
+            if (/^https?:\/\//i.test(val)) return val;
+            const compact = val.replace(/\s+/g, '');
+            if (/^(PHN2Zy|PD94bW)/i.test(compact)) return `data:image/svg+xml;base64,${compact}`;
+            if (compact.startsWith('iVBORw')) return `data:image/png;base64,${compact}`;
+            if (compact.startsWith('/9j/')) return `data:image/jpeg;base64,${compact}`;
+            if (compact.startsWith('R0lGOD')) return `data:image/gif;base64,${compact}`;
+            if (compact.startsWith('UklGR')) return `data:image/webp;base64,${compact}`;
+            if (/^[A-Za-z0-9+/=]{24,}$/.test(compact) && !val.includes('.')) {
+                return `data:image/png;base64,${compact}`;
+            }
+            if (manifestUrl) {
+                try { return new URL(val, manifestUrl).href; } catch (_) {}
+            }
+            return val;
+        }
+
+        async function resolvePluginIconForStorage(rawIcon, manifestUrl) {
+            const normalized = normalizePluginIcon(rawIcon, manifestUrl);
+            if (!normalized) return '';
+            if (/^data:/i.test(normalized)) return normalized;
+            if (/^https?:\/\//i.test(normalized)) {
+                try {
+                    const res = await fetch(normalized, { cache: 'no-store' });
+                    if (res.ok) {
+                        const blob = await res.blob();
+                        const dataUrl = await new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+                            reader.onerror = () => resolve('');
+                            reader.readAsDataURL(blob);
+                        });
+                        if (dataUrl) return dataUrl;
+                    }
+                } catch (_) {}
+            }
+            return normalized;
+        }
+
+        function normalizePluginVersion(v) {
+            return String(v || '1.0.0').trim().replace(/^v/i, '');
+        }
+
+        function syncToolbarPluginStates() {
+            const toolbarContent = document.getElementById('toolbar-content');
+            if (!toolbarContent) return;
+            toolbarContent.querySelectorAll('button[data-toolbar-plugin-id]').forEach(btn => {
+                const pluginId = btn.dataset.toolbarPluginId;
+                btn.classList.toggle('active', activePluginInstances.has(pluginId));
+            });
+        }
+
+        let activeContextPlugin = null;
+
+        function closePluginContextMenu() {
+            if (!pluginContextMenu) return;
+            activeContextPlugin = null;
+            pluginContextMenu.classList.add('hidden');
+            pluginContextMenu.classList.remove('flex');
+        }
+
+        async function openPluginContextMenu(plugin, anchorBtn) {
+            if (!pluginContextMenu || !plugin || !anchorBtn) return;
+            const latestRecord = await getInstalledPluginFromDB(plugin.id);
+            const targetPlugin = latestRecord || plugin;
+            activeContextPlugin = targetPlugin;
+
+            const isEnabled = targetPlugin.enabled !== false;
+
+            if (pluginCtxEnableBtn) {
+                pluginCtxEnableBtn.disabled = isEnabled;
+                pluginCtxEnableBtn.classList.toggle('opacity-40', isEnabled);
+                pluginCtxEnableBtn.classList.toggle('pointer-events-none', isEnabled);
+            }
+            if (pluginCtxDisableBtn) {
+                pluginCtxDisableBtn.disabled = !isEnabled;
+                pluginCtxDisableBtn.classList.toggle('opacity-40', !isEnabled);
+                pluginCtxDisableBtn.classList.toggle('pointer-events-none', !isEnabled);
+            }
+
+            pluginContextMenu.style.left = '-9999px';
+            pluginContextMenu.style.top = '-9999px';
+            pluginContextMenu.classList.remove('hidden');
+            pluginContextMenu.classList.add('flex');
+
+            const menuWidth = pluginContextMenu.offsetWidth || 156;
+            const menuHeight = pluginContextMenu.offsetHeight || 110;
+            const btnRect = anchorBtn.getBoundingClientRect();
+
+            let left = Math.round(btnRect.left + (btnRect.width / 2) - (menuWidth / 2));
+            let top = Math.round(btnRect.top - menuHeight - 10);
+
+            if (top < 12) {
+                top = Math.round(btnRect.bottom + 10);
+            }
+            left = Math.max(8, Math.min(window.innerWidth - menuWidth - 8, left));
+            top = Math.max(8, Math.min(window.innerHeight - menuHeight - 8, top));
+
+            pluginContextMenu.style.left = `${left}px`;
+            pluginContextMenu.style.top = `${top}px`;
+        }
+
+        async function setPluginEnabledState(id, enabled) {
+            if (!id) return;
+            const record = await getInstalledPluginFromDB(id);
+            if (!record) return;
+            const displayName = record.name || id;
+            record.enabled = Boolean(enabled);
+            await saveInstalledPluginToDB(record);
+
+            if (record.enabled) {
+                executePluginRecord(record, true);
+                showToast(`Extensão "${displayName}" ativada!`);
+            } else {
+                unmountPluginInstance(id);
+                const existingScript = document.querySelector(`script[data-anotado-plugin-id="${CSS.escape(id)}"]`);
+                if (existingScript) existingScript.remove();
+                if (window.ANOTADO_PLUGINS && window.ANOTADO_PLUGINS[id]) {
+                    delete window.ANOTADO_PLUGINS[id];
+                }
+                showToast(`Extensão "${displayName}" desativada.`);
+            }
+
+            await renderToolbarPluginIcons();
+            if (pluginStoreModal && !pluginStoreModal.classList.contains('hidden')) {
+                await renderPluginStoreList();
+            }
+        }
+
+        if (pluginCtxEnableBtn) {
+            pluginCtxEnableBtn.onclick = async (e) => {
+                e.stopPropagation();
+                if (!activeContextPlugin) return;
+                const targetId = activeContextPlugin.id;
+                closePluginContextMenu();
+                await setPluginEnabledState(targetId, true);
+            };
+        }
+
+        if (pluginCtxDisableBtn) {
+            pluginCtxDisableBtn.onclick = async (e) => {
+                e.stopPropagation();
+                if (!activeContextPlugin) return;
+                const targetId = activeContextPlugin.id;
+                closePluginContextMenu();
+                await setPluginEnabledState(targetId, false);
+            };
+        }
+
+        if (pluginCtxUninstallBtn) {
+            pluginCtxUninstallBtn.onclick = (e) => {
+                e.stopPropagation();
+                if (!activeContextPlugin) return;
+                const targetId = activeContextPlugin.id;
+                const displayName = activeContextPlugin.name || targetId;
+                closePluginContextMenu();
+                openPluginUninstallModal(targetId, displayName);
+            };
+        }
+
+        document.addEventListener('pointerdown', (e) => {
+            if (!pluginContextMenu || pluginContextMenu.classList.contains('hidden')) return;
+            if (pluginContextMenu.contains(e.target)) return;
+            if (e.button === 2 && e.target.closest('button[data-toolbar-plugin-id]')) return;
+            closePluginContextMenu();
+        });
+
+        async function renderToolbarPluginIcons(installedOverride = null) {
+            const toolbarContent = document.getElementById('toolbar-content');
+            if (!toolbarContent) return;
+
+            toolbarContent.querySelectorAll('button[data-toolbar-plugin-id], [data-toolbar-plugins-divider]').forEach(el => el.remove());
+
+            const installed = Array.isArray(installedOverride)
+                ? installedOverride
+                : await getAllInstalledPluginsFromDB();
+
+            const validPlugins = installed.filter(plugin => plugin && plugin.id);
+
+            if (validPlugins.length > 0) {
+                const divider = document.createElement('div');
+                divider.className = 'w-px h-5 bg-outline-variant/80 rounded-full shrink-0 mx-0.5';
+                divider.dataset.toolbarPluginsDivider = 'true';
+                divider.setAttribute('aria-hidden', 'true');
+                toolbarContent.appendChild(divider);
+            }
+
+            validPlugins.forEach(plugin => {
+                const displayName = plugin.name || plugin.id;
+                const isEnabled = plugin.enabled !== false;
+                const iconSrc = normalizePluginIcon(plugin.icon, plugin.manifestUrl);
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `icon-button${isEnabled && activePluginInstances.has(plugin.id) ? ' active' : ''}`;
+                btn.dataset.toolbarPluginId = plugin.id;
+                btn.title = isEnabled ? displayName : `${displayName} (Desativada)`;
+
+                const iconWrap = document.createElement('span');
+                iconWrap.className = 'relative flex items-center justify-center w-[20px] h-[20px] pointer-events-none shrink-0';
+
+                const createFallbackIcon = () => {
+                    const fallback = document.createElement('span');
+                    fallback.className = `material-symbols-outlined text-[20px] leading-none${!isEnabled ? ' opacity-40 grayscale' : ''}`;
+                    fallback.textContent = 'extension';
+                    return fallback;
+                };
+
+                if (iconSrc) {
+                    const img = document.createElement('img');
+                    img.src = iconSrc;
+                    img.alt = displayName;
+                    img.className = `w-[20px] h-[20px] rounded-[4px] object-contain pointer-events-none shrink-0${!isEnabled ? ' opacity-40 grayscale' : ''}`;
+                    img.onerror = () => {
+                        img.replaceWith(createFallbackIcon());
+                    };
+                    iconWrap.appendChild(img);
+                } else {
+                    iconWrap.appendChild(createFallbackIcon());
+                }
+
+                if (!isEnabled) {
+                    const blockedOverlay = document.createElement('span');
+                    blockedOverlay.className = 'absolute inset-0 flex items-center justify-center pointer-events-none';
+                    blockedOverlay.innerHTML = `<span class="material-symbols-outlined text-[18px] leading-none text-error drop-shadow-[0_0_2px_rgba(248,249,251,0.95)]">block</span>`;
+                    iconWrap.appendChild(blockedOverlay);
+                }
+
+                btn.appendChild(iconWrap);
+
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    closePluginContextMenu();
+                    if (plugin.enabled === false) {
+                        showToast(`Extensão "${displayName}" está desativada. Clique com o botão direito para ativar.`, true);
+                        return;
+                    }
+                    if (activePluginInstances.has(plugin.id)) {
+                        unmountPluginInstance(plugin.id);
+                    } else {
+                        const hasMountFn = Boolean(
+                            window.ANOTADO_PLUGINS &&
+                            window.ANOTADO_PLUGINS[plugin.id] &&
+                            typeof window.ANOTADO_PLUGINS[plugin.id].mount === 'function'
+                        );
+                        if (hasMountFn) {
+                            mountRegisteredPlugin(plugin.id, displayName);
+                        } else {
+                            executePluginRecord(plugin, true);
+                        }
+                    }
+                    if (pluginStoreModal && !pluginStoreModal.classList.contains('hidden')) {
+                        renderPluginStoreList();
+                    }
+                };
+
+                btn.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openPluginContextMenu(plugin, btn);
+                };
+
+                toolbarContent.appendChild(btn);
+            });
+
+            if (toolbar && !toolbar.classList.contains('hidden') && toolbar.style.left && toolbar.style.left !== '50%') {
+                clampToolbarToViewport();
+            }
+        }
+
+        function unmountPluginInstance(id) {
+            const active = activePluginInstances.get(id);
+            if (!active) return;
+            try {
+                if (active.instance && typeof active.instance.unmount === 'function') {
+                    active.instance.unmount();
+                }
+            } catch (err) {
+                console.warn(`Erro ao desmontar extensão "${id}":`, err);
+            }
+            if (active.wrapperEl && active.wrapperEl.parentNode) {
+                active.wrapperEl.remove();
+            }
+            activePluginInstances.delete(id);
+            syncToolbarPluginStates();
+        }
+
+        function unmountAllPlugins() {
+            Array.from(activePluginInstances.keys()).forEach(id => unmountPluginInstance(id));
+            if (pluginHostContainer) pluginHostContainer.innerHTML = '';
+            document.querySelectorAll('script[data-anotado-plugin-id]').forEach(s => s.remove());
+            document.querySelectorAll('#toolbar-content button[data-toolbar-plugin-id], #toolbar-content [data-toolbar-plugins-divider]').forEach(el => el.remove());
+            if (window.ANOTADO_PLUGINS) {
+                window.ANOTADO_PLUGINS = Object.create(null);
+            }
+        }
+
+        function mountRegisteredPlugin(id, displayName) {
+            if (!pluginHostContainer) return false;
+            const registry = window.ANOTADO_PLUGINS;
+            const pluginObj = registry && registry[id];
+            if (!pluginObj || typeof pluginObj.mount !== 'function') return false;
+
+            if (activePluginInstances.has(id)) {
+                return true;
+            }
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'pointer-events-auto relative flex flex-col gap-1.5 bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-2 select-none';
+            wrapper.dataset.pluginHostId = id;
+
+            const bar = document.createElement('div');
+            bar.className = 'flex items-center justify-between gap-2 px-1';
+            bar.innerHTML = `
+                <div class="plugin-drag-handle flex-1 flex items-center gap-1.5 text-outline hover:text-on-surface cursor-grab active:cursor-grabbing h-5 rounded px-1 hover:bg-surface-variant transition-colors min-w-0" title="Arrastar extensão">
+                    <span class="material-symbols-outlined text-[15px]">drag_indicator</span>
+                    <span class="text-[11px] font-semibold text-on-surface-variant truncate">${escapePluginHtml(displayName || id)}</span>
+                </div>
+                <button type="button" class="plugin-close-btn text-outline hover:text-on-surface h-5 w-5 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Fechar extensão">
+                    <span class="material-symbols-outlined text-[15px]">close</span>
+                </button>
+            `;
+
+            const mountTarget = document.createElement('div');
+            wrapper.appendChild(bar);
+            wrapper.appendChild(mountTarget);
+            pluginHostContainer.appendChild(wrapper);
+
+            const dragBar = bar.querySelector('.plugin-drag-handle');
+            const closeBtn = bar.querySelector('.plugin-close-btn');
+
+            let isDragging = false;
+            let offX = 0;
+            let offY = 0;
+
+            dragBar.addEventListener('pointerdown', (e) => {
+                if (e.button !== 0) return;
+                isDragging = true;
+                const rect = wrapper.getBoundingClientRect();
+                offX = e.clientX - rect.left;
+                offY = e.clientY - rect.top;
+                if (wrapper.style.position !== 'fixed') {
+                    wrapper.style.position = 'fixed';
+                    wrapper.style.left = `${rect.left}px`;
+                    wrapper.style.top = `${rect.top}px`;
+                    wrapper.style.right = 'auto';
+                    wrapper.style.bottom = 'auto';
+                }
+                try { dragBar.setPointerCapture(e.pointerId); } catch (_) {}
+            });
+
+            const onMove = (e) => {
+                if (!isDragging) return;
+                const maxL = window.innerWidth - (wrapper.offsetWidth || 320) - 8;
+                const maxT = window.innerHeight - (wrapper.offsetHeight || 200) - 8;
+                wrapper.style.left = `${Math.max(8, Math.min(maxL, e.clientX - offX))}px`;
+                wrapper.style.top = `${Math.max(8, Math.min(maxT, e.clientY - offY))}px`;
+            };
+            const onUp = () => {
+                isDragging = false;
+            };
+            window.addEventListener('pointermove', onMove);
+            window.addEventListener('pointerup', onUp);
+
+            closeBtn.onclick = () => {
+                window.removeEventListener('pointermove', onMove);
+                window.removeEventListener('pointerup', onUp);
+                unmountPluginInstance(id);
+                if (pluginStoreModal && !pluginStoreModal.classList.contains('hidden')) {
+                    renderPluginStoreList();
+                }
+            };
+
+            try {
+                const hostApi = {
+                    app: 'ANOTADO',
+                    version: '1.0.0',
+                    pluginId: id
+                };
+                const instance = pluginObj.mount(mountTarget, hostApi);
+                activePluginInstances.set(id, { instance, wrapperEl: wrapper });
+                syncToolbarPluginStates();
+                return true;
+            } catch (err) {
+                console.error(`Erro ao montar extensão "${id}":`, err);
+                wrapper.remove();
+                return false;
+            }
+        }
+
+        function executePluginRecord(record, shouldMount = true) {
+            if (!record || !record.id || !record.code || record.enabled === false) return false;
+            try {
+                const existingScript = document.querySelector(`script[data-anotado-plugin-id="${CSS.escape(record.id)}"]`);
+                if (existingScript) existingScript.remove();
+
+                const scriptEl = document.createElement('script');
+                scriptEl.type = 'text/javascript';
+                scriptEl.dataset.anotadoPluginId = record.id;
+                scriptEl.textContent = record.code;
+                document.body.appendChild(scriptEl);
+
+                if (shouldMount && window.ANOTADO_PLUGINS && window.ANOTADO_PLUGINS[record.id]) {
+                    mountRegisteredPlugin(record.id, record.name || record.id);
+                }
+                return true;
+            } catch (err) {
+                console.error(`Erro ao executar script da extensão "${record.id}":`, err);
+                return false;
+            }
+        }
+
+        async function loadAndExecuteInstalledPlugins() {
+            const installed = await getAllInstalledPluginsFromDB();
+            for (const pluginRecord of installed) {
+                if (pluginRecord && pluginRecord.enabled !== false) {
+                    executePluginRecord(pluginRecord, true);
+                }
+            }
+            renderToolbarPluginIcons(installed);
+        }
+
+        async function fetchPluginCatalog() {
+            if (pluginStoreCache.loading) return;
+            pluginStoreCache.loading = true;
+            pluginStoreCache.error = null;
+            renderPluginStoreList();
+
+            try {
+                const res = await fetch(PLUGIN_CATALOG_URL, { cache: 'no-store' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const catalog = await res.json();
+                const entries = Array.isArray(catalog?.plugins) ? catalog.plugins : [];
+
+                const items = await Promise.all(entries.map(async (entry) => {
+                    const urls = resolvePluginUrls(entry);
+                    let manifest = null;
+                    try {
+                        if (urls.manifestUrl) {
+                            const mRes = await fetch(urls.manifestUrl, { cache: 'no-store' });
+                            if (mRes.ok) {
+                                manifest = await mRes.json();
+                            }
+                        }
+                    } catch (_) {}
+
+                    let finalScriptUrl = urls.scriptUrl;
+                    let finalReadmeUrl = urls.readmeUrl;
+                    if (manifest) {
+                        if (manifest.entry && urls.manifestUrl && urls.manifestUrl.endsWith('.json')) {
+                            try { finalScriptUrl = new URL(manifest.entry, urls.manifestUrl).href; } catch (_) {}
+                        }
+                        if (manifest.readme && urls.manifestUrl) {
+                            try { finalReadmeUrl = new URL(manifest.readme, urls.manifestUrl).href; } catch (_) {}
+                        }
+                    }
+
+                    const rawIcon = (manifest && manifest.icon) || entry.icon || '';
+                    return {
+                        id: urls.id,
+                        name: (manifest && manifest.name) || entry.name || urls.id,
+                        version: (manifest && manifest.version) || '1.0.0',
+                        description: (manifest && manifest.description) || entry.description || '',
+                        author: (manifest && manifest.author) || '',
+                        icon: normalizePluginIcon(rawIcon, urls.manifestUrl),
+                        scriptUrl: finalScriptUrl,
+                        manifestUrl: urls.manifestUrl,
+                        readmeUrl: finalReadmeUrl,
+                        manifest
+                    };
+                }));
+
+                pluginStoreCache.items = items;
+            } catch (err) {
+                console.warn('Erro ao buscar catálogo de extensões:', err);
+                pluginStoreCache.error = 'Não foi possível carregar o catálogo de extensões.';
+            } finally {
+                pluginStoreCache.loading = false;
+                renderPluginStoreList();
+            }
+        }
+
+        async function installPluginFromStore(item, options = {}) {
+            if (!item || !item.id || !item.scriptUrl) return;
+            const isUpdate = Boolean(options && options.isUpdate);
+            const wasMounted = activePluginInstances.has(item.id);
+            try {
+                const scriptRes = await fetch(item.scriptUrl, { cache: 'no-store' });
+                if (!scriptRes.ok) throw new Error(`Falha ao baixar script (${scriptRes.status})`);
+                const code = await scriptRes.text();
+
+                let manifest = item.manifest;
+                if (!manifest && item.manifestUrl) {
+                    try {
+                        const mRes = await fetch(item.manifestUrl, { cache: 'no-store' });
+                        if (mRes.ok) manifest = await mRes.json();
+                    } catch (_) {}
+                }
+
+                let readme = '';
+                if (item.readmeUrl) {
+                    try {
+                        const rRes = await fetch(item.readmeUrl, { cache: 'no-store' });
+                        if (rRes.ok) readme = await rRes.text();
+                    } catch (_) {}
+                }
+
+                const rawIcon = (manifest && manifest.icon) || item.icon || '';
+                const storedIcon = await resolvePluginIconForStorage(rawIcon, item.manifestUrl);
+
+                const existingRecord = isUpdate ? await getInstalledPluginFromDB(item.id) : null;
+                const preserveEnabled = existingRecord ? existingRecord.enabled !== false : true;
+
+                const record = {
+                    id: item.id,
+                    name: (manifest && manifest.name) || item.name || item.id,
+                    version: (manifest && manifest.version) || item.version || '1.0.0',
+                    description: (manifest && manifest.description) || item.description || '',
+                    author: (manifest && manifest.author) || item.author || '',
+                    icon: storedIcon,
+                    scriptUrl: item.scriptUrl,
+                    manifestUrl: item.manifestUrl,
+                    readmeUrl: item.readmeUrl,
+                    manifest: manifest || null,
+                    readme,
+                    code,
+                    enabled: preserveEnabled,
+                    installedAt: Date.now()
+                };
+
+                if (isUpdate) {
+                    unmountPluginInstance(item.id);
+                    const existingScript = document.querySelector(`script[data-anotado-plugin-id="${CSS.escape(item.id)}"]`);
+                    if (existingScript) existingScript.remove();
+                    if (window.ANOTADO_PLUGINS && window.ANOTADO_PLUGINS[item.id]) {
+                        delete window.ANOTADO_PLUGINS[item.id];
+                    }
+                }
+
+                await saveInstalledPluginToDB(record);
+                if (record.enabled !== false) {
+                    executePluginRecord(record, isUpdate ? wasMounted : true);
+                }
+                await renderToolbarPluginIcons();
+                showToast(isUpdate ? `Extensão "${record.name}" atualizada!` : `Extensão "${record.name}" instalada!`);
+                await renderPluginStoreList();
+            } catch (err) {
+                console.error(isUpdate ? 'Erro ao atualizar extensão:' : 'Erro ao instalar extensão:', err);
+                showToast(isUpdate ? 'Erro ao atualizar extensão.' : 'Erro ao instalar extensão.', true);
+                if (isUpdate) {
+                    await renderPluginStoreList();
+                }
+            }
+        }
+
+        async function uninstallPluginFromStore(id, displayName) {
+            try {
+                unmountPluginInstance(id);
+                const existingScript = document.querySelector(`script[data-anotado-plugin-id="${CSS.escape(id)}"]`);
+                if (existingScript) existingScript.remove();
+                if (window.ANOTADO_PLUGINS && window.ANOTADO_PLUGINS[id]) {
+                    delete window.ANOTADO_PLUGINS[id];
+                }
+                await deleteInstalledPluginFromDB(id);
+                await renderToolbarPluginIcons();
+                showToast(`Extensão "${displayName || id}" removida.`);
+                await renderPluginStoreList();
+            } catch (err) {
+                console.error('Erro ao desinstalar extensão:', err);
+                showToast('Erro ao desinstalar extensão.', true);
+            }
+        }
+
+        async function openPluginReadmeView(item, installedRecord) {
+            if (!pluginStoreListView || !pluginStoreReadmeView || !pluginStoreReadmeContent || !pluginStoreReadmeTitle) return;
+            pluginStoreListView.classList.add('hidden');
+            pluginStoreReadmeView.classList.remove('hidden');
+            pluginStoreReadmeView.classList.add('flex');
+            pluginStoreReadmeTitle.textContent = `${item.name || item.id} — Documentação`;
+
+            if (installedRecord && installedRecord.readme) {
+                pluginStoreReadmeContent.innerHTML = renderMarkdownSimple(installedRecord.readme);
+                return;
+            }
+
+            pluginStoreReadmeContent.innerHTML = `<p class="text-[11px] text-on-surface-variant py-4 text-center">Carregando documentação...</p>`;
+            try {
+                if (!item.readmeUrl) throw new Error('Sem URL de documentação');
+                const res = await fetch(item.readmeUrl, { cache: 'no-store' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const md = await res.text();
+                pluginStoreReadmeContent.innerHTML = renderMarkdownSimple(md);
+            } catch (_) {
+                pluginStoreReadmeContent.innerHTML = `<p class="text-[11px] text-on-surface-variant py-4 text-center">Documentação não disponível para esta extensão.</p>`;
+            }
+        }
+
+        async function openPluginInspectModal(item, installedRecord) {
+            if (!dbInspectModal || !dbInspectJsonContent) return;
+            const reqId = ++inspectModalRequestId;
+            const displayName = item.name || item.id || 'Extensão';
+            const fileName = `${item.id || 'script'}.js`;
+            if (dbInspectTitle) {
+                dbInspectTitle.textContent = `${displayName} — ${fileName}`;
+            }
+            if (dbInspectJsonContent.parentElement) {
+                dbInspectJsonContent.parentElement.scrollTop = 0;
+            }
+            dbInspectModal.classList.remove('hidden');
+            dbInspectModal.classList.add('flex');
+
+            if (item.scriptUrl) {
+                dbInspectJsonContent.textContent = 'Carregando script...';
+                try {
+                    const res = await fetch(item.scriptUrl, { cache: 'no-store' });
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const code = await res.text();
+                    if (reqId !== inspectModalRequestId || dbInspectModal.classList.contains('hidden')) return;
+                    dbInspectJsonContent.textContent = code;
+                    return;
+                } catch (err) {
+                    if (reqId !== inspectModalRequestId || dbInspectModal.classList.contains('hidden')) return;
+                    if (installedRecord && installedRecord.code) {
+                        dbInspectJsonContent.textContent = installedRecord.code;
+                        return;
+                    }
+                    dbInspectJsonContent.textContent = `Não foi possível carregar o script (${err?.message || 'erro desconhecido'}).`;
+                    return;
+                }
+            }
+
+            if (installedRecord && installedRecord.code) {
+                dbInspectJsonContent.textContent = installedRecord.code;
+            } else {
+                dbInspectJsonContent.textContent = 'Script não disponível para esta extensão.';
+            }
+        }
+
+        let pendingUninstallPlugin = null;
+        let pluginUninstallCloseTimer = null;
+
+        function openPluginUninstallModal(id, displayName) {
+            if (!pluginUninstallModal) return;
+            if (pluginUninstallCloseTimer) {
+                clearTimeout(pluginUninstallCloseTimer);
+                pluginUninstallCloseTimer = null;
+            }
+            pendingUninstallPlugin = { id, displayName };
+            if (pluginUninstallTitle) {
+                pluginUninstallTitle.textContent = `Desinstalar "${displayName || id}"?`;
+            }
+            pluginUninstallModal.classList.remove('hidden', 'uninstall-open', 'uninstall-closing');
+            pluginUninstallModal.classList.add('flex');
+            void pluginUninstallModal.offsetHeight;
+            requestAnimationFrame(() => {
+                pluginUninstallModal.classList.add('uninstall-open');
+            });
+        }
+
+        function closePluginUninstallModal() {
+            if (!pluginUninstallModal || pluginUninstallModal.classList.contains('hidden')) return;
+            if (pluginUninstallCloseTimer) {
+                clearTimeout(pluginUninstallCloseTimer);
+                pluginUninstallCloseTimer = null;
+            }
+            pendingUninstallPlugin = null;
+            pluginUninstallModal.classList.remove('uninstall-open');
+            pluginUninstallModal.classList.add('uninstall-closing');
+            pluginUninstallCloseTimer = setTimeout(() => {
+                pluginUninstallModal.classList.add('hidden');
+                pluginUninstallModal.classList.remove('flex', 'uninstall-closing');
+                pluginUninstallCloseTimer = null;
+            }, 310);
+        }
+
+        if (closePluginUninstallBtn) {
+            closePluginUninstallBtn.onclick = () => closePluginUninstallModal();
+        }
+        if (cancelPluginUninstallBtn) {
+            cancelPluginUninstallBtn.onclick = () => closePluginUninstallModal();
+        }
+        if (pluginUninstallBackdrop) {
+            pluginUninstallBackdrop.onclick = () => closePluginUninstallModal();
+        }
+        if (confirmPluginUninstallBtn) {
+            confirmPluginUninstallBtn.onclick = async () => {
+                if (!pendingUninstallPlugin) return;
+                const { id, displayName } = pendingUninstallPlugin;
+                closePluginUninstallModal();
+                await uninstallPluginFromStore(id, displayName);
+            };
+        }
+
+        function showPluginStoreListView() {
+            if (!pluginStoreListView || !pluginStoreReadmeView) return;
+            pluginStoreReadmeView.classList.add('hidden');
+            pluginStoreReadmeView.classList.remove('flex');
+            pluginStoreListView.classList.remove('hidden');
+        }
+
+        async function renderPluginStoreList() {
+            if (!pluginStoreList) return;
+            const installedList = await getAllInstalledPluginsFromDB();
+            const installedMap = new Map(installedList.map(p => [p.id, p]));
+
+            if (pluginStoreCache.loading) {
+                pluginStoreList.innerHTML = `
+                    <div class="py-10 flex flex-col items-center justify-center text-center text-on-surface-variant gap-2">
+                        <span class="material-symbols-outlined text-2xl animate-spin">progress_activity</span>
+                        <p class="text-xs font-medium">Carregando catálogo de extensões...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const combined = pluginStoreCache.items.map(it => ({ ...it, _fromStore: true }));
+            installedList.forEach(inst => {
+                if (!combined.some(it => it.id === inst.id)) {
+                    combined.push({ ...inst, _fromStore: false });
+                }
+            });
+
+            if (combined.length === 0) {
+                pluginStoreList.innerHTML = `
+                    <div class="py-10 flex flex-col items-center justify-center text-center text-on-surface-variant gap-2">
+                        <span class="material-symbols-outlined text-2xl">extension_off</span>
+                        <p class="text-xs font-semibold text-on-surface">${pluginStoreCache.error || 'Nenhuma extensão disponível.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            pluginStoreList.innerHTML = '';
+            combined.forEach(item => {
+                const installedRecord = installedMap.get(item.id);
+                const isInstalled = Boolean(installedRecord);
+                const isMounted = activePluginInstances.has(item.id);
+                const hasMountFn = Boolean(window.ANOTADO_PLUGINS && window.ANOTADO_PLUGINS[item.id] && typeof window.ANOTADO_PLUGINS[item.id].mount === 'function');
+                const hasUpdate = Boolean(
+                    isInstalled &&
+                    item._fromStore &&
+                    normalizePluginVersion(item.version) !== normalizePluginVersion(installedRecord.version)
+                );
+
+                const card = document.createElement('div');
+                card.className = 'flex flex-col gap-2.5 p-3 rounded-xl border border-outline-variant/70 bg-surface-container-lowest shadow-2xs';
+
+                const resolvedIcon = normalizePluginIcon(item.icon || (installedRecord && installedRecord.icon) || '', item.manifestUrl);
+                const iconHtml = resolvedIcon
+                    ? `<img src="${escapePluginHtml(resolvedIcon)}" alt="${escapePluginHtml(item.name)}" class="w-9 h-9 rounded-xl border border-outline-variant/60 shrink-0 object-cover bg-surface-container">`
+                    : `<div class="w-9 h-9 rounded-xl border border-outline-variant/60 bg-surface-container flex items-center justify-center shrink-0 text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">extension</span></div>`;
+
+                card.innerHTML = `
+                    <div class="flex items-start gap-2.5">
+                        ${iconHtml}
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-xs font-semibold text-on-surface truncate">${escapePluginHtml(item.name || item.id)}</span>
+                                <span class="text-[10px] font-mono text-outline shrink-0">v${escapePluginHtml(item.version || '1.0.0')}</span>
+                            </div>
+                            <p class="text-[11px] text-on-surface-variant leading-snug mt-0.5">${escapePluginHtml(item.description || 'Sem descrição disponível.')}</p>
+                            <div class="flex items-center gap-2 mt-1 text-[10px] text-outline">
+                                ${item.author ? `<span>por ${escapePluginHtml(item.author)}</span>` : ''}
+                                ${isInstalled ? `<span class="px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold">Instalada</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-1.5 pt-2 border-t border-outline-variant/30 flex-wrap">
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" class="btn-plugin-readme py-1 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer" title="Ver documentação">
+                                Documentação
+                            </button>
+                            ${(item.scriptUrl || (installedRecord && installedRecord.code)) ? `
+                                <button type="button" class="btn-plugin-inspect py-1 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer" title="Inspecionar script da extensão">
+                                    Inspecionar
+                                </button>
+                            ` : ''}
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            ${isInstalled ? `
+                                ${hasMountFn ? `
+                                    <button type="button" class="btn-plugin-toggle py-1 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer">
+                                        ${isMounted ? 'Fechar' : 'Abrir'}
+                                    </button>
+                                ` : ''}
+                                <button type="button" class="btn-plugin-uninstall py-1 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold hover:text-error hover:bg-surface-variant text-on-surface transition-colors cursor-pointer">
+                                    Desinstalar
+                                </button>
+                            ` : `
+                                <button type="button" class="btn-plugin-install py-1 px-3 rounded-lg bg-primary border border-primary text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs">
+                                    Instalar
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                    ${hasUpdate ? `
+                        <button type="button" class="btn-plugin-update plugin-update-btn w-full py-2 px-4 rounded-full border border-black/20 shadow-md text-slate-900 hover:text-black hover:shadow-lg transition-all text-xs font-bold cursor-pointer select-none active:scale-95 tracking-wide flex items-center justify-center" title="Atualizar extensão para v${escapePluginHtml(item.version || '1.0.0')}">
+                            ATUALIZAR EXTENSÃO
+                        </button>
+                    ` : ''}
+                `;
+
+                const readmeBtn = card.querySelector('.btn-plugin-readme');
+                if (readmeBtn) {
+                    readmeBtn.onclick = () => openPluginReadmeView(item, installedRecord);
+                }
+
+                const inspectBtn = card.querySelector('.btn-plugin-inspect');
+                if (inspectBtn) {
+                    inspectBtn.onclick = () => openPluginInspectModal(item, installedRecord);
+                }
+
+                const installBtn = card.querySelector('.btn-plugin-install');
+                if (installBtn) {
+                    installBtn.onclick = async () => {
+                        installBtn.disabled = true;
+                        installBtn.textContent = 'Instalando...';
+                        await installPluginFromStore(item);
+                    };
+                }
+
+                const updateBtn = card.querySelector('.btn-plugin-update');
+                if (updateBtn) {
+                    updateBtn.onclick = async () => {
+                        updateBtn.disabled = true;
+                        updateBtn.textContent = 'ATUALIZANDO...';
+                        await installPluginFromStore(item, { isUpdate: true });
+                    };
+                }
+
+                const toggleBtn = card.querySelector('.btn-plugin-toggle');
+                if (toggleBtn) {
+                    toggleBtn.onclick = () => {
+                        if (activePluginInstances.has(item.id)) {
+                            unmountPluginInstance(item.id);
+                        } else {
+                            mountRegisteredPlugin(item.id, item.name || item.id);
+                        }
+                        renderPluginStoreList();
+                    };
+                }
+
+                const uninstallBtn = card.querySelector('.btn-plugin-uninstall');
+                if (uninstallBtn) {
+                    uninstallBtn.onclick = () => {
+                        openPluginUninstallModal(item.id, item.name || item.id);
+                    };
+                }
+
+                pluginStoreList.appendChild(card);
+            });
+        }
+
+        function openPluginStoreModal() {
+            if (!pluginStoreModal) return;
+            showPluginStoreListView();
+            positionPanelRightCenter(pluginStoreModal);
+            pluginStoreModal.classList.remove('hidden');
+            pluginStoreModal.classList.add('flex');
+            fetchPluginCatalog();
+        }
+
+        function closePluginStoreModal() {
+            if (!pluginStoreModal) return;
+            pluginStoreModal.classList.add('hidden');
+            pluginStoreModal.classList.remove('flex');
+        }
+
+        if (pluginStoreBtn) {
+            pluginStoreBtn.onclick = (e) => {
+                e.stopPropagation();
+                if (pluginStoreModal && !pluginStoreModal.classList.contains('hidden')) {
+                    closePluginStoreModal();
+                } else {
+                    openPluginStoreModal();
+                }
+            };
+        }
+        if (closePluginStoreBtn) {
+            closePluginStoreBtn.onclick = () => closePluginStoreModal();
+        }
+        const PLUGIN_REFRESH_COOLDOWN_MS = 30000;
+        let lastPluginStoreRefreshAt = 0;
+        let pluginStoreRefreshCooldownTimer = null;
+
+        if (pluginStoreRefreshBtn) {
+            pluginStoreRefreshBtn.onclick = () => {
+                const now = Date.now();
+                if (pluginStoreCache.loading || (now - lastPluginStoreRefreshAt) < PLUGIN_REFRESH_COOLDOWN_MS) {
+                    return;
+                }
+                lastPluginStoreRefreshAt = now;
+                pluginStoreRefreshBtn.disabled = true;
+                pluginStoreRefreshBtn.classList.add('opacity-40', 'cursor-not-allowed');
+                pluginStoreRefreshBtn.classList.remove('cursor-pointer', 'hover:text-on-surface', 'hover:bg-surface-variant');
+                pluginStoreRefreshBtn.title = 'Aguarde alguns segundos para atualizar novamente';
+
+                if (pluginStoreRefreshCooldownTimer) {
+                    clearTimeout(pluginStoreRefreshCooldownTimer);
+                }
+                pluginStoreRefreshCooldownTimer = setTimeout(() => {
+                    pluginStoreRefreshBtn.disabled = false;
+                    pluginStoreRefreshBtn.classList.remove('opacity-40', 'cursor-not-allowed');
+                    pluginStoreRefreshBtn.classList.add('cursor-pointer', 'hover:text-on-surface', 'hover:bg-surface-variant');
+                    pluginStoreRefreshBtn.title = 'Atualizar catálogo';
+                    pluginStoreRefreshCooldownTimer = null;
+                }, PLUGIN_REFRESH_COOLDOWN_MS);
+
+                showPluginStoreListView();
+                fetchPluginCatalog();
+            };
+        }
+        if (pluginStoreReadmeBackBtn) {
+            pluginStoreReadmeBackBtn.onclick = () => showPluginStoreListView();
         }
 
         initApp();
