@@ -3,7 +3,7 @@
   "plugins": [
     {
       "id": "temporizador-foco",
-      "manifest": "plugins/temporizador-foco/manifest.json"
+      "manifest": "https://raw.githubusercontent.com/versaodeluxe18/ANOTADO/refs/heads/main/plugin-store/temporizador-foco/script.js"
     }
   ]
 }
