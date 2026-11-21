@@ -8058,7 +8058,7 @@
             }
 
             function onUp(e) {
-                if (activePointerId !== null && e && e.pointerId !== activePointerId) return;
+                if (activePointerId !== null && e && typeof e.pointerId === 'number' && e.pointerId !== activePointerId) return;
                 isDragging = false;
                 activePointerId = null;
             }
