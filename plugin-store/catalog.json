@@ -4,6 +4,10 @@
     {
       "id": "temporizador-foco",
       "manifest": "https://raw.githubusercontent.com/versaodeluxe18/ANOTADO/refs/heads/main/plugin-store/temporizador-foco/script.js"
+    },
+    {
+      "id": "comunidade-anotado",
+      "manifest": "https://raw.githubusercontent.com/versaodeluxe18/ANOTADO/refs/heads/main/plugin-store/comunidade-anotado/manifest.json"
     }
   ]
 }
