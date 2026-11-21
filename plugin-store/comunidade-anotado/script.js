@@ -9,7 +9,7 @@
     'use strict';
 
     const PLUGIN_ID = 'comunidade-anotado';
-    const PLUGIN_VERSION = '1.0.0';
+    const PLUGIN_VERSION = '1.0.1';
     const REPOSITORY_URL = 'https://github.com/versaodeluxe18/ANOTADO';
     const COMMITS_URL = REPOSITORY_URL + '/commits/main/';
     const mountedInstances = new WeakMap();
@@ -51,6 +51,75 @@
                 '</article>'
             ].join('');
         }).join('');
+    }
+
+    function configureCommunityWindow(container) {
+        const hostWindow = container && container.parentElement;
+        if (!hostWindow) return function () {};
+
+        // O host cria o contêiner ancorado no canto inferior.
+        // A extensão assume a posição da própria janela para que todo o painel
+        // comece visível, independentemente da altura do conteúdo.
+        hostWindow.style.position = 'fixed';
+        hostWindow.style.top = '16px';
+        hostWindow.style.right = '16px';
+        hostWindow.style.bottom = 'auto';
+        hostWindow.style.left = 'auto';
+        hostWindow.style.width = 'min(900px, calc(100vw - 32px))';
+        hostWindow.style.maxWidth = 'calc(100vw - 16px)';
+        hostWindow.style.maxHeight = 'calc(100vh - 32px)';
+        hostWindow.style.overflow = 'hidden';
+        hostWindow.style.display = 'flex';
+        hostWindow.style.flexDirection = 'column';
+        hostWindow.style.boxSizing = 'border-box';
+
+        // O cabeçalho do host permanece visível; o conteúdo comprido rola por dentro.
+        container.style.width = '100%';
+        container.style.minWidth = '0';
+        container.style.minHeight = '0';
+        container.style.flex = '1 1 auto';
+        container.style.maxWidth = '100%';
+        container.style.maxHeight = 'calc(100vh - 72px)';
+        container.style.overflowY = 'auto';
+        container.style.overflowX = 'hidden';
+        container.style.overscrollBehavior = 'contain';
+        container.style.boxSizing = 'border-box';
+
+        const dragHandle = hostWindow.querySelector('.plugin-drag-handle');
+        if (dragHandle) {
+            dragHandle.style.touchAction = 'none';
+        }
+
+        function clampWindow() {
+            if (!hostWindow.isConnected) return;
+
+            const rect = hostWindow.getBoundingClientRect();
+            const margin = 8;
+            const maxLeft = Math.max(margin, window.innerWidth - rect.width - margin);
+            const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
+            const left = Math.min(maxLeft, Math.max(margin, rect.left));
+            const top = Math.min(maxTop, Math.max(margin, rect.top));
+
+            // Usar left/top e liberar right/bottom permite que o arraste nativo
+            // do cabeçalho do ANOTADO continue funcionando sem conflito de âncoras.
+            hostWindow.style.left = left + 'px';
+            hostWindow.style.top = top + 'px';
+            hostWindow.style.right = 'auto';
+            hostWindow.style.bottom = 'auto';
+        }
+
+        clampWindow();
+        const frame = window.requestAnimationFrame
+            ? window.requestAnimationFrame(clampWindow)
+            : null;
+        window.addEventListener('resize', clampWindow);
+
+        return function cleanupCommunityWindow() {
+            window.removeEventListener('resize', clampWindow);
+            if (frame !== null && window.cancelAnimationFrame) {
+                window.cancelAnimationFrame(frame);
+            }
+        };
     }
 
     function mount(container) {
@@ -235,11 +304,14 @@
         const updatesElement = panel.querySelector('[data-role="updates"]');
         if (updatesElement) updatesElement.innerHTML = renderUpdates();
 
+        const cleanupCommunityWindow = configureCommunityWindow(container);
+
         let disposed = false;
 
         function unmount() {
             if (disposed) return;
             disposed = true;
+            cleanupCommunityWindow();
             panel.remove();
             if (mountedInstances.get(container) === unmount) {
                 mountedInstances.delete(container);
