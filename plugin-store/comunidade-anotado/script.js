@@ -188,7 +188,7 @@
                 '.anotado-community .ac-footer { align-items: flex-start; flex-direction: column; gap: 7px; }',
             '}',
             '@media (prefers-reduced-motion: reduce) { .anotado-community * { scroll-behavior: auto !important; } }'
-        ].join('\\n');
+        ].join('\n');
 
         panel.innerHTML = [
             '<div class="ac-shell">',
