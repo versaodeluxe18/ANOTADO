@@ -63,3 +63,8 @@ Essa declaração de permissões descreve o comportamento da extensão; não sub
 - API declarada: \`2.0.0\`
 - Versão mínima declarada do ANOTADO: \`2.0.0\`
 - Dependências externas: nenhuma
+
+
+## Janela e posicionamento
+
+A extensão configura a janela hospedeira durante a montagem: posiciona-a no canto superior direito dentro da área visível, limita a altura ao viewport e habilita rolagem interna para o conteúdo longo. O cabeçalho de arraste fornecido pelo ANOTADO continua sendo utilizado para reposicionar a janela. Ao redimensionar a tela, a extensão ajusta os limites sem reiniciar a posição escolhida pelo usuário.
