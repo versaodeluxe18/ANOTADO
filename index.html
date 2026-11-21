@@ -7923,16 +7923,24 @@
         function unmountPluginInstance(id) {
             const active = activePluginInstances.get(id);
             if (!active) return;
+
+            // Remove os listeners globais de arraste antes de desmontar a extensão.
+            if (typeof active.cleanupDrag === 'function') {
+                active.cleanupDrag();
+            }
+
             try {
                 if (active.instance && typeof active.instance.unmount === 'function') {
                     active.instance.unmount();
                 }
             } catch (err) {
-                console.warn(`Erro ao desmontar extensão "${id}":`, err);
+                console.warn('Erro ao desmontar extensão "' + id + '":', err);
             }
+
             if (active.wrapperEl && active.wrapperEl.parentNode) {
                 active.wrapperEl.remove();
             }
+
             activePluginInstances.delete(id);
             syncToolbarPluginStates();
         }
@@ -7947,6 +7955,29 @@
             }
         }
 
+        function clampPluginWindowToViewport(wrapper) {
+            if (!wrapper || !wrapper.isConnected || wrapper.style.position !== 'fixed') return;
+
+            const rect = wrapper.getBoundingClientRect();
+            const margin = 8;
+            const maxLeft = Math.max(margin, window.innerWidth - rect.width - margin);
+            const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
+            const left = Math.min(maxLeft, Math.max(margin, rect.left));
+            const top = Math.min(maxTop, Math.max(margin, rect.top));
+
+            wrapper.style.left = left + 'px';
+            wrapper.style.top = top + 'px';
+        }
+
+        // Mantém janelas já abertas dentro da área visível quando o viewport muda.
+        window.addEventListener('resize', () => {
+            activePluginInstances.forEach(active => {
+                if (active && active.wrapperEl) {
+                    clampPluginWindowToViewport(active.wrapperEl);
+                }
+            });
+        });
+
         function mountRegisteredPlugin(id, displayName) {
             if (!pluginHostContainer) return false;
             const registry = window.ANOTADO_PLUGINS;
@@ -7958,22 +7989,31 @@
             }
 
             const wrapper = document.createElement('div');
-            wrapper.className = 'pointer-events-auto relative flex flex-col gap-1.5 bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-2 select-none';
+            wrapper.className = 'pointer-events-auto relative flex flex-col gap-1.5 bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-2 select-none max-w-[calc(100vw-16px)] max-h-[calc(100vh-16px)] overflow-hidden';
             wrapper.dataset.pluginHostId = id;
+            wrapper.style.maxWidth = 'calc(100vw - 16px)';
+            wrapper.style.maxHeight = 'calc(100vh - 16px)';
+            wrapper.style.boxSizing = 'border-box';
 
             const bar = document.createElement('div');
-            bar.className = 'flex items-center justify-between gap-2 px-1';
-            bar.innerHTML = `
-                <div class="plugin-drag-handle flex-1 flex items-center gap-1.5 text-outline hover:text-on-surface cursor-grab active:cursor-grabbing h-5 rounded px-1 hover:bg-surface-variant transition-colors min-w-0" title="Arrastar extensão">
-                    <span class="material-symbols-outlined text-[15px]">drag_indicator</span>
-                    <span class="text-[11px] font-semibold text-on-surface-variant truncate">${escapePluginHtml(displayName || id)}</span>
-                </div>
-                <button type="button" class="plugin-close-btn text-outline hover:text-on-surface h-5 w-5 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Fechar extensão">
-                    <span class="material-symbols-outlined text-[15px]">close</span>
-                </button>
-            `;
+            bar.className = 'flex items-center justify-between gap-2 px-1 shrink-0';
+            bar.innerHTML =
+                '<div class="plugin-drag-handle flex-1 flex items-center gap-1.5 text-outline hover:text-on-surface cursor-grab active:cursor-grabbing touch-none h-5 rounded px-1 hover:bg-surface-variant transition-colors min-w-0" title="Arrastar extensão">' +
+                    '<span class="material-symbols-outlined text-[15px]">drag_indicator</span>' +
+                    '<span class="text-[11px] font-semibold text-on-surface-variant truncate">' + escapePluginHtml(displayName || id) + '</span>' +
+                '</div>' +
+                '<button type="button" class="plugin-close-btn text-outline hover:text-on-surface h-5 w-5 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Fechar extensão">' +
+                    '<span class="material-symbols-outlined text-[15px]">close</span>' +
+                '</button>';
 
             const mountTarget = document.createElement('div');
+            mountTarget.className = 'min-h-0 min-w-0 overflow-auto overscroll-contain';
+            mountTarget.style.maxHeight = 'calc(100vh - 64px)';
+            mountTarget.style.minHeight = '0';
+            mountTarget.style.overflowY = 'auto';
+            mountTarget.style.overflowX = 'auto';
+            mountTarget.style.overscrollBehavior = 'contain';
+
             wrapper.appendChild(bar);
             wrapper.appendChild(mountTarget);
             pluginHostContainer.appendChild(wrapper);
@@ -7982,46 +8022,62 @@
             const closeBtn = bar.querySelector('.plugin-close-btn');
 
             let isDragging = false;
+            let activePointerId = null;
             let offX = 0;
             let offY = 0;
 
-            dragBar.addEventListener('pointerdown', (e) => {
+            function onPointerDown(e) {
                 if (e.button !== 0) return;
+
+                e.preventDefault();
                 isDragging = true;
+                activePointerId = e.pointerId;
+
                 const rect = wrapper.getBoundingClientRect();
                 offX = e.clientX - rect.left;
                 offY = e.clientY - rect.top;
-                if (wrapper.style.position !== 'fixed') {
-                    wrapper.style.position = 'fixed';
-                    wrapper.style.left = `${rect.left}px`;
-                    wrapper.style.top = `${rect.top}px`;
-                    wrapper.style.right = 'auto';
-                    wrapper.style.bottom = 'auto';
-                }
-                try { dragBar.setPointerCapture(e.pointerId); } catch (_) {}
-            });
 
-            const onMove = (e) => {
-                if (!isDragging) return;
-                const maxL = window.innerWidth - (wrapper.offsetWidth || 320) - 8;
-                const maxT = window.innerHeight - (wrapper.offsetHeight || 200) - 8;
-                wrapper.style.left = `${Math.max(8, Math.min(maxL, e.clientX - offX))}px`;
-                wrapper.style.top = `${Math.max(8, Math.min(maxT, e.clientY - offY))}px`;
-            };
-            const onUp = () => {
+                try {
+                    dragBar.setPointerCapture(e.pointerId);
+                } catch (_) {}
+            }
+
+            function onMove(e) {
+                if (!isDragging || e.pointerId !== activePointerId) return;
+
+                const margin = 8;
+                const maxLeft = Math.max(margin, window.innerWidth - wrapper.offsetWidth - margin);
+                const maxTop = Math.max(margin, window.innerHeight - wrapper.offsetHeight - margin);
+                const left = Math.min(maxLeft, Math.max(margin, e.clientX - offX));
+                const top = Math.min(maxTop, Math.max(margin, e.clientY - offY));
+
+                wrapper.style.left = left + 'px';
+                wrapper.style.top = top + 'px';
+                wrapper.style.right = 'auto';
+                wrapper.style.bottom = 'auto';
+            }
+
+            function onUp(e) {
+                if (activePointerId !== null && e && e.pointerId !== activePointerId) return;
                 isDragging = false;
-            };
-            window.addEventListener('pointermove', onMove);
-            window.addEventListener('pointerup', onUp);
+                activePointerId = null;
+            }
 
-            closeBtn.onclick = () => {
+            function cleanupDrag() {
+                isDragging = false;
+                activePointerId = null;
+                dragBar.removeEventListener('pointerdown', onPointerDown);
                 window.removeEventListener('pointermove', onMove);
                 window.removeEventListener('pointerup', onUp);
-                unmountPluginInstance(id);
-                if (pluginStoreModal && !pluginStoreModal.classList.contains('hidden')) {
-                    renderPluginStoreList();
-                }
-            };
+                window.removeEventListener('pointercancel', onUp);
+                window.removeEventListener('blur', onUp);
+            }
+
+            dragBar.addEventListener('pointerdown', onPointerDown);
+            window.addEventListener('pointermove', onMove);
+            window.addEventListener('pointerup', onUp);
+            window.addEventListener('pointercancel', onUp);
+            window.addEventListener('blur', onUp);
 
             try {
                 const hostApi = {
@@ -8030,11 +8086,33 @@
                     pluginId: id
                 };
                 const instance = pluginObj.mount(mountTarget, hostApi);
-                activePluginInstances.set(id, { instance, wrapperEl: wrapper });
+
+                // Mede o conteúdo montado e converte a janela para posição fixa.
+                // Assim, mesmo uma extensão alta começa dentro da tela, com cabeçalho visível.
+                const initialRect = wrapper.getBoundingClientRect();
+                const cascadeOffset = Math.min(activePluginInstances.size * 24, 72);
+                const margin = 8;
+                const maxLeft = Math.max(margin, window.innerWidth - initialRect.width - margin);
+                const maxTop = Math.max(margin, window.innerHeight - initialRect.height - margin);
+                const left = Math.min(maxLeft, Math.max(margin, initialRect.left - cascadeOffset));
+                const top = Math.min(maxTop, Math.max(margin, initialRect.top - cascadeOffset));
+
+                wrapper.style.position = 'fixed';
+                wrapper.style.left = left + 'px';
+                wrapper.style.top = top + 'px';
+                wrapper.style.right = 'auto';
+                wrapper.style.bottom = 'auto';
+
+                activePluginInstances.set(id, {
+                    instance,
+                    wrapperEl: wrapper,
+                    cleanupDrag
+                });
                 syncToolbarPluginStates();
                 return true;
             } catch (err) {
-                console.error(`Erro ao montar extensão "${id}":`, err);
+                cleanupDrag();
+                console.error('Erro ao montar extensão "' + id + '":', err);
                 wrapper.remove();
                 return false;
             }
