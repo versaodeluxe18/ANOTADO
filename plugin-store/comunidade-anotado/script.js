@@ -9,62 +9,61 @@
     'use strict';
 
     const PLUGIN_ID = 'comunidade-anotado';
-    const PLUGIN_VERSION = '1.1.0';
+    const PLUGIN_VERSION = '1.2.0';
     const REPOSITORY_URL = 'https://github.com/versaodeluxe18/ANOTADO';
     const SUPPORTERS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSTfsdOYawlg9uvFxtguMaUuNMfK7yMHoxi7l38kM3IrOQPG81BOPidwgqpIIWH0lV6cKBodK-WtryQ/pub?gid=1741040537&single=true&output=tsv';
     const DONATION_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAERCAIAAADT9gTZAAAE9ElEQVR42u3dTW4TQRCAUYx8AnbcgPufhhuw4wrDFmUsUVK5fjq8t05ie+xPbVVaPY/rur4AYV9dAtAMaAY0A5oBzQCaAc2AZkAzoBnQDKAZ0AxoBjQDmgE0A5oBzcA6z+Tvf/v+Y9tL+v3r59tf0cu/WfGTFVd+9sl/vk+IdQY0A5oBzYBmQDPA3bPijyZneXEVc8z4k0/+ZHJYnHyghX/zlE+IdQY0A5oBzYBmQDPA3bPtkZJTv9ldwPG/OTtWTl6Q2WHx7CfEOgOaAc2AZkAzgGYg4+kSfNC2Vzr5QPFhccX03DoDaAY0A5oBzYBmgL+ZNX/UNhdO/mTFicltm7KtM+C7GaAZ0AxoBjQDn0zfrHnhIHL2yIiKYXHyWI+KU0GO/oRYZ0AzoBnQDGgGNAMElcyaKwaRbZLz1rZjlNt+0ifEOgOaAc2AZkAzoBngn7Kz5qOPTVg4hK14RRU/Obsl3DoDmgHNAJoBzYBmYJvsrHnhuLbi/njxB6p4mQu3Wrf9evJ9t86A72agGdAMoBnQDPQo2decHC+2zUaTm3Nnb5rXtjG5TfIit70d1hnQDGgGNAOaAc0Ad8/Zh2873XhWxV7ptvl18oGSO8oXTvmtM6AZ0AxoBjQDmgHuSs7QaFMxiJzdqd22W7niZIzZ7dvWGfDdDDQDmgE0A5qBQX1naFTMhU85HPmUQ0XaLl3bp846A76bgWZAM4BmQDPQ43Fd19v/aMWW29mjGOIWvsyFTnmPrDPguxloBjQDmgHNAEHZWfPsGbsLD1iIv6K2KerCndrJ9z35UbTOgO9moBnQDGgG0Ay83TFnaFQ8+ktHz1vbrlLbU5q9dNYZ0AxoBjQDmgHNAEHP2Yev2MK8cLQa17b7u+0qLbzXojM0wHcz0AxoBjQDaAberuQMjZdOOUo4+dpnt2+3mf0nQduTt86A72agGdAMaAY0AwQN72uuOO9i4Stqc8pBJckPw+wudesMaAY0A5oBzYBmgLvsvua4tkMw2rZaz+5rbns7kk9p4f8D7GsG381AM6AZ0AygGXi7Y85rfqltjtn2QG1nU1Q8UMXG5IWbna0zoBnQDGgGNAOaAe6OOa+5bTpZYeH98WYdfdqGdQY0A5oBzYBmQDPAXcm+5oU3jlu4kXZ2Z3HS7Iko9jWD72agGUAzoBnQDGzTd4ZG24HLbbetm71KbU8+eQRH0uyGdOsMaAY0A5oBzYBmgKC+WfPs7tpT7kx49AbqtnezbdJtnQHNgGZAM6AZ0AwQlJ01V0z9ZqeoFWanvQtvbBh/nrNHXVtnwHcz0AxoBjQDmgGCsrPmU+47VzGynP31Uwa7bccoV1wl6wxoBjQDmgHNgGaAoOF7Aya13Rsw/jJn73Y4+3ZUPPrCSbd1BjQDmgHNgGZAM8Dd8L0B49qOe46PgE85myL5N4++IBVPyToDmgHNgGZAM6AZ4O7pEkxp22odf/S4insYLjyB2joDmgHNgGZAM6AZIOi/njUnB6Zt9/GbPYai4nq2/bp1Bnw3A82AZgDNgGagR9+seeGpwW3HPVfsAo4/z9n3KLmvueJ2hdYZ0AxoBjQDmgE0A29XMmueHQVWPKWK040rnnzbTu0KC2f31hnQDGgGNAOaAc0AQY/rulwFsM6AZkAzoBnQDKAZ0AxoBjQDmgHNAJoBzYBmQDOgGUAzoBnQDGgGTvYHxuPUtxlsjukAAAAASUVORK5CYII=';
     const mountedInstances = new WeakMap();
 
-    const TOUR_STEPS = [
-        {
-            selector: '#topbar-projects-list',
-            parent: true,
-            title: 'Seus projetos',
-            text: 'Alterne entre os arquivos abertos por aqui.'
+    const TUTORIALS = {
+        document: {
+            label: 'Criar documento',
+            description: 'Crie um novo arquivo para organizar suas ideias.',
+            steps: [
+                { selector: '#topbar-add-project-btn', title: 'Abra o menu de arquivos', text: 'Toque no botão + no alto da tela para criar ou abrir um documento.', trigger: 'click' },
+                { selector: '#btn-choice-create-local', title: 'Crie um arquivo local', text: 'Escolha “Criar arquivo local” para começar um novo documento.', trigger: 'click' },
+                { selector: '#new-project-name-input', title: 'Dê um nome ao documento', text: 'Digite o nome que deseja usar. Quando terminar, toque em PRÓXIMO.', trigger: 'manual' },
+                { selector: '#new-project-confirm-btn', title: 'Confirme a criação', text: 'Toque no botão de confirmação. O ANOTADO vai criar seu documento e abrir a primeira folha.', trigger: 'click', delay: 850 }
+            ],
+            success: 'Documento criado! Sua primeira folha já está pronta para receber anotações.'
         },
-        {
-            selector: '#topbar-add-project-btn',
-            title: 'Criar ou abrir',
-            text: 'Crie um arquivo local ou abra um arquivo JSON.'
+        sticky: {
+            label: 'Criar nota',
+            description: 'Adicione um post-it e escreva nele.',
+            steps: [
+                { selector: '#quick-add-note', title: 'Adicione uma nota', text: 'Toque no botão de nota rápida, no canto inferior esquerdo.', trigger: 'click', delay: 180 },
+                { selector: '.sticky-content', lastMatch: true, title: 'Escreva sua ideia', text: 'Clique dentro do post-it e digite. O ANOTADO salva o texto automaticamente.', trigger: 'input', requireChange: true }
+            ],
+            success: 'Muito bem! Sua nota foi criada e o texto é salvo automaticamente.'
         },
-        {
-            selector: '#topbar-manage-db-btn',
-            title: 'Seus dados',
-            text: 'Gerencie, importe ou exporte os dados do aplicativo.'
+        rename: {
+            label: 'Renomear folha',
+            description: 'Dê um nome próprio para cada folha.',
+            steps: [
+                { selector: '.note-title-wrapper', firstMatch: true, title: 'Escolha a folha', text: 'Toque no título de uma folha para editar o nome.', trigger: 'click', scrollIntoView: true },
+                { selector: '.note-title-input', firstMatch: true, title: 'Digite o novo nome', text: 'Escreva o nome que deseja usar. Depois toque em PRÓXIMO.', trigger: 'manual' },
+                { selector: '.note-title-save-btn', firstMatch: true, title: 'Salve o nome', text: 'Toque no botão de confirmação para aplicar o novo título.', trigger: 'click', delay: 250 }
+            ],
+            success: 'Nome atualizado! Sua folha ficou mais fácil de identificar.'
         },
-        {
-            selector: '#topbar-undo-btn',
-            title: 'Desfazer',
-            text: 'Volte atrás em uma ação recente.'
+        expand: {
+            label: 'Aumentar espaço da folha',
+            description: 'Amplie a área de trabalho quando precisar.',
+            steps: [
+                { selector: '.stage-expand-bar', firstMatch: true, title: 'Amplie sua folha', text: 'Toque na barra “+300px” abaixo da folha para aumentar o espaço disponível.', trigger: 'click', scrollIntoView: true, delay: 300 }
+            ],
+            success: 'Pronto! Sua folha ganhou mais espaço para anotações.'
         },
-        {
-            selector: '#topbar-deadlines-btn',
-            title: 'Prazos',
-            text: 'Consulte as notas que têm prazo definido.'
-        },
-        {
-            selector: '#topbar-completed-btn',
-            title: 'Concluídos',
-            text: 'Encontre as tarefas que você já concluiu.'
-        },
-        {
-            selector: '#quick-add-note',
-            title: 'Nota rápida',
-            text: 'Crie uma nota sem interromper seu trabalho.'
-        },
-        {
-            selector: '#collapsed-toolbar-btn',
-            alternateSelector: '#toolbar-drag-handle',
-            title: 'Menu flutuante',
-            text: 'Abra a barra de ferramentas. Quando aberta, arraste o puxador para movê-la.'
-        },
-        {
-            selector: '#plugin-store-btn',
-            revealToolbar: true,
-            title: 'Loja de extensões',
-            text: 'Encontre recursos extras para ampliar o ANOTADO.'
+        focus: {
+            label: 'Trabalhar em uma folha',
+            description: 'Abra uma folha em foco para trabalhar nela.',
+            steps: [
+                { selector: '.stage-expand-btn', firstMatch: true, title: 'Abra a folha em foco', text: 'Toque em TRABALHAR NESSE no centro da folha.', trigger: 'click', scrollIntoView: true, delay: 350 },
+                { selector: '#close-deep-note-btn', title: 'Volte ao quadro', text: 'A folha está em foco. Quando terminar, use este botão para minimizar e voltar ao quadro.', trigger: 'click', delay: 250 }
+            ],
+            success: 'Você já sabe abrir uma folha em foco e retornar ao quadro.'
         }
-    ];
+    };
 
     function escapeHTML(value) {
         return String(value)
@@ -116,7 +115,38 @@
         container.style.boxSizing = 'border-box';
 
         const dragHandle = hostWindow.querySelector('.plugin-drag-handle');
-        if (dragHandle) dragHandle.style.touchAction = 'none';
+        if (dragHandle) {
+            dragHandle.style.touchAction = 'none';
+            dragHandle.style.display = 'flex';
+            dragHandle.style.flex = '1 1 100%';
+            dragHandle.style.width = '100%';
+            dragHandle.style.justifyContent = 'center';
+            dragHandle.style.alignItems = 'center';
+            dragHandle.style.paddingLeft = '0';
+            dragHandle.style.paddingRight = '0';
+            dragHandle.style.textAlign = 'center';
+
+            dragHandle.querySelectorAll('span').forEach(function (span) {
+                if (!span.classList.contains('material-symbols-outlined')) {
+                    span.style.display = 'none';
+                } else {
+                    span.style.margin = '0 auto';
+                }
+            });
+
+            const dragBar = dragHandle.parentElement;
+            if (dragBar) {
+                dragBar.style.position = 'relative';
+                dragBar.style.justifyContent = 'center';
+                const closeButton = dragBar.querySelector('.plugin-close-btn');
+                if (closeButton) {
+                    closeButton.style.position = 'absolute';
+                    closeButton.style.right = '4px';
+                    closeButton.style.top = '50%';
+                    closeButton.style.transform = 'translateY(-50%)';
+                }
+            }
+        }
 
         function clampWindow() {
             if (!hostWindow.isConnected) return;
@@ -170,13 +200,6 @@
             '.anotado-community button, .anotado-community a { font:inherit; }',
             '.anotado-community button:focus-visible, .anotado-community a:focus-visible { outline:2px solid #64748b; outline-offset:3px; }',
             '.anotado-community .ac-shell { display:flex; flex-direction:column; gap:19px; padding:4px; }',
-            '.anotado-community .ac-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:13px; border-bottom:1px solid var(--ac-line); }',
-            '.anotado-community .ac-brand { display:flex; align-items:center; gap:9px; }',
-            '.anotado-community .ac-mark { display:grid; place-items:center; width:34px; height:34px; border-radius:9px; background:var(--ac-primary); color:#fff; font-size:15px; font-weight:800; letter-spacing:-.06em; }',
-            '.anotado-community .ac-brand-copy { display:flex; flex-direction:column; line-height:1.25; }',
-            '.anotado-community .ac-brand-copy strong { font-size:12px; letter-spacing:.04em; }',
-            '.anotado-community .ac-brand-copy span, .anotado-community .ac-official { color:var(--ac-muted); font-size:10px; letter-spacing:.08em; }',
-            '.anotado-community .ac-official { font-weight:700; }',
             '.anotado-community .ac-kicker { margin:0 0 5px; color:var(--ac-muted); font-size:10px; font-weight:700; letter-spacing:.12em; }',
             '.anotado-community .ac-home h1, .anotado-community .ac-detail h1 { margin:0; color:var(--ac-ink); font-size:clamp(22px,4vw,28px); font-weight:700; letter-spacing:-.045em; line-height:1.18; }',
             '.anotado-community .ac-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; margin-top:16px; }',
@@ -186,7 +209,15 @@
             '.anotado-community .ac-choice strong { font-size:13px; font-weight:800; letter-spacing:.06em; }',
             '.anotado-community .ac-footer { padding-top:2px; color:var(--ac-muted); font-size:10px; }',
             '.anotado-community .ac-detail { display:flex; flex-direction:column; gap:13px; }',
-            '.anotado-community .ac-back { align-self:flex-start; padding:5px 0; border:0; background:transparent; color:var(--ac-muted); font-size:11px; font-weight:700; cursor:pointer; }',
+            '.anotado-community .ac-back { align-self:flex-start; min-height:36px; margin-top:5px; padding:0 13px; border:1px solid var(--ac-line); border-radius:9px; background:var(--ac-soft); color:var(--ac-ink); font-size:11px; font-weight:700; cursor:pointer; transition:background .15s,border-color .15s; }',
+            '.anotado-community .ac-back:hover { border-color:var(--ac-muted); background:var(--ac-card); }',
+            '.anotado-community .ac-tutorial-list { display:grid; gap:8px; margin-top:3px; }',
+            '.anotado-community .ac-tutorial-choice { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:58px; padding:11px 13px; border:1px solid var(--ac-line); border-radius:10px; background:var(--ac-card); color:var(--ac-ink); text-align:left; cursor:pointer; transition:border-color .15s,background .15s; }',
+            '.anotado-community .ac-tutorial-choice:hover { border-color:var(--ac-muted); background:var(--ac-soft); }',
+            '.anotado-community .ac-tutorial-choice span { display:block; }',
+            '.anotado-community .ac-tutorial-choice strong { font-size:12px; font-weight:800; }',
+            '.anotado-community .ac-tutorial-choice small { display:block; margin-top:2px; color:var(--ac-muted); font-size:10px; }',
+            '.anotado-community .ac-tutorial-arrow { flex:0 0 auto; color:var(--ac-muted); font-size:17px; }',
             '.anotado-community .ac-copy { margin:0; color:var(--ac-muted); font-size:12px; line-height:1.75; }',
             '.anotado-community .ac-facts { display:grid; gap:7px; margin:2px 0 0; padding:0; list-style:none; }',
             '.anotado-community .ac-facts li { padding:10px 12px; border:1px solid var(--ac-line); border-radius:9px; background:var(--ac-soft); color:var(--ac-ink); font-size:11px; }',
@@ -213,6 +244,7 @@
             '.ac-tour-footer-group { display:flex; gap:6px; }',
             '.ac-tour-footer button { min-height:30px; padding:0 10px; border:1px solid #d8dde5; border-radius:8px; background:#fff; color:#303846; font-size:10px; font-weight:800; cursor:pointer; }',
             '.ac-tour-footer button.ac-tour-next { border-color:#171d2a; background:#171d2a; color:#fff; }',
+            '.ac-tour-hint { color:#64748b; font-size:10px; font-weight:700; }',
             '.anotado-community .ac-tour-footer button:disabled { opacity:.35; cursor:not-allowed; }',
             'html.dark .anotado-community { --ac-ink:#f2f4f8; --ac-muted:#aab3c2; --ac-line:#364050; --ac-card:#202733; --ac-soft:#1a2230; --ac-primary:#edf2fb; }',
             'html.dark .anotado-community .ac-mark { color:#141b2b; }',
@@ -227,13 +259,6 @@
 
         panel.innerHTML = [
             '<div class="ac-shell">',
-                '<header class="ac-head">',
-                    '<div class="ac-brand">',
-                        '<span class="ac-mark" aria-hidden="true">A.</span>',
-                        '<span class="ac-brand-copy"><strong>ANOTADO</strong><span>COMUNIDADE</span></span>',
-                    '</div>',
-                    '<span class="ac-official">ESPAÇO OFICIAL</span>',
-                '</header>',
                 '<section class="ac-home" data-view="home">',
                     '<p class="ac-kicker">COMUNIDADE ANOTADO</p>',
                     '<h1>O que você procura?</h1>',
@@ -353,16 +378,40 @@
             });
         }
 
+        function showHome() {
+            detailView.hidden = true;
+            detailView.innerHTML = '';
+            homeView.hidden = false;
+        }
+
+        function showHelpMenu() {
+            homeView.hidden = true;
+            detailView.hidden = false;
+            detailView.innerHTML = [
+                '<p class="ac-kicker">AJUDA</p>',
+                '<h1>O que você quer aprender?</h1>',
+                '<div class="ac-tutorial-list">',
+                    Object.keys(TUTORIALS).map(function (key) {
+                        const item = TUTORIALS[key];
+                        return '<button type="button" class="ac-tutorial-choice" data-tutorial="' + key + '">' +
+                            '<span><strong>' + escapeHTML(item.label) + '</strong><small>' + escapeHTML(item.description) + '</small></span>' +
+                            '<span class="ac-tutorial-arrow" aria-hidden="true">›</span>' +
+                        '</button>';
+                    }).join(''),
+                '</div>',
+                '<button type="button" class="ac-back" data-action="back">← VOLTAR</button>'
+            ].join('');
+        }
+
         function showDetail(kind) {
             homeView.hidden = true;
             detailView.hidden = false;
 
-            const backButton = '<button type="button" class="ac-back" data-action="back">← Voltar</button>';
+            const backButton = '<button type="button" class="ac-back" data-action="back">← VOLTAR</button>';
             let content = '';
 
             if (kind === 'dev') {
                 content = [
-                    backButton,
                     '<p class="ac-kicker">DEV</p>',
                     '<h1>Como o projeto funciona.</h1>',
                     '<p class="ac-copy">O ANOTADO é um aplicativo web. O núcleo fica no index.html e os dados de trabalho são guardados localmente no navegador.</p>',
@@ -372,19 +421,19 @@
                         '<li><strong>plugin-store/</strong> — extensões separadas, com manifest.json e script.js.</li>',
                     '</ul>',
                     '<p class="ac-copy">As extensões são registradas em ANOTADO_PLUGINS e montadas pelo aplicativo.</p>',
-                    '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>'
+                    '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>',
+                    backButton
                 ].join('');
             } else if (kind === 'deluxe') {
                 content = [
-                    backButton,
                     '<p class="ac-kicker">CHEFÃO</p>',
                     '<h1>Versão Deluxe.</h1>',
                     '<p class="ac-copy">Fundada por W. F. Fukuta, a Versão Deluxe reúne pessoas que buscam desenvolver a melhor versão de si mesmas por meio de projetos coletivos e individuais.</p>',
-                    '<p class="ac-copy">A empresa coordena o trabalho e gerencia o repositório do ANOTADO.</p>'
+                    '<p class="ac-copy">A empresa coordena o trabalho e gerencia o repositório do ANOTADO.</p>',
+                    backButton
                 ].join('');
             } else if (kind === 'thanks') {
                 content = [
-                    backButton,
                     '<p class="ac-kicker">OBRIGADO</p>',
                     '<h1>Este projeto é feito em conjunto.</h1>',
                     '<p class="ac-copy">W. F. Fukuta criou sozinho a estrutura e a base do aplicativo. Nosso agradecimento também a todos os desenvolvedores que contribuem com ideias, código e melhorias.</p>',
@@ -404,14 +453,12 @@
                             '<p class="ac-qr-caption">Escaneie o QR Code para contribuir.</p>',
                             '<img src="' + DONATION_QR_DATA + '" alt="QR Code de doação para o ANOTADO" width="190" height="190">',
                         '</div>',
-                    '</section>'
+                    '</section>',
+                    backButton
                 ].join('');
             }
 
             detailView.innerHTML = content;
-
-            const back = detailView.querySelector('[data-action="back"]');
-            if (back) back.addEventListener('click', showHome);
 
             if (kind === 'thanks') {
                 loadSupporters(detailView.querySelector('[data-role="supporters"]'));
@@ -428,97 +475,109 @@
         }
 
         function clearTourHighlight() {
-            if (!tourState || !tourState.target || !tourState.originalStyles) return;
-            tourState.target.style.outline = tourState.originalStyles.outline;
-            tourState.target.style.outlineOffset = tourState.originalStyles.outlineOffset;
-            tourState.target.style.boxShadow = tourState.originalStyles.boxShadow;
+            if (!tourState) return;
+
+            if (tourState.target && tourState.originalStyles) {
+                tourState.target.style.outline = tourState.originalStyles.outline;
+                tourState.target.style.outlineOffset = tourState.originalStyles.outlineOffset;
+                tourState.target.style.boxShadow = tourState.originalStyles.boxShadow;
+            }
+            if (tourState.target && tourState.targetListener) {
+                tourState.target.removeEventListener('click', tourState.targetListener, true);
+            }
+            if (tourState.target && tourState.inputListener) {
+                tourState.target.removeEventListener('input', tourState.inputListener);
+            }
+            if (tourState.pendingTimer) window.clearTimeout(tourState.pendingTimer);
+
             tourState.target = null;
             tourState.originalStyles = null;
+            tourState.targetListener = null;
+            tourState.inputListener = null;
+            tourState.pendingTimer = null;
         }
 
         function positionTourBubble() {
-            if (!tourState || !tourState.bubble || !tourState.target) return;
+            if (!tourState || !tourState.bubble) return;
 
-            const targetRect = tourState.target.getBoundingClientRect();
             const bubbleRect = tourState.bubble.getBoundingClientRect();
             const margin = 12;
+            if (!tourState.target) {
+                tourState.bubble.style.top = Math.max(margin, (window.innerHeight - bubbleRect.height) / 2) + 'px';
+                tourState.bubble.style.left = Math.max(margin, (window.innerWidth - bubbleRect.width) / 2) + 'px';
+                return;
+            }
+
+            const targetRect = tourState.target.getBoundingClientRect();
             const below = targetRect.bottom + 14;
             const top = below + bubbleRect.height <= window.innerHeight - margin
                 ? below
                 : Math.max(margin, targetRect.top - bubbleRect.height - 14);
-            const left = Math.max(
-                margin,
-                Math.min(
-                    window.innerWidth - bubbleRect.width - margin,
-                    targetRect.left + targetRect.width / 2 - bubbleRect.width / 2
-                )
-            );
-
+            const left = Math.max(margin, Math.min(
+                window.innerWidth - bubbleRect.width - margin,
+                targetRect.left + targetRect.width / 2 - bubbleRect.width / 2
+            ));
             tourState.bubble.style.top = top + 'px';
             tourState.bubble.style.left = left + 'px';
         }
 
-        function finishHelpTour() {
+        function finishHelpTour(returnToHelp) {
             if (!tourState) return;
-
             clearTourHighlight();
             window.removeEventListener('resize', tourState.reposition);
             window.removeEventListener('scroll', tourState.reposition, true);
-
             if (tourState.backdrop) tourState.backdrop.remove();
             if (tourState.bubble) tourState.bubble.remove();
-
             if (tourState.hiddenElement) {
                 tourState.hiddenElement.style.visibility = tourState.previousVisibility;
             }
             tourState = null;
+            if (returnToHelp !== false && !disposed) showHelpMenu();
         }
 
-        function resolveTourTarget(step) {
-            let target = null;
-
-            if (step.alternateSelector) {
-                const first = document.querySelector(step.selector);
-                const alternate = document.querySelector(step.alternateSelector);
-                target = isVisible(first) ? first : (isVisible(alternate) ? alternate : null);
-            } else {
-                target = document.querySelector(step.selector);
-            }
-
-            if (step.parent && target) target = target.parentElement;
-            return target;
+        function resolveTutorialTarget(step) {
+            const matches = Array.from(document.querySelectorAll(step.selector)).filter(isVisible);
+            if (!matches.length) return null;
+            if (step.lastMatch) return matches[matches.length - 1];
+            return matches[0];
         }
 
-        function renderTourStep() {
+        function renderTutorialStep() {
             if (!tourState || disposed) return;
-
             clearTourHighlight();
 
-            if (tourState.index >= TOUR_STEPS.length) {
-                finishHelpTour();
+            const tutorial = tourState.tutorial;
+            if (tourState.index >= tutorial.steps.length) {
+                tourState.target = null;
+                tourState.bubble.innerHTML = [
+                    '<p class="ac-tour-count">AULA CONCLUÍDA</p>',
+                    '<h2>Você conseguiu!</h2>',
+                    '<p class="ac-tour-text">' + escapeHTML(tutorial.success) + '</p>',
+                    '<div class="ac-tour-footer"><span></span><button type="button" class="ac-tour-next" data-tour-done>VOLTAR À AJUDA</button></div>'
+                ].join('');
+                tourState.bubble.querySelector('[data-tour-done]').addEventListener('click', function () {
+                    finishHelpTour(true);
+                });
+                positionTourBubble();
                 return;
             }
 
-            const step = TOUR_STEPS[tourState.index];
-            let target = resolveTourTarget(step);
+            const step = tutorial.steps[tourState.index];
+            const target = resolveTutorialTarget(step);
 
-            if (step.revealToolbar && !isVisible(target)) {
-                const collapsedButton = document.querySelector('#collapsed-toolbar-btn');
-                if (isVisible(collapsedButton) && !tourState.waitingForToolbar) {
-                    tourState.waitingForToolbar = true;
-                    collapsedButton.click();
-                    window.setTimeout(function () {
-                        if (!tourState || disposed) return;
-                        tourState.waitingForToolbar = false;
-                        renderTourStep();
-                    }, 900);
-                    return;
-                }
-            }
-
-            if (!isVisible(target)) {
-                tourState.index += 1;
-                renderTourStep();
+            if (!target) {
+                tourState.target = null;
+                tourState.bubble.innerHTML = [
+                    '<p class="ac-tour-count">ETAPA ' + (tourState.index + 1) + ' / ' + tutorial.steps.length + '</p>',
+                    '<h2>Ferramenta não encontrada</h2>',
+                    '<p class="ac-tour-text">Não encontrei esse controle na tela. Volte ao quadro do ANOTADO e tente novamente.</p>',
+                    '<div class="ac-tour-footer"><button type="button" data-tour-exit>SAIR</button><button type="button" class="ac-tour-next" data-tour-retry>TENTAR NOVAMENTE</button></div>'
+                ].join('');
+                tourState.bubble.querySelector('[data-tour-exit]').addEventListener('click', function () {
+                    finishHelpTour(true);
+                });
+                tourState.bubble.querySelector('[data-tour-retry]').addEventListener('click', renderTutorialStep);
+                positionTourBubble();
                 return;
             }
 
@@ -528,23 +587,67 @@
                 outlineOffset: target.style.outlineOffset,
                 boxShadow: target.style.boxShadow
             };
+
+            if (step.scrollIntoView) {
+                try { target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' }); } catch (_) {}
+            }
+
             target.style.outline = '2px solid #64748b';
             target.style.outlineOffset = '5px';
             target.style.boxShadow = '0 0 0 8px rgba(100,116,139,.18)';
 
-            tourState.bubble.querySelector('[data-role="count"]').textContent =
-                'AJUDA ' + (tourState.index + 1) + ' / ' + TOUR_STEPS.length;
-            tourState.bubble.querySelector('[data-role="title"]').textContent = step.title;
-            tourState.bubble.querySelector('[data-role="text"]').textContent = step.text;
-            tourState.bubble.querySelector('[data-tour-prev]').disabled = tourState.index === 0;
-            tourState.bubble.querySelector('[data-tour-next]').textContent =
-                tourState.index === TOUR_STEPS.length - 1 ? 'CONCLUIR' : 'PRÓXIMO';
+            const manual = step.trigger === 'manual' || step.trigger === 'input';
+            tourState.bubble.innerHTML = [
+                '<p class="ac-tour-count">ETAPA ' + (tourState.index + 1) + ' / ' + tutorial.steps.length + '</p>',
+                '<h2>' + escapeHTML(step.title) + '</h2>',
+                '<p class="ac-tour-text">' + escapeHTML(step.text) + '</p>',
+                '<div class="ac-tour-footer">',
+                    '<button type="button" data-tour-exit>SAIR</button>',
+                    manual
+                        ? '<button type="button" class="ac-tour-next" data-tour-next>PRÓXIMO</button>'
+                        : '<span class="ac-tour-hint">Toque no item destacado</span>',
+                '</div>'
+            ].join('');
+
+            tourState.bubble.querySelector('[data-tour-exit]').addEventListener('click', function () {
+                finishHelpTour(true);
+            });
+
+            if (manual) {
+                const nextButton = tourState.bubble.querySelector('[data-tour-next]');
+                if (step.trigger === 'input' && step.requireChange) {
+                    const initialValue = target.isContentEditable ? target.innerText : target.value;
+                    nextButton.disabled = true;
+                    tourState.inputListener = function () {
+                        const nextValue = target.isContentEditable ? target.innerText : target.value;
+                        nextButton.disabled = nextValue.trim().length === 0 || nextValue === initialValue;
+                    };
+                    target.addEventListener('input', tourState.inputListener);
+                }
+                nextButton.addEventListener('click', function () {
+                    if (!tourState || nextButton.disabled) return;
+                    tourState.index += 1;
+                    renderTutorialStep();
+                });
+            } else if (step.trigger === 'click') {
+                tourState.targetListener = function () {
+                    if (!tourState) return;
+                    tourState.pendingTimer = window.setTimeout(function () {
+                        if (!tourState || disposed) return;
+                        tourState.index += 1;
+                        renderTutorialStep();
+                    }, Number(step.delay) || 180);
+                };
+                target.addEventListener('click', tourState.targetListener, true);
+            }
 
             positionTourBubble();
         }
 
-        function startHelpTour() {
-            if (tourState) finishHelpTour();
+        function startTutorial(key) {
+            const tutorial = TUTORIALS[key];
+            if (!tutorial) return;
+            if (tourState) finishHelpTour(false);
 
             const hostWindow = windowConfig.hostWindow || panel;
             const previousVisibility = hostWindow.style.visibility;
@@ -557,67 +660,54 @@
             const bubble = document.createElement('div');
             bubble.className = 'ac-tour-bubble';
             bubble.setAttribute('role', 'dialog');
-            bubble.setAttribute('aria-label', 'Ajuda das ferramentas do ANOTADO');
-            bubble.innerHTML = [
-                '<p class="ac-tour-count" data-role="count"></p>',
-                '<h2 data-role="title"></h2>',
-                '<p class="ac-tour-text" data-role="text"></p>',
-                '<div class="ac-tour-footer">',
-                    '<button type="button" data-tour-exit>SAIR</button>',
-                    '<div class="ac-tour-footer-group">',
-                        '<button type="button" data-tour-prev>VOLTAR</button>',
-                        '<button type="button" class="ac-tour-next" data-tour-next>PRÓXIMO</button>',
-                    '</div>',
-                '</div>'
-            ].join('');
-
+            bubble.setAttribute('aria-label', 'Aula interativa: ' + tutorial.label);
             document.body.appendChild(backdrop);
             document.body.appendChild(bubble);
 
             tourState = {
                 index: 0,
+                tutorial: tutorial,
                 target: null,
                 originalStyles: null,
+                targetListener: null,
+                inputListener: null,
+                pendingTimer: null,
                 backdrop: backdrop,
                 bubble: bubble,
                 hiddenElement: hostWindow,
                 previousVisibility: previousVisibility,
-                waitingForToolbar: false,
                 reposition: positionTourBubble
             };
 
-            bubble.querySelector('[data-tour-exit]').addEventListener('click', finishHelpTour);
-            bubble.querySelector('[data-tour-prev]').addEventListener('click', function () {
-                if (!tourState || tourState.index <= 0) return;
-                tourState.index -= 1;
-                renderTourStep();
-            });
-            bubble.querySelector('[data-tour-next]').addEventListener('click', function () {
-                if (!tourState) return;
-                tourState.index += 1;
-                renderTourStep();
-            });
-
             window.addEventListener('resize', positionTourBubble);
             window.addEventListener('scroll', positionTourBubble, true);
-            renderTourStep();
+            renderTutorialStep();
         }
 
         panel.querySelectorAll('[data-action]').forEach(function (button) {
             button.addEventListener('click', function () {
                 const action = button.getAttribute('data-action');
                 if (action === 'help') {
-                    startHelpTour();
+                    showHelpMenu();
                 } else if (action === 'dev' || action === 'deluxe' || action === 'thanks') {
                     showDetail(action);
                 }
             });
         });
 
+        detailView.addEventListener('click', function (event) {
+            const tutorialButton = event.target.closest('[data-tutorial]');
+            if (tutorialButton) {
+                startTutorial(tutorialButton.getAttribute('data-tutorial'));
+                return;
+            }
+            if (event.target.closest('[data-action="back"]')) showHome();
+        });
+
         function unmount() {
             if (disposed) return;
             disposed = true;
-            finishHelpTour();
+            finishHelpTour(false);
             windowConfig.cleanup();
             panel.remove();
 
