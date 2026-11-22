@@ -55,7 +55,7 @@ O manifesto declara `permissions: []`. A extensão não lê nem altera anotaçõ
 
 ## Compatibilidade
 
-- Versão da extensão: `1.2.0`
+- Versão da extensão: `1.2.1`
 - API declarada: `2.0.0`
 - Versão mínima do ANOTADO: `2.0.0`
 - Permissões declaradas: nenhuma
