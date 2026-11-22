@@ -245,7 +245,7 @@
             '.ac-tour-footer button { min-height:30px; padding:0 10px; border:1px solid #d8dde5; border-radius:8px; background:#fff; color:#303846; font-size:10px; font-weight:800; cursor:pointer; }',
             '.ac-tour-footer button.ac-tour-next { border-color:#171d2a; background:#171d2a; color:#fff; }',
             '.ac-tour-hint { color:#64748b; font-size:10px; font-weight:700; }',
-            '.anotado-community .ac-tour-footer button:disabled { opacity:.35; cursor:not-allowed; }',
+            '.ac-tour-footer button:disabled { opacity:.35; cursor:not-allowed; }',
             'html.dark .anotado-community { --ac-ink:#f2f4f8; --ac-muted:#aab3c2; --ac-line:#364050; --ac-card:#202733; --ac-soft:#1a2230; --ac-primary:#edf2fb; }',
             'html.dark .anotado-community .ac-mark { color:#141b2b; }',
             'html.dark .anotado-community .ac-link { color:#141b2b !important; }',
