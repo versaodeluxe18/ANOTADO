@@ -260,7 +260,6 @@
         panel.innerHTML = [
             '<div class="ac-shell">',
                 '<section class="ac-home" data-view="home">',
-                    '<p class="ac-kicker">COMUNIDADE ANOTADO</p>',
                     '<h1>O que você procura?</h1>',
                     '<div class="ac-grid">',
                         '<button type="button" class="ac-choice" data-action="help"><span class="ac-choice-icon" aria-hidden="true">?</span><strong>AJUDA</strong></button>',
