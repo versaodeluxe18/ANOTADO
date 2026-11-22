@@ -1,25 +1,32 @@
 # Comunidade ANOTADO
 
-Extensão oficial com quatro entradas: **AJUDA**, **DEV**, **CHEFÃO** e **OBRIGADO**.
+Extensão oficial com quatro áreas: **AJUDA**, **DEV**, **CHEFÃO** e **OBRIGADO**.
 
-## Recursos
+## AJUDA
 
-- **AJUDA:** tour com balões ancorados nas ferramentas do `index.html`. Não altera o arquivo principal.
+Aulas interativas que destacam os controles reais do aplicativo e orientam o usuário enquanto ele executa as ações:
+
+- Criar documento (arquivo local).
+- Criar nota adesiva.
+- Renomear folha.
+- Aumentar o espaço da folha.
+- Trabalhar em uma folha em foco.
+
+O tour localiza os elementos existentes no `index.html`. A extensão não modifica o arquivo principal.
+
+## Outras áreas
+
 - **DEV:** resumo da arquitetura e acesso ao repositório.
 - **CHEFÃO:** apresentação da Versão Deluxe.
-- **OBRIGADO:** agradecimentos, lista pública de apoiadores e QR Code de doação em Base64.
+- **OBRIGADO:** agradecimento aos desenvolvedores, lista pública de apoiadores e QR Code de doação embutido em Base64.
+
+A lista de apoiadores é carregada da planilha pública em formato TSV definida em `script.js`. O QR Code contém o endereço de doação como imagem Base64.
 
 ## Arquivos
 
 - `manifest.json`: metadados, ícone, versão e permissões.
-- `script.js`: interface, tour de ajuda, lista de apoiadores e QR Code.
+- `script.js`: interface, aulas interativas, lista de apoiadores e QR Code.
 - `README.md`: documentação da extensão.
-
-## Apoiadores e doações
-
-A lista de apoiadores é carregada da planilha pública em formato TSV definida em `script.js`. O código exibe apenas os nomes encontrados na coluna de identificação. O QR Code contém o endereço de doação da Stripe como imagem Base64; o endereço não é exibido como link na interface.
-
-A extensão não lê anotações, projetos ou outros dados pessoais do usuário.
 
 ## Integração
 
@@ -42,11 +49,13 @@ Desmontagem:
 instance.unmount();
 ```
 
-O modo AJUDA localiza elementos já existentes no aplicativo por seus seletores de DOM. O tour não cria nem modifica ferramentas no `index.html`.
+## Privacidade e permissões
+
+O manifesto declara `permissions: []`. A extensão não lê nem altera anotações, projetos, IndexedDB ou dados pessoais. A ajuda apenas consulta os elementos visuais do aplicativo para explicar seu uso.
 
 ## Compatibilidade
 
-- Versão da extensão: `1.1.0`
+- Versão da extensão: `1.2.0`
 - API declarada: `2.0.0`
 - Versão mínima do ANOTADO: `2.0.0`
 - Permissões declaradas: nenhuma
