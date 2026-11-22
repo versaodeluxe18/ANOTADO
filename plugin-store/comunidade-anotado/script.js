@@ -473,7 +473,7 @@
                     const siteDonationLink = document.createElement('a');
                     siteDonationLink.className = donateButton.className;
                     siteDonationLink.id = donateButton.id;
-                    siteDonationLink.href = 'https://docs.google.com/forms/d/e/1FAIpQLSdoOGtPGpqnviD8I4JYHWYg_2aqECBCY_kr5RrKBYdPNziltw/viewform?usp=dialog';
+                    siteDonationLink.href = 'https://donate.stripe.com/eVq5kw5vs50L0Jsd0N2oE07';
                     siteDonationLink.target = '_blank';
                     siteDonationLink.rel = 'noopener noreferrer';
                     siteDonationLink.textContent = 'DOAR PELO SITE';
