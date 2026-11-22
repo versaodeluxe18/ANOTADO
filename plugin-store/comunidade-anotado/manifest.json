@@ -2,8 +2,8 @@
   "manifestVersion": 1,
   "id": "comunidade-anotado",
   "name": "Comunidade ANOTADO",
-  "version": "1.1.0",
-  "description": "Ajuda guiada, informações do projeto e agradecimentos da comunidade em uma interface minimalista.",
+  "version": "1.2.0",
+  "description": "Central minimalista com aulas interativas, informações do projeto e agradecimentos da comunidade.",
   "author": "W. F. Fukuta — Versão Deluxe",
   "category": "comunidade",
   "tags": [
