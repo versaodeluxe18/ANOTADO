@@ -9,7 +9,7 @@
     'use strict';
 
     const PLUGIN_ID = 'comunidade-anotado';
-    const PLUGIN_VERSION = '1.2.1';
+    const PLUGIN_VERSION = '1.2.2';
     const REPOSITORY_URL = 'https://github.com/versaodeluxe18/ANOTADO';
     const SUPPORTERS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSTfsdOYawlg9uvFxtguMaUuNMfK7yMHoxi7l38kM3IrOQPG81BOPidwgqpIIWH0lV6cKBodK-WtryQ/pub?gid=1741040537&single=true&output=tsv';
     const DONATION_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAERCAIAAADT9gTZAAAE9ElEQVR42u3dTW4TQRCAUYx8AnbcgPufhhuw4wrDFmUsUVK5fjq8t05ie+xPbVVaPY/rur4AYV9dAtAMaAY0A5oBzQCaAc2AZkAzoBnQDKAZ0AxoBjQDmgE0A5oBzcA6z+Tvf/v+Y9tL+v3r59tf0cu/WfGTFVd+9sl/vk+IdQY0A5oBzYBmQDPA3bPijyZneXEVc8z4k0/+ZHJYnHyghX/zlE+IdQY0A5oBzYBmQDPA3bPtkZJTv9ldwPG/OTtWTl6Q2WHx7CfEOgOaAc2AZkAzgGYg4+kSfNC2Vzr5QPFhccX03DoDaAY0A5oBzYBmgL+ZNX/UNhdO/mTFicltm7KtM+C7GaAZ0AxoBjQDn0zfrHnhIHL2yIiKYXHyWI+KU0GO/oRYZ0AzoBnQDGgGNAMElcyaKwaRbZLz1rZjlNt+0ifEOgOaAc2AZkAzoBngn7Kz5qOPTVg4hK14RRU/Obsl3DoDmgHNAJoBzYBmYJvsrHnhuLbi/njxB6p4mQu3Wrf9evJ9t86A72agGdAMoBnQDPQo2decHC+2zUaTm3Nnb5rXtjG5TfIit70d1hnQDGgGNAOaAc0Ad8/Zh2873XhWxV7ptvl18oGSO8oXTvmtM6AZ0AxoBjQDmgHuSs7QaFMxiJzdqd22W7niZIzZ7dvWGfDdDDQDmgE0A5qBQX1naFTMhU85HPmUQ0XaLl3bp846A76bgWZAM4BmQDPQ43Fd19v/aMWW29mjGOIWvsyFTnmPrDPguxloBjQDmgHNAEHZWfPsGbsLD1iIv6K2KerCndrJ9z35UbTOgO9moBnQDGgG0Ay83TFnaFQ8+ktHz1vbrlLbU5q9dNYZ0AxoBjQDmgHNAEHP2Yev2MK8cLQa17b7u+0qLbzXojM0wHcz0AxoBjQDaAberuQMjZdOOUo4+dpnt2+3mf0nQduTt86A72agGdAMaAY0AwQN72uuOO9i4Stqc8pBJckPw+wudesMaAY0A5oBzYBmgLvsvua4tkMw2rZaz+5rbns7kk9p4f8D7GsG381AM6AZ0AygGXi7Y85rfqltjtn2QG1nU1Q8UMXG5IWbna0zoBnQDGgGNAOaAe6OOa+5bTpZYeH98WYdfdqGdQY0A5oBzYBmQDPAXcm+5oU3jlu4kXZ2Z3HS7Iko9jWD72agGUAzoBnQDGzTd4ZG24HLbbetm71KbU8+eQRH0uyGdOsMaAY0A5oBzYBmgKC+WfPs7tpT7kx49AbqtnezbdJtnQHNgGZAM6AZ0AwQlJ01V0z9ZqeoFWanvQtvbBh/nrNHXVtnwHcz0AxoBjQDmgGCsrPmU+47VzGynP31Uwa7bccoV1wl6wxoBjQDmgHNgGaAoOF7Aya13Rsw/jJn73Y4+3ZUPPrCSbd1BjQDmgHNgGZAM8Dd8L0B49qOe46PgE85myL5N4++IBVPyToDmgHNgGZAM6AZ4O7pEkxp22odf/S4insYLjyB2joDmgHNgGZAM6AZIOi/njUnB6Zt9/GbPYai4nq2/bp1Bnw3A82AZgDNgGagR9+seeGpwW3HPVfsAo4/z9n3KLmvueJ2hdYZ0AxoBjQDmgE0A29XMmueHQVWPKWK040rnnzbTu0KC2f31hnQDGgGNAOaAc0AQY/rulwFsM6AZkAzoBnQDKAZ0AxoBjQDmgHNAJoBzYBmQDOgGUAzoBnQDGgGTvYHxuPUtxlsjukAAAAASUVORK5CYII=';
@@ -468,10 +468,20 @@
                 const donateButton = detailView.querySelector('#ac-donate-toggle');
                 const qrPanel = detailView.querySelector('#ac-qr-panel');
                 donateButton.addEventListener('click', function () {
-                    const isOpening = qrPanel.hidden;
-                    qrPanel.hidden = !isOpening;
-                    donateButton.textContent = isOpening ? 'FECHAR QR CODE' : 'DOAR';
-                    donateButton.setAttribute('aria-expanded', String(isOpening));
+                    qrPanel.hidden = false;
+
+                    const siteDonationLink = document.createElement('a');
+                    siteDonationLink.className = donateButton.className;
+                    siteDonationLink.id = donateButton.id;
+                    siteDonationLink.href = 'https://docs.google.com/forms/d/e/1FAIpQLSdoOGtPGpqnviD8I4JYHWYg_2aqECBCY_kr5RrKBYdPNziltw/viewform?usp=dialog';
+                    siteDonationLink.target = '_blank';
+                    siteDonationLink.rel = 'noopener noreferrer';
+                    siteDonationLink.textContent = 'DOAR PELO SITE';
+                    siteDonationLink.style.display = 'inline-flex';
+                    siteDonationLink.style.alignItems = 'center';
+                    siteDonationLink.style.textDecoration = 'none';
+
+                    donateButton.replaceWith(siteDonationLink);
                 });
             }
         }
