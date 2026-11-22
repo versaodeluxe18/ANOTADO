@@ -9,7 +9,7 @@
     'use strict';
 
     const PLUGIN_ID = 'comunidade-anotado';
-    const PLUGIN_VERSION = '1.2.0';
+    const PLUGIN_VERSION = '1.2.1';
     const REPOSITORY_URL = 'https://github.com/versaodeluxe18/ANOTADO';
     const SUPPORTERS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSTfsdOYawlg9uvFxtguMaUuNMfK7yMHoxi7l38kM3IrOQPG81BOPidwgqpIIWH0lV6cKBodK-WtryQ/pub?gid=1741040537&single=true&output=tsv';
     const DONATION_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAERCAIAAADT9gTZAAAE9ElEQVR42u3dTW4TQRCAUYx8AnbcgPufhhuw4wrDFmUsUVK5fjq8t05ie+xPbVVaPY/rur4AYV9dAtAMaAY0A5oBzQCaAc2AZkAzoBnQDKAZ0AxoBjQDmgE0A5oBzcA6z+Tvf/v+Y9tL+v3r59tf0cu/WfGTFVd+9sl/vk+IdQY0A5oBzYBmQDPA3bPijyZneXEVc8z4k0/+ZHJYnHyghX/zlE+IdQY0A5oBzYBmQDPA3bPtkZJTv9ldwPG/OTtWTl6Q2WHx7CfEOgOaAc2AZkAzgGYg4+kSfNC2Vzr5QPFhccX03DoDaAY0A5oBzYBmgL+ZNX/UNhdO/mTFicltm7KtM+C7GaAZ0AxoBjQDn0zfrHnhIHL2yIiKYXHyWI+KU0GO/oRYZ0AzoBnQDGgGNAMElcyaKwaRbZLz1rZjlNt+0ifEOgOaAc2AZkAzoBngn7Kz5qOPTVg4hK14RRU/Obsl3DoDmgHNAJoBzYBmYJvsrHnhuLbi/njxB6p4mQu3Wrf9evJ9t86A72agGdAMoBnQDPQo2decHC+2zUaTm3Nnb5rXtjG5TfIit70d1hnQDGgGNAOaAc0Ad8/Zh2873XhWxV7ptvl18oGSO8oXTvmtM6AZ0AxoBjQDmgHuSs7QaFMxiJzdqd22W7niZIzZ7dvWGfDdDDQDmgE0A5qBQX1naFTMhU85HPmUQ0XaLl3bp846A76bgWZAM4BmQDPQ43Fd19v/aMWW29mjGOIWvsyFTnmPrDPguxloBjQDmgHNAEHZWfPsGbsLD1iIv6K2KerCndrJ9z35UbTOgO9moBnQDGgG0Ay83TFnaFQ8+ktHz1vbrlLbU5q9dNYZ0AxoBjQDmgHNAEHP2Yev2MK8cLQa17b7u+0qLbzXojM0wHcz0AxoBjQDaAberuQMjZdOOUo4+dpnt2+3mf0nQduTt86A72agGdAMaAY0AwQN72uuOO9i4Stqc8pBJckPw+wudesMaAY0A5oBzYBmgLvsvua4tkMw2rZaz+5rbns7kk9p4f8D7GsG381AM6AZ0AygGXi7Y85rfqltjtn2QG1nU1Q8UMXG5IWbna0zoBnQDGgGNAOaAe6OOa+5bTpZYeH98WYdfdqGdQY0A5oBzYBmQDPAXcm+5oU3jlu4kXZ2Z3HS7Iko9jWD72agGUAzoBnQDGzTd4ZG24HLbbetm71KbU8+eQRH0uyGdOsMaAY0A5oBzYBmgKC+WfPs7tpT7kx49AbqtnezbdJtnQHNgGZAM6AZ0AwQlJ01V0z9ZqeoFWanvQtvbBh/nrNHXVtnwHcz0AxoBjQDmgGCsrPmU+47VzGynP31Uwa7bccoV1wl6wxoBjQDmgHNgGaAoOF7Aya13Rsw/jJn73Y4+3ZUPPrCSbd1BjQDmgHNgGZAM8Dd8L0B49qOe46PgE85myL5N4++IBVPyToDmgHNgGZAM6AZ4O7pEkxp22odf/S4insYLjyB2joDmgHNgGZAM6AZIOi/njUnB6Zt9/GbPYai4nq2/bp1Bnw3A82AZgDNgGagR9+seeGpwW3HPVfsAo4/z9n3KLmvueJ2hdYZ0AxoBjQDmgE0A29XMmueHQVWPKWK040rnnzbTu0KC2f31hnQDGgGNAOaAc0AQY/rulwFsM6AZkAzoBnQDKAZ0AxoBjQDmgHNAJoBzYBmQDOgGUAzoBnQDGgGTvYHxuPUtxlsjukAAAAASUVORK5CYII=';
@@ -211,6 +211,8 @@
             '.anotado-community .ac-detail { display:flex; flex-direction:column; gap:13px; }',
             '.anotado-community .ac-back { align-self:flex-start; min-height:36px; margin-top:5px; padding:0 13px; border:1px solid var(--ac-line); border-radius:9px; background:var(--ac-soft); color:var(--ac-ink); font-size:11px; font-weight:700; cursor:pointer; transition:background .15s,border-color .15s; }',
             '.anotado-community .ac-back:hover { border-color:var(--ac-muted); background:var(--ac-card); }',
+            '.anotado-community .ac-actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin-top:5px; }',
+            '.anotado-community .ac-actions .ac-back { margin:0; }',
             '.anotado-community .ac-tutorial-list { display:grid; gap:8px; margin-top:3px; }',
             '.anotado-community .ac-tutorial-choice { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:58px; padding:11px 13px; border:1px solid var(--ac-line); border-radius:10px; background:var(--ac-card); color:var(--ac-ink); text-align:left; cursor:pointer; transition:border-color .15s,background .15s; }',
             '.anotado-community .ac-tutorial-choice:hover { border-color:var(--ac-muted); background:var(--ac-soft); }',
@@ -411,7 +413,6 @@
 
             if (kind === 'dev') {
                 content = [
-                    '<p class="ac-kicker">DEV</p>',
                     '<h1>Como o projeto funciona.</h1>',
                     '<p class="ac-copy">O ANOTADO é um aplicativo web. O núcleo fica no index.html e os dados de trabalho são guardados localmente no navegador.</p>',
                     '<ul class="ac-facts">',
@@ -420,12 +421,13 @@
                         '<li><strong>plugin-store/</strong> — extensões separadas, com manifest.json e script.js.</li>',
                     '</ul>',
                     '<p class="ac-copy">As extensões são registradas em ANOTADO_PLUGINS e montadas pelo aplicativo.</p>',
-                    '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>',
-                    backButton
+                    '<div class="ac-actions">',
+                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>',
+                        backButton,
+                    '</div>'
                 ].join('');
             } else if (kind === 'deluxe') {
                 content = [
-                    '<p class="ac-kicker">CHEFÃO</p>',
                     '<h1>Versão Deluxe.</h1>',
                     '<p class="ac-copy">Fundada por W. F. Fukuta, a Versão Deluxe reúne pessoas que buscam desenvolver a melhor versão de si mesmas por meio de projetos coletivos e individuais.</p>',
                     '<p class="ac-copy">A empresa coordena o trabalho e gerencia o repositório do ANOTADO.</p>',
@@ -433,10 +435,8 @@
                 ].join('');
             } else if (kind === 'thanks') {
                 content = [
-                    '<p class="ac-kicker">OBRIGADO</p>',
                     '<h1>Este projeto é feito em conjunto.</h1>',
                     '<p class="ac-copy">W. F. Fukuta criou sozinho a estrutura e a base do aplicativo. Nosso agradecimento também a todos os desenvolvedores que contribuem com ideias, código e melhorias.</p>',
-                    '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Ver projeto no GitHub ↗</a>',
                     '<section class="ac-supporters">',
                         '<h2>Apoiadores</h2>',
                         '<p class="ac-copy">Obrigado a quem ajuda a manter o projeto.</p>',
@@ -453,7 +453,10 @@
                             '<img src="' + DONATION_QR_DATA + '" alt="QR Code de doação para o ANOTADO" width="190" height="190">',
                         '</div>',
                     '</section>',
-                    backButton
+                    '<div class="ac-actions">',
+                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Ver projeto no GitHub ↗</a>',
+                        backButton,
+                    '</div>'
                 ].join('');
             }
 
