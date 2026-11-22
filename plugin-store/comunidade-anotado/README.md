@@ -20,7 +20,7 @@ O tour localiza os elementos existentes no `index.html`. A extensão não modifi
 - **CHEFÃO:** apresentação da Versão Deluxe.
 - **OBRIGADO:** agradecimento aos desenvolvedores, lista pública de apoiadores e QR Code de doação embutido em Base64.
 
-A lista de apoiadores é carregada da planilha pública em formato TSV definida em `script.js`. O QR Code contém o endereço de doação como imagem Base64.
+A lista de apoiadores é carregada da planilha pública em formato TSV definida em `script.js`. O QR Code contém o endereço de doação como imagem Base64. Depois de exibir o QR Code, o botão é substituído por **DOAR PELO SITE**, que abre o formulário de contribuição em uma nova aba.
 
 ## Arquivos
 
@@ -55,7 +55,7 @@ O manifesto declara `permissions: []`. A extensão não lê nem altera anotaçõ
 
 ## Compatibilidade
 
-- Versão da extensão: `1.2.1`
+- Versão da extensão: `1.2.2`
 - API declarada: `2.0.0`
 - Versão mínima do ANOTADO: `2.0.0`
 - Permissões declaradas: nenhuma
