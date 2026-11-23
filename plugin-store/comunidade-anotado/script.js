@@ -211,7 +211,7 @@
             '.anotado-community .ac-detail { display:flex; flex-direction:column; gap:13px; }',
             '.anotado-community .ac-back { align-self:flex-start; min-height:36px; margin-top:5px; padding:0 13px; border:1px solid var(--ac-line); border-radius:9px; background:var(--ac-soft); color:var(--ac-ink); font-size:11px; font-weight:700; cursor:pointer; transition:background .15s,border-color .15s; }',
             '.anotado-community .ac-back:hover { border-color:var(--ac-muted); background:var(--ac-card); }',
-            '.anotado-community .ac-actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin-top:5px; }',
+            '.anotado-community .ac-actions { display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:8px; margin-top:5px; }',
             '.anotado-community .ac-actions .ac-back { margin:0; }',
             '.anotado-community .ac-tutorial-list { display:grid; gap:8px; margin-top:3px; }',
             '.anotado-community .ac-tutorial-choice { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:58px; padding:11px 13px; border:1px solid var(--ac-line); border-radius:10px; background:var(--ac-card); color:var(--ac-ink); text-align:left; cursor:pointer; transition:border-color .15s,background .15s; }',
@@ -422,8 +422,8 @@
                     '</ul>',
                     '<p class="ac-copy">As extensões são registradas em ANOTADO_PLUGINS e montadas pelo aplicativo.</p>',
                     '<div class="ac-actions">',
-                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>',
                         backButton,
+                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>',
                     '</div>'
                 ].join('');
             } else if (kind === 'deluxe') {
@@ -454,8 +454,8 @@
                         '</div>',
                     '</section>',
                     '<div class="ac-actions">',
-                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Ver projeto no GitHub ↗</a>',
                         backButton,
+                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Ver projeto no GitHub ↗</a>',
                     '</div>'
                 ].join('');
             }
