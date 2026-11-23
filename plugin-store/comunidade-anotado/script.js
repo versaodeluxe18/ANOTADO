@@ -411,14 +411,13 @@
                     '<h1>Como o projeto funciona.</h1>',
                     '<p class="ac-copy">A nossa comunidade é um ponto de encontro para desenvolvedores, curiosos e colaboradores que desejam conhecer a arquitetura, acompanhar a evolução do projeto, compartilhar conhecimento e participar da construção do que vem pela frente.</p>',
                     '<ul class="ac-facts">',
-                        '<li><strong>index.html</strong> — interface e funcionamento principal.</li>',
+                        '<li><strong>Index.html</strong> — interface e funcionamento principal.</li>',
                         '<li><strong>IndexedDB</strong> — armazenamento local dos projetos.</li>',
-                        '<li><strong>plugin-store/</strong> — extensões separadas, com manifest.json e script.js.</li>',
+                        '<li><strong>Extensões/</strong> — feito em script.js por apoiadores.</li>',
                     '</ul>',
-                    '<p class="ac-copy">As extensões são registradas em ANOTADO_PLUGINS e montadas pelo aplicativo.</p>',
                     '<div class="ac-actions">',
                         backButton,
-                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>',
+                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">ABRIR REPOSITÓRIO GITHUB ↗</a>',
                     '</div>'
                 ].join('');
             } else if (kind === 'deluxe') {
