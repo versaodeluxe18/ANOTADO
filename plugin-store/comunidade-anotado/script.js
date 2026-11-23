@@ -227,7 +227,7 @@
             '.anotado-community .ac-link:hover { opacity:.88; }',
             '.anotado-community .ac-supporters { padding:13px; border:1px solid var(--ac-line); border-radius:11px; background:var(--ac-soft); }',
             '.anotado-community .ac-supporters h2, .anotado-community .ac-donation h2 { margin:0 0 4px; color:var(--ac-ink); font-size:13px; font-weight:800; }',
-            '.anotado-community .ac-supporters ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:5px 14px; margin:10px 0 0; padding:0; list-style:none; }',
+            '.anotado-community .ac-supporters ul { display:grid; grid-template-columns:1fr; gap:8px; margin:10px 0 0; padding:0; list-style:none; }',
             '.anotado-community .ac-supporters li { overflow-wrap:anywhere; color:var(--ac-muted); font-size:11px; }',
             '.anotado-community .ac-supporters li strong { color:var(--ac-ink); font-weight:800; }',
             '.anotado-community .ac-supporters li span { color:var(--ac-muted); }',
