@@ -423,8 +423,8 @@
             } else if (kind === 'deluxe') {
                 content = [
                     '<h1>Versão Deluxe.</h1>',
-                    '<p class="ac-copy">Fundada por W. F. Fukuta, a Versão Deluxe reúne pessoas que buscam desenvolver a melhor versão de si mesmas por meio de projetos coletivos e individuais.</p>',
-                    '<p class="ac-copy">A empresa coordena o trabalho e gerencia o repositório do ANOTADO.</p>',
+                    '<p class="ac-copy">A Versão Deluxe reúne pessoas que buscam desenvolver a melhor versão de si mesmas por meio de projetos coletivos e individuais.</p>',
+                    '<p class="ac-copy">A empresa coordena o trabalho e gerencia o repositório do ANOTADO garantindo a segurança da loja para todos os usuários.</p>',
                     backButton
                 ].join('');
             } else if (kind === 'thanks') {
@@ -448,7 +448,7 @@
                     '</section>',
                     '<div class="ac-actions">',
                         backButton,
-                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">Ver projeto no GitHub ↗</a>',
+                        '<a class="ac-link" href="' + REPOSITORY_URL + '" target="_blank" rel="noopener noreferrer">VER PROJETO NO GITHUB ↗</a>',
                     '</div>'
                 ].join('');
             }
