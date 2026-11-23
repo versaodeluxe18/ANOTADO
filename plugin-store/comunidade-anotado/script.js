@@ -11,7 +11,7 @@
     const PLUGIN_ID = 'comunidade-anotado';
     const PLUGIN_VERSION = '1.2.3';
     const REPOSITORY_URL = 'https://github.com/versaodeluxe18/ANOTADO';
-    const SUPPORTERS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSTfsdOYawlg9uvFxtguMaUuNMfK7yMHoxi7l38kM3IrOQPG81BOPidwgqpIIWH0lV6cKBodK-WtryQ/pub?gid=1741040537&single=true&output=tsv';
+    const SUPPORTERS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRYoVqNPteW1KqTwm62zAb9S9I6BVwlKbj-Ink99YjO9nqMphKvl-oaKpOD9SCHrSy1OI138CH2Q4WC/pub?gid=12993792&single=true&output=tsv';
     const DONATION_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlAAAAJQAQAAAABpmWfoAAACZElEQVR42u3dMZLbMAwFUCKT+18ZKTYWAYpOml3KxXOlXWtegeIPQFNU5Piuz6+BQqFQKBQKhUKhUCgUCoVCfTP1+3UR7d85xoiR13dZ7snNvcqOQqHO5dXMna9ciusqS0Ll9l5lR6FQZ/Nq9k+vLipaMuWVX+u9yo5CoU7n1ZpdX5mVV6+VS0IpOwqF+oS8eq1gRVm9CmVHoVAfklfZ+qtsU2DNsLHts5QdhUKdyqt4Mxfm38kw2y+Gyo5CoQ5T8e/nceLWR8XbFSxlR6FQZ/IqylQYbUKcK+55JVbcOi5lR6FQ5/qrmkszj0a56nmWS7+l7CgU6lxejSWT5vr6OgX2nVnKjkKhzs6Du/X0LLsZ+tM50b5VdhQK9ePUZv9VtKSa+xl6QtWdWcqOQqHO9lfr/qs6He52MFi/QqFQT/VX9bfAbCtY9WnBPjOmeRCFQh3Pq3y7c72fyTC7qnUdXtlRKNSp/qrOgXMPQ5Rv5j6H3EyQyo5CoX6UWvaL5pJLM6nGuJ/p1+9SdhQKdaq/qrvX64RY17Rmtt1P7lN2FAp1ch6cTzePMvv1M7Bi6bCUHYVCnc+rvhO0zol1/+hoyWUeRKFQh6i35zOsJ7bH9jzkeoeyo1CoM/3V/Z0363rWff3d74MoFOqZebA/+bx7q0TvuTzvjEKhnsqrsZwT87ruTzxH25Hl90EUCvVMXq2ffv5Vbrsw6+0oFOoT8qqe2Ff7qb7nXdlRKNT5vMpNf5XL3zWz+pvplR2FQp3Kq9hOg9G6q9pfpfOvUCjUSeo/78dRKxQKhUKhUCgUCoVCoVAo1KPUH8gXvLEEr028AAAAAElFTkSuQmCC';
     const mountedInstances = new WeakMap();
 
@@ -414,7 +414,7 @@
             if (kind === 'dev') {
                 content = [
                     '<h1>Como o projeto funciona.</h1>',
-                    '<p class="ac-copy">O ANOTADO é um aplicativo web. O núcleo fica no index.html e os dados de trabalho são guardados localmente no navegador.</p>',
+                    '<p class="ac-copy">A nossa comunidade é um ponto de encontro para desenvolvedores, curiosos e colaboradores que desejam conhecer a arquitetura, acompanhar a evolução do projeto, compartilhar conhecimento e participar da construção do que vem pela frente.</p>',
                     '<ul class="ac-facts">',
                         '<li><strong>index.html</strong> — interface e funcionamento principal.</li>',
                         '<li><strong>IndexedDB</strong> — armazenamento local dos projetos.</li>',
