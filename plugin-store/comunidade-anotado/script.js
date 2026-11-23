@@ -430,15 +430,14 @@
             } else if (kind === 'thanks') {
                 content = [
                     '<h1>Este projeto é feito em conjunto.</h1>',
-                    '<p class="ac-copy">W. F. Fukuta criou sozinho a estrutura e a base do aplicativo. Nosso agradecimento também a todos os desenvolvedores que contribuem com ideias, código e melhorias.</p>',
+                    '<p class="ac-copy">Nosso agradecimento a todos os usuários e desenvolvedores que contribuem com ideias, código e melhorias.</p>',
                     '<section class="ac-supporters">',
                         '<h2>Apoiadores</h2>',
-                        '<p class="ac-copy">Obrigado a quem ajuda a manter o projeto.</p>',
                         '<ul data-role="supporters" aria-live="polite"><li>Carregando...</li></ul>',
                     '</section>',
                     '<section class="ac-donation">',
                         '<div class="ac-donation-copy">',
-                            '<h2>Apoie o ANOTADO</h2>',
+                            '<h2>APOIE O ANOTADO</h2>',
                             '<p>Uma contribuição ajuda o projeto a continuar.</p>',
                             '<button type="button" class="ac-donate-btn" id="ac-donate-toggle" aria-expanded="false">DOAR</button>',
                         '</div>',
