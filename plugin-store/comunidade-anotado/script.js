@@ -229,6 +229,8 @@
             '.anotado-community .ac-supporters h2, .anotado-community .ac-donation h2 { margin:0 0 4px; color:var(--ac-ink); font-size:13px; font-weight:800; }',
             '.anotado-community .ac-supporters ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:5px 14px; margin:10px 0 0; padding:0; list-style:none; }',
             '.anotado-community .ac-supporters li { overflow-wrap:anywhere; color:var(--ac-muted); font-size:11px; }',
+            '.anotado-community .ac-supporters li strong { color:var(--ac-ink); font-weight:800; }',
+            '.anotado-community .ac-supporters li span { color:var(--ac-muted); }',
             '.anotado-community .ac-donation { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px; border:1px solid var(--ac-line); border-radius:11px; }',
             '.anotado-community .ac-donation-copy { min-width:0; }',
             '.anotado-community .ac-donation-copy p, .anotado-community .ac-qr-caption { margin:0; color:var(--ac-muted); font-size:11px; }',
@@ -313,47 +315,38 @@
                             });
 
                         let headerRow = -1;
-                        let nameColumn = -1;
                         const headerPattern = /(nome|name|apoiador|apoiadora|contribuidor|supporter|usuário|usuario)/i;
 
+                        // A coluna A contém o nome e a coluna B contém a mensagem.
                         for (let i = 0; i < Math.min(rows.length, 6); i += 1) {
-                            const column = rows[i].findIndex(function (cell) {
-                                return headerPattern.test(cell);
-                            });
-                            if (column >= 0) {
+                            if (headerPattern.test(rows[i][0] || '')) {
                                 headerRow = i;
-                                nameColumn = column;
                                 break;
                             }
                         }
 
                         const startAt = headerRow >= 0 ? headerRow + 1 : 0;
-                        const names = [];
-                        const seen = new Set();
+                        const supporters = [];
+                        const seen = new Map();
 
                         rows.slice(startAt).forEach(function (row) {
-                            let name = nameColumn >= 0
-                                ? row[nameColumn]
-                                : row.find(function (cell) {
-                                    return cell &&
-                                        !/^(\d{1,4}[\/.-]\d{1,2}[\/.-]\d{1,4}|\d{1,2}:\d{2})$/.test(cell) &&
-                                        !/^[R$€]?\s*[\d.,]+(?:\s*[R$€])?$/.test(cell) &&
-                                        !/@/.test(cell) &&
-                                        !/^https?:\/\//i.test(cell);
-                                });
+                            const name = String(row[0] || '').trim();
+                            const message = String(row[1] || '').trim();
 
-                            name = String(name || '').trim();
                             if (!name || headerPattern.test(name) || /^(total|anônimo|anonimo|—|-|n\/a)$/i.test(name)) return;
                             if (/@/.test(name) || /^https?:\/\//i.test(name)) return;
 
                             const key = name.toLocaleLowerCase('pt-BR');
                             if (!seen.has(key)) {
-                                seen.add(key);
-                                names.push(name);
+                                seen.set(key, supporters.length);
+                                supporters.push({ name: name, message: message });
+                            } else {
+                                const existing = supporters[seen.get(key)];
+                                if (!existing.message && message) existing.message = message;
                             }
                         });
 
-                        return names;
+                        return supporters;
                     })
                     .catch(function () {
                         return null;
@@ -361,20 +354,22 @@
             }
 
             listElement.innerHTML = '<li>Carregando...</li>';
-            supportersPromise.then(function (names) {
+            supportersPromise.then(function (supporters) {
                 if (!listElement.isConnected) return;
 
-                if (names === null) {
+                if (supporters === null) {
                     listElement.innerHTML = '<li>Lista indisponível no momento.</li>';
                     return;
                 }
-                if (!names.length) {
+                if (!supporters.length) {
                     listElement.innerHTML = '<li>Ainda não há nomes publicados.</li>';
                     return;
                 }
 
-                listElement.innerHTML = names.map(function (name) {
-                    return '<li>' + escapeHTML(name) + '</li>';
+                listElement.innerHTML = supporters.map(function (supporter) {
+                    return '<li><strong>' + escapeHTML(supporter.name) + '</strong>' +
+                        (supporter.message ? '<span> — ' + escapeHTML(supporter.message) + '</span>' : '') +
+                        '</li>';
                 }).join('');
             });
         }
