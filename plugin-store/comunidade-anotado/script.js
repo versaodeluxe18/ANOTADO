@@ -366,11 +366,33 @@
                     return;
                 }
 
-                listElement.innerHTML = supporters.map(function (supporter) {
-                    return '<li><strong>' + escapeHTML(supporter.name) + '</strong>' +
+                let currentIndex = -1;
+
+                function showRandomSupporter() {
+                    if (!listElement.isConnected) {
+                        window.clearInterval(rotationTimer);
+                        return;
+                    }
+
+                    let nextIndex = Math.floor(Math.random() * supporters.length);
+                    if (supporters.length > 1) {
+                        while (nextIndex === currentIndex) {
+                            nextIndex = Math.floor(Math.random() * supporters.length);
+                        }
+                    }
+                    currentIndex = nextIndex;
+
+                    const supporter = supporters[currentIndex];
+                    listElement.innerHTML = '<li><strong>' + escapeHTML(supporter.name) + '</strong>' +
                         (supporter.message ? '<span> — ' + escapeHTML(supporter.message) + '</span>' : '') +
                         '</li>';
-                }).join('');
+                }
+
+                let rotationTimer = null;
+                showRandomSupporter();
+                if (supporters.length > 1) {
+                    rotationTimer = window.setInterval(showRandomSupporter, 3000);
+                }
             });
         }
 
