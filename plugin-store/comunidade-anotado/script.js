@@ -266,7 +266,7 @@
                 '<section class="ac-home" data-view="home">',
                     '<h1>O que você procura?</h1>',
                     '<div class="ac-grid">',
-                        '<button type="button" class="ac-choice" data-action="help"><span class="ac-choice-icon" aria-hidden="true">?</span><strong>QUER AJUDA ?</strong></button>',
+                        '<button type="button" class="ac-choice" data-action="help"><span class="ac-choice-icon" aria-hidden="true">?</span><strong>QUER AJUDA?</strong></button>',
                         '<button type="button" class="ac-choice" data-action="dev"><span class="ac-choice-icon" aria-hidden="true">&lt;/&gt;</span><strong>OS DESENVOLVEDORES</strong></button>',
                         '<button type="button" class="ac-choice" data-action="deluxe"><span class="ac-choice-icon" aria-hidden="true">VD</span><strong>O CHEFÃO</strong></button>',
                         '<button type="button" class="ac-choice" data-action="thanks"><span class="ac-choice-icon" aria-hidden="true">♥</span><strong>MUITO OBRIGADO</strong></button>',
@@ -384,7 +384,7 @@
             homeView.hidden = true;
             detailView.hidden = false;
             detailView.innerHTML = [
-                '<p class="ac-kicker">AJUDA</p>',
+                '<p class="ac-kicker"></p>',
                 '<h1>O que você quer aprender?</h1>',
                 '<div class="ac-tutorial-list">',
                     Object.keys(TUTORIALS).map(function (key) {
