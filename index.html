@@ -2753,7 +2753,7 @@
             toast._timeout = setTimeout(() => {
                 toast.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
                 toast.classList.add('opacity-0', 'translate-y-3', 'scale-95');
-            }, 2500);
+            }, isError ? 5000 : 2500);
         }
 
         function completeStickyNotes(stickies) {
@@ -8315,6 +8315,7 @@
             needsAuth: true,
             isLoading: false,
             files: [],
+            errorMessage: null,
             pendingOverwrite: null
         };
 
@@ -8409,12 +8410,24 @@
             gdriveFilesList.innerHTML = '';
 
             if (gdriveState.isLoading) {
+                gdriveFilesStatus.classList.remove('text-error');
+                gdriveFilesStatus.classList.add('text-on-surface-variant');
                 gdriveFilesStatus.textContent = 'Carregando arquivos do Google Drive...';
                 gdriveFilesStatus.classList.remove('hidden');
                 return;
             }
 
+            if (gdriveState.errorMessage) {
+                gdriveFilesStatus.classList.remove('text-on-surface-variant');
+                gdriveFilesStatus.classList.add('text-error');
+                gdriveFilesStatus.textContent = gdriveState.errorMessage;
+                gdriveFilesStatus.classList.remove('hidden');
+                return;
+            }
+
             if (!gdriveState.files || gdriveState.files.length === 0) {
+                gdriveFilesStatus.classList.remove('text-error');
+                gdriveFilesStatus.classList.add('text-on-surface-variant');
                 gdriveFilesStatus.textContent = gdriveState.mode === 'save'
                     ? 'Nenhum arquivo salvo pelo ANOTADO no Drive ainda.'
                     : 'Nenhum arquivo do ANOTADO encontrado no seu Google Drive.';
@@ -8493,6 +8506,7 @@
             const bridge = getDriveBridge();
             if (!bridge) return;
             gdriveState.isLoading = true;
+            gdriveState.errorMessage = null;
             renderDriveFilesList();
 
             try {
@@ -8508,7 +8522,9 @@
                     return;
                 }
                 console.error('Erro ao listar arquivos do Google Drive:', err);
-                showToast('Erro ao carregar arquivos do Google Drive.', true);
+                const detail = err && err.message ? err.message : 'Erro ao carregar arquivos do Google Drive.';
+                gdriveState.errorMessage = detail;
+                showToast(detail, true);
                 gdriveState.files = [];
             } finally {
                 gdriveState.isLoading = false;
@@ -8546,7 +8562,7 @@
                     return;
                 }
                 console.error('Erro ao abrir arquivo do Google Drive:', err);
-                showToast('Erro ao abrir arquivo do Google Drive.', true);
+                showToast(err && err.message ? err.message : 'Erro ao abrir arquivo do Google Drive.', true);
             } finally {
                 gdriveState.isLoading = false;
                 renderDriveFilesList();
@@ -8590,7 +8606,7 @@
                     return;
                 }
                 console.error('Erro ao salvar no Google Drive:', err);
-                showToast('Erro ao salvar arquivo no Google Drive.', true);
+                showToast(err && err.message ? err.message : 'Erro ao salvar arquivo no Google Drive.', true);
             } finally {
                 gdriveState.isLoading = false;
                 if (gdriveSaveNewBtn) gdriveSaveNewBtn.disabled = false;
@@ -8624,7 +8640,7 @@
                     return;
                 }
                 console.error('Erro ao atualizar arquivo no Google Drive:', err);
-                showToast('Erro ao atualizar arquivo no Google Drive.', true);
+                showToast(err && err.message ? err.message : 'Erro ao atualizar arquivo no Google Drive.', true);
             } finally {
                 if (gdriveOverwriteConfirmBtn) gdriveOverwriteConfirmBtn.disabled = false;
                 if (gdriveOverwriteCancelBtn) gdriveOverwriteCancelBtn.disabled = false;
@@ -8725,7 +8741,7 @@
                 } catch (err) {
                     console.error('Falha ao entrar com Google:', err);
                     if (gdriveAuthError) {
-                        gdriveAuthError.textContent = 'Não foi possível concluir o login com Google. Tente novamente.';
+                        gdriveAuthError.textContent = (err && err.message) ? err.message : 'Não foi possível concluir o login com Google. Tente novamente.';
                         gdriveAuthError.classList.remove('hidden');
                     }
                 } finally {
@@ -10052,6 +10068,24 @@
                     throw new Error('Não foi possível obter o token de acesso do Google.');
                 }
 
+                // Best-effort scope check so missing Drive consent is caught immediately
+                try {
+                    const infoRes = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${encodeURIComponent(credential.accessToken)}`);
+                    if (infoRes.ok) {
+                        const info = await infoRes.json();
+                        const grantedScopes = String(info.scope || '');
+                        if (!grantedScopes.includes('https://www.googleapis.com/auth/drive')) {
+                            cachedAccessToken = null;
+                            provider.setCustomParameters({ prompt: 'consent select_account' });
+                            throw new Error('Permissão do Google Drive não foi marcada. Entre novamente e autorize o acesso ao Google Drive.');
+                        }
+                    }
+                } catch (scopeErr) {
+                    if (scopeErr && scopeErr.message && scopeErr.message.includes('Google Drive')) {
+                        throw scopeErr;
+                    }
+                }
+
                 cachedAccessToken = credential.accessToken;
                 currentUser = result.user;
                 return { user: result.user, accessToken: cachedAccessToken };
@@ -10088,13 +10122,37 @@
             }
             if (!res.ok) {
                 let details = '';
+                let reason = '';
+                let statusText = '';
                 try {
                     const errJson = await res.json();
                     details = errJson?.error?.message || '';
+                    statusText = errJson?.error?.status || '';
+                    reason = errJson?.error?.errors?.[0]?.reason || '';
                 } catch {
                     details = res.statusText;
                 }
-                throw new Error(details || `Erro na API do Google Drive (${res.status})`);
+
+                if (
+                    res.status === 403 &&
+                    (reason === 'insufficientPermissions' ||
+                        statusText === 'PERMISSION_DENIED' && /scope/i.test(details) ||
+                        /insufficient/i.test(details) ||
+                        /ACCESS_TOKEN_SCOPE_INSUFFICIENT/i.test(details))
+                ) {
+                    cachedAccessToken = null;
+                    provider.setCustomParameters({ prompt: 'consent select_account' });
+                    throw new AuthExpiredError('Permissão de acesso ao Google Drive não concedida. Faça login novamente e marque a caixa de acesso ao Google Drive.');
+                }
+
+                if (
+                    res.status === 403 &&
+                    (reason === 'accessNotConfigured' || /has not been used in project|is disabled/i.test(details))
+                ) {
+                    throw new Error('A Google Drive API não está ativada no projeto Google Cloud (wffukuta). Ative a API "Google Drive API" no Google Cloud Console.');
+                }
+
+                throw new Error(details ? `Google Drive (${res.status}): ${details}` : `Erro na API do Google Drive (${res.status})`);
             }
             return res;
         }
