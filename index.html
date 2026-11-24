@@ -140,6 +140,7 @@
         }
         
         .note-card {
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -205,6 +206,13 @@
             -webkit-line-clamp: unset !important;
             cursor: text;
         }
+        .sticky-content h1 { font-size: 1.25em; font-weight: 700; line-height: 1.25; margin: 0.15em 0; }
+        .sticky-content h2 { font-size: 1.12em; font-weight: 600; line-height: 1.3; margin: 0.15em 0; }
+        .sticky-content p { margin: 0.1em 0; }
+        .sticky-content ul { list-style-type: disc; padding-left: 1.25em; margin: 0.15em 0; }
+        .sticky-content ol { list-style-type: decimal; padding-left: 1.25em; margin: 0.15em 0; }
+        .sticky-content blockquote { border-left: 2.5px solid rgba(0, 0, 0, 0.25); padding-left: 0.55em; color: rgba(15, 23, 42, 0.72); font-style: italic; margin: 0.15em 0; }
+        .sticky-content pre { font-family: 'Fira Code', monospace; font-size: 0.85em; background: rgba(0, 0, 0, 0.06); padding: 0.25em 0.45em; border-radius: 4px; white-space: pre-wrap; margin: 0.15em 0; }
         
         .resize-handle {
             position: absolute;
@@ -280,6 +288,23 @@
         .icon-button:hover { background-color: #edeef0; color: #191c1e; }
         .icon-button.active { background-color: #dce2f3; color: #000000; font-weight: 600; }
 
+        .toolbar-plugins-divider {
+            width: 2px;
+            height: 22px;
+            flex-shrink: 0;
+            margin: 0 2px;
+            border-radius: 9999px;
+            background: linear-gradient(
+                180deg,
+                rgba(118, 119, 125, 0) 0%,
+                rgba(118, 119, 125, 0.35) 20%,
+                rgba(69, 70, 76, 0.72) 50%,
+                rgba(118, 119, 125, 0.35) 80%,
+                rgba(118, 119, 125, 0) 100%
+            );
+            box-shadow: 1px 0 0 rgba(255, 255, 255, 0.75);
+        }
+
         #topbar-add-project-btn,
         #topbar-manage-db-btn,
         #cozy-delete-btn,
@@ -309,6 +334,7 @@
         #undo-drag-handle:hover,
         #db-reset-modal button:hover,
         #plugin-uninstall-modal button:hover,
+        #gdrive-modal button:not(.gsi-material-button):hover,
         #deadline-modal button:hover,
         #save-modal button:hover,
         #db-inspect-modal button:hover,
@@ -325,6 +351,7 @@
         #undo-drag-handle,
         #db-reset-modal button,
         #plugin-uninstall-modal button,
+        #gdrive-modal button,
         #deadline-modal button,
         #save-modal button,
         #db-inspect-modal button,
@@ -335,6 +362,7 @@
         .cozy-floating-panel button.bg-primary:hover,
         #db-reset-modal button.bg-primary:hover,
         #plugin-uninstall-modal button.bg-primary:hover,
+        #gdrive-modal button.bg-primary:hover,
         #deadline-modal button.bg-primary:hover,
         #save-modal button.bg-slate-900:hover,
         #db-inspect-modal button.bg-primary:hover,
@@ -488,6 +516,114 @@
             pointer-events: none;
             display: block;
         }
+        #cozy-deep-editor h1 { font-size: 1.65em; font-weight: 700; line-height: 1.25; margin: 0.35em 0 0.4em; color: #0f172a; }
+        #cozy-deep-editor h2 { font-size: 1.32em; font-weight: 600; line-height: 1.3; margin: 0.3em 0 0.35em; color: #1e293b; }
+        #cozy-deep-editor p { margin: 0 0 0.45em; }
+        #cozy-deep-editor ul { list-style-type: disc; padding-left: 1.5em; margin: 0.35em 0 0.55em; }
+        #cozy-deep-editor ol { list-style-type: decimal; padding-left: 1.5em; margin: 0.35em 0 0.55em; }
+        #cozy-deep-editor li { margin: 0.15em 0; }
+        #cozy-deep-editor blockquote { border-left: 3px solid rgba(0, 0, 0, 0.25); padding-left: 12px; color: rgba(30, 41, 59, 0.72); font-style: italic; margin: 0.45em 0; }
+        #cozy-deep-editor pre { font-family: 'Fira Code', monospace; font-size: 0.85em; background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 8px; padding: 10px 12px; margin: 0.45em 0; white-space: pre-wrap; color: #0f172a; }
+
+        #cozy-deep-toolbar .deep-tool-btn {
+            height: 28px;
+            min-width: 28px;
+            padding: 0 5px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: rgba(25, 28, 30, 0.75);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            cursor: pointer;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        #cozy-deep-toolbar .deep-tool-btn:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+            color: #191c1e;
+        }
+        #cozy-deep-toolbar .deep-tool-btn.is-active {
+            background-color: rgba(0, 0, 0, 0.14);
+            color: #000000;
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+        #cozy-deep-toolbar .deep-tool-btn:active {
+            transform: scale(0.95);
+        }
+        #cozy-deep-toolbar .deep-tool-divider {
+            width: 1px;
+            height: 18px;
+            background-color: rgba(0, 0, 0, 0.12);
+            margin: 0 2px;
+            flex-shrink: 0;
+        }
+        #cozy-deep-toolbar .deep-tool-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            background: rgba(248, 249, 251, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid #c6c6cd;
+            border-radius: 12px;
+            box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.18);
+            display: none;
+            flex-direction: column;
+            padding: 4px;
+            z-index: 40;
+            min-width: 152px;
+        }
+        #cozy-deep-toolbar .deep-tool-dropdown.right-aligned {
+            left: auto;
+            right: 0;
+        }
+        #cozy-deep-toolbar .deep-tool-dropdown.show {
+            display: flex;
+        }
+        #cozy-deep-toolbar .deep-tool-dropdown-item {
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-size: 12px;
+            color: #191c1e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+        #cozy-deep-toolbar .deep-tool-dropdown-item:hover {
+            background-color: #edeef0;
+            color: #191c1e;
+        }
+        #cozy-deep-toolbar .deep-tool-dropdown-item.is-active {
+            background-color: #dce2f3;
+            color: #000000;
+            font-weight: 600;
+        }
+        #cozy-deep-toolbar .deep-swatch-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            cursor: pointer;
+            transition: transform 0.12s, box-shadow 0.12s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #cozy-deep-toolbar .deep-swatch-btn:hover {
+            transform: scale(1.12);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            background-color: var(--swatch-bg, inherit) !important;
+        }
 
         /* Stage Expand Responsiveness & Workspace Mode */
         @keyframes cozyStageMaxOpen {
@@ -603,7 +739,8 @@
             margin: 16px 20px 24px 20px !important;
             width: calc(100% - 40px) !important;
         }
-        .note-card.stage-expanded .stage-expand-btn {
+        .note-card.stage-expanded .stage-expand-btn,
+        .note-card.stage-expanded .stage-add-sheet-btn {
             display: none !important;
         }
         @keyframes noteColorShift {
@@ -729,38 +866,60 @@
             animation: undoBannerReinforce 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Slide-up / Slide-down Reset & Uninstall Confirmation Windows */
+        /* Slide-up / Slide-down Reset, Uninstall & Drive Confirmation Windows */
         #db-reset-modal #db-reset-backdrop,
-        #plugin-uninstall-modal #plugin-uninstall-backdrop {
-            transition: opacity 0.28s ease;
+        #plugin-uninstall-modal #plugin-uninstall-backdrop,
+        #gdrive-modal #gdrive-modal-backdrop {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.28) 0%, rgba(248, 249, 251, 0.16) 65%, rgba(248, 249, 251, 0.06) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            clip-path: circle(0% at 50% 50%);
+            opacity: 0;
+            transition: clip-path 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.32s ease;
         }
         #db-reset-modal #db-reset-card,
-        #plugin-uninstall-modal #plugin-uninstall-card {
+        #plugin-uninstall-modal #plugin-uninstall-card,
+        #gdrive-modal #gdrive-modal-card {
             transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
             transform: translateY(100vh);
             opacity: 0;
         }
         #db-reset-modal.reset-open #db-reset-backdrop,
-        #plugin-uninstall-modal.uninstall-open #plugin-uninstall-backdrop {
+        #plugin-uninstall-modal.uninstall-open #plugin-uninstall-backdrop,
+        #gdrive-modal.gdrive-open #gdrive-modal-backdrop {
+            clip-path: circle(110% at 50% 50%);
             opacity: 1;
         }
         #db-reset-modal.reset-open #db-reset-card,
-        #plugin-uninstall-modal.uninstall-open #plugin-uninstall-card {
+        #plugin-uninstall-modal.uninstall-open #plugin-uninstall-card,
+        #gdrive-modal.gdrive-open #gdrive-modal-card {
             transform: translateY(0);
             opacity: 1;
         }
         #db-reset-modal.reset-closing #db-reset-backdrop,
-        #plugin-uninstall-modal.uninstall-closing #plugin-uninstall-backdrop {
+        #plugin-uninstall-modal.uninstall-closing #plugin-uninstall-backdrop,
+        #gdrive-modal.gdrive-closing #gdrive-modal-backdrop {
+            clip-path: circle(0% at 50% 50%);
             opacity: 0;
+            transition: clip-path 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.24s ease;
         }
         #db-reset-modal.reset-closing #db-reset-card,
-        #plugin-uninstall-modal.uninstall-closing #plugin-uninstall-card {
+        #plugin-uninstall-modal.uninstall-closing #plugin-uninstall-card,
+        #gdrive-modal.gdrive-closing #gdrive-modal-card {
             transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.24s ease;
             transform: translateY(100vh);
             opacity: 0;
         }
         .topbar-project-btn:hover {
             border-color: #000000 !important;
+        }
+        #topbar-add-project-btn,
+        #topbar-manage-db-btn {
+            border: 1.5px solid transparent;
+        }
+        #topbar-add-project-btn:hover,
+        #topbar-manage-db-btn:hover {
+            border-color: #000000;
         }
 
         /* Cozy Inspector <-> Deadline Morphing Transition */
@@ -912,6 +1071,126 @@
             transform: translateX(-50%) !important;
             z-index: 999 !important;
         }
+
+        @keyframes quickAddGentleShake {
+            0%, 100% {
+                transform: translate3d(0, 0, 0) rotate(0deg);
+            }
+            15% {
+                transform: translate3d(-1.5px, -0.5px, 0) rotate(-3deg);
+            }
+            30% {
+                transform: translate3d(1.5px, 0, 0) rotate(3deg);
+            }
+            45% {
+                transform: translate3d(-1.2px, -0.5px, 0) rotate(-2.2deg);
+            }
+            60% {
+                transform: translate3d(1px, 0, 0) rotate(1.8deg);
+            }
+            75% {
+                transform: translate3d(-0.5px, 0, 0) rotate(-0.8deg);
+            }
+        }
+        #quick-add-note.quick-add-gentle-shake {
+            animation: quickAddGentleShake 2s ease-in-out infinite;
+            will-change: transform;
+        }
+        #quick-add-note.quick-add-gentle-shake:hover,
+        #quick-add-note.quick-add-gentle-shake:active {
+            animation: none;
+        }
+
+        /* Official Sign in with Google button styling */
+        .gsi-material-button {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -webkit-appearance: none;
+            background-color: #ffffff;
+            background-image: none;
+            border: 1px solid #747775;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            color: #1f1f1f;
+            cursor: pointer;
+            font-family: 'Inter', roboto, arial, sans-serif;
+            font-size: 13px;
+            height: 40px;
+            letter-spacing: 0.25px;
+            outline: none;
+            overflow: hidden;
+            padding: 0 16px;
+            position: relative;
+            text-align: center;
+            -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+            transition: background-color .218s, border-color .218s, box-shadow .218s;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: auto;
+            max-width: 400px;
+            min-width: min-content;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gsi-material-button .gsi-material-button-icon {
+            height: 18px;
+            margin-right: 10px;
+            min-width: 18px;
+            width: 18px;
+        }
+        .gsi-material-button .gsi-material-button-content-wrapper {
+            -webkit-align-items: center;
+            align-items: center;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            -webkit-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            height: 100%;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+        .gsi-material-button .gsi-material-button-contents {
+            -webkit-flex-grow: 0;
+            flex-grow: 0;
+            font-family: 'Inter', roboto, arial, sans-serif;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top;
+        }
+        .gsi-material-button .gsi-material-button-state {
+            -webkit-transition: opacity .218s;
+            transition: opacity .218s;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .gsi-material-button:disabled {
+            cursor: default;
+            background-color: #ffffff61;
+            border-color: #1f1f1f1f;
+        }
+        .gsi-material-button:not(:disabled):hover {
+            -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+        }
+        .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+            background-color: #303030;
+            opacity: 8%;
+        }
+        .gsi-material-button:not(:disabled):active .gsi-material-button-state {
+            background-color: #303030;
+            opacity: 12%;
+        }
     </style>
 </head>
 <body class="bg-background text-on-background font-ui-body text-[13px] overflow-hidden select-none">
@@ -951,6 +1230,10 @@
                             <button id="btn-choice-open-json" type="button" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors w-full text-left">
                                 <span class="material-symbols-outlined text-[17px] text-slate-500">upload_file</span>
                                 <span>Abrir arquivo (JSON)</span>
+                            </button>
+                            <button id="btn-choice-open-drive" type="button" class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors w-full text-left">
+                                <span class="material-symbols-outlined text-[17px] text-slate-500">cloud_download</span>
+                                <span>Abrir do Google Drive</span>
                             </button>
                         </div>
 
@@ -1133,15 +1416,6 @@
                     </div>
                 </div>
 
-                <!-- Tipografia / Tamanho da fonte -->
-                <div class="flex flex-col gap-1.5 pt-2 border-t border-outline-variant/30">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-semibold text-on-surface">Tamanho do Texto</span>
-                        <span id="cozy-font-size-label" class="text-[10px] font-mono text-outline">14px</span>
-                    </div>
-                    <input id="cozy-font-slider" type="range" min="11" max="28" value="14" class="w-full accent-black cursor-pointer h-1.5 bg-surface-variant rounded-lg">
-                </div>
-
                 <!-- Ações da Nota: Concluído e Prazo -->
                 <div class="grid grid-cols-2 gap-2 pt-2 border-t border-outline-variant/30">
                     <button type="button" id="cozy-btn-concluido" class="py-1.5 px-2 rounded-lg border border-outline-variant text-[11px] font-semibold flex items-center justify-center hover:bg-surface-variant text-on-surface transition-colors cursor-pointer active:scale-95" title="Marcar nota como concluída e adicionar ao painel">
@@ -1276,24 +1550,151 @@
         <!-- Maintenance Actions: Salvar, Abrir, Resetar & Inspecionar -->
         <div class="flex items-center justify-between gap-1.5 pt-2 border-t border-outline-variant/30 text-xs">
             <div class="flex items-center gap-1.5">
-                <button id="db-export-all-btn" type="button" class="flex items-center gap-1.5 py-1.5 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-container-low text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs whitespace-nowrap" title="Salvar todos os projetos do IndexedDB em um arquivo JSON">
-                    <span class="material-symbols-outlined text-[14px]">download</span>
-                    <span>Salvar</span>
+                <button id="db-export-all-btn" type="button" class="flex items-center justify-center py-1.5 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold uppercase hover:bg-surface-container-low text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs whitespace-nowrap" title="Salvar projeto no dispositivo ou Google Drive">
+                    <span>SALVAR</span>
                 </button>
-                <label class="flex items-center gap-1.5 py-1.5 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-container-low text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs whitespace-nowrap" title="Abrir projetos para o IndexedDB de um arquivo JSON">
-                    <span class="material-symbols-outlined text-[14px]">upload</span>
-                    <span>Abrir</span>
-                    <input id="db-import-file-input" type="file" accept=".json" class="hidden">
-                </label>
-                <button id="db-reset-all-btn" type="button" class="flex items-center gap-1.5 py-1.5 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-container-low text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs whitespace-nowrap" title="Resetar todo o IndexedDB e configurações">
-                    <span class="material-symbols-outlined text-[14px]">restart_alt</span>
-                    <span>Resetar</span>
+                <button id="db-open-all-btn" type="button" class="flex items-center justify-center py-1.5 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold uppercase hover:bg-surface-container-low text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs whitespace-nowrap" title="Abrir projeto do dispositivo ou Google Drive">
+                    <span>ABRIR</span>
+                </button>
+                <input id="db-import-file-input" type="file" accept=".json" class="hidden">
+                <button id="db-reset-all-btn" type="button" class="flex items-center justify-center py-1.5 px-2.5 rounded-lg border border-outline-variant text-[11px] font-semibold uppercase hover:bg-surface-container-low text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs whitespace-nowrap" title="Resetar todo o IndexedDB e configurações">
+                    <span>RESETAR</span>
                 </button>
             </div>
-            <button id="db-inspect-json-btn" type="button" class="flex items-center gap-1.5 py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-surface-container-low hover:text-on-surface hover:border-outline-variant text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs whitespace-nowrap shrink-0" title="Inspecionar JSON do projeto atual em tela inteira">
-                <span class="material-symbols-outlined text-[14px]">code</span>
-                <span>Inspecionar</span>
+            <button id="db-inspect-json-btn" type="button" class="flex items-center justify-center py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-surface-container-low hover:text-on-surface hover:border-outline-variant text-on-primary text-[11px] font-semibold uppercase transition-colors cursor-pointer active:scale-95 shadow-xs whitespace-nowrap shrink-0" title="Inspecionar JSON do projeto atual em tela inteira">
+                <span>INSPECIONAR</span>
             </button>
+        </div>
+    </div>
+
+    <!-- Local / Google Drive Slide-Up Window (Matches Reset & Uninstall Alert Style) -->
+    <div id="gdrive-modal" class="fixed inset-0 z-[115] hidden items-center justify-center p-4 select-none">
+        <div id="gdrive-modal-backdrop" class="absolute inset-0 opacity-0"></div>
+        <div id="gdrive-modal-card" class="relative z-10 w-80 max-w-[calc(100vw-32px)] bg-white/95 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-xl p-3.5 flex flex-col gap-3 text-on-surface max-h-[85vh]">
+            <div class="flex items-center justify-between gap-1 border-b border-outline-variant/30 pb-1.5">
+                <div class="w-6 h-6 shrink-0 flex items-center justify-center">
+                    <button id="gdrive-back-btn" type="button" class="hidden text-outline hover:text-on-surface h-6 w-6 rounded hover:bg-surface-variant transition-colors items-center justify-center shrink-0 cursor-pointer" title="Voltar">
+                        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    </button>
+                </div>
+                <div class="flex-1 h-6 px-1 flex items-center justify-center min-w-0">
+                    <span id="gdrive-modal-title" class="text-[11px] font-semibold text-on-surface-variant truncate">Salvar Projeto</span>
+                </div>
+                <button id="close-gdrive-modal-btn" type="button" class="text-outline hover:text-on-surface h-6 w-6 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Fechar">
+                    <span class="material-symbols-outlined text-[17px]">close</span>
+                </button>
+            </div>
+
+            <!-- View 1: Choice between Local Device and Google Drive -->
+            <div id="gdrive-choice-view" class="hidden flex-col gap-2">
+                <button id="gdrive-choice-local-btn" type="button" class="flex items-center gap-2.5 p-2.5 rounded-xl border border-outline-variant/70 bg-surface-container-lowest hover:border-outline-variant shadow-2xs transition-colors text-left cursor-pointer">
+                    <div class="w-7 h-7 rounded-lg bg-surface-container border border-outline-variant/60 flex items-center justify-center shrink-0 text-on-surface">
+                        <span id="gdrive-choice-local-icon" class="material-symbols-outlined text-[17px]">computer</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <span id="gdrive-choice-local-title" class="text-xs font-semibold text-on-surface">No dispositivo (JSON)</span>
+                        <span id="gdrive-choice-local-desc" class="text-[11px] text-on-surface-variant">Baixar arquivo de backup localmente</span>
+                    </div>
+                </button>
+                <button id="gdrive-choice-drive-btn" type="button" class="flex items-center gap-2.5 p-2.5 rounded-xl border border-outline-variant/70 bg-surface-container-lowest hover:border-outline-variant shadow-2xs transition-colors text-left cursor-pointer">
+                    <div class="w-7 h-7 rounded-lg bg-surface-container border border-outline-variant/60 flex items-center justify-center shrink-0 text-on-surface">
+                        <span id="gdrive-choice-drive-icon" class="material-symbols-outlined text-[17px]">cloud_upload</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-semibold text-on-surface">Google Drive</span>
+                        <span id="gdrive-choice-drive-desc" class="text-[11px] text-on-surface-variant">Entrar com sua conta Google para salvar na nuvem</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- View 2: Google Sign-In -->
+            <div id="gdrive-auth-view" class="hidden flex-col items-center justify-center gap-2.5 py-2 px-1 text-center">
+                <div class="w-9 h-9 rounded-full bg-surface-container border border-outline-variant/80 flex items-center justify-center text-on-surface shadow-xs">
+                    <span class="material-symbols-outlined text-[19px]">cloud_sync</span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <p class="text-xs font-semibold text-on-surface leading-snug">Conectar ao Google Drive</p>
+                    <p id="gdrive-auth-subtitle" class="text-[11px] text-on-surface-variant leading-relaxed">Entre com sua conta Google para salvar e carregar seus projetos diretamente no seu Google Drive.</p>
+                </div>
+                <button id="gdrive-signin-btn" type="button" class="gsi-material-button mt-0.5">
+                    <div class="gsi-material-button-state"></div>
+                    <div class="gsi-material-button-content-wrapper">
+                        <div class="gsi-material-button-icon">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                <path fill="none" d="M0 0h48v48H0z"></path>
+                            </svg>
+                        </div>
+                        <span class="gsi-material-button-contents">Sign in with Google</span>
+                        <span style="display: none;">Sign in with Google</span>
+                    </div>
+                </button>
+                <p id="gdrive-auth-error" class="hidden text-[11px] text-error"></p>
+            </div>
+
+            <!-- View 3: Authenticated Google Drive Save / Open -->
+            <div id="gdrive-main-view" class="hidden flex-col gap-2.5 min-h-0 flex-1">
+                <!-- Account Bar -->
+                <div class="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl bg-surface-container-low border border-outline-variant/60">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="material-symbols-outlined text-[17px] text-on-surface-variant shrink-0">account_circle</span>
+                        <div class="flex flex-col min-w-0">
+                            <span id="gdrive-user-name" class="text-[11px] font-semibold text-on-surface truncate"></span>
+                            <span id="gdrive-user-email" class="text-[10px] text-on-surface-variant truncate"></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button id="gdrive-refresh-btn" type="button" class="text-outline hover:text-on-surface h-6 w-6 rounded hover:bg-surface-variant transition-colors flex items-center justify-center cursor-pointer" title="Atualizar arquivos">
+                            <span class="material-symbols-outlined text-[15px]">refresh</span>
+                        </button>
+                        <button id="gdrive-logout-btn" type="button" class="px-2 py-1 rounded-lg border border-outline-variant text-[10px] font-semibold text-on-surface transition-colors cursor-pointer shadow-2xs" title="Sair da conta Google">
+                            Sair
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Save Section -->
+                <div id="gdrive-save-section" class="hidden flex-col gap-2">
+                    <div class="flex items-center gap-1.5">
+                        <button id="gdrive-scope-current-btn" type="button" class="flex-1 py-1.5 px-2 rounded-lg border text-[11px] font-semibold transition-colors cursor-pointer">
+                            Projeto atual
+                        </button>
+                        <button id="gdrive-scope-all-btn" type="button" class="flex-1 py-1.5 px-2 rounded-lg border text-[11px] font-semibold transition-colors cursor-pointer">
+                            Todos os projetos
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <input id="gdrive-filename-input" type="text" maxlength="80" placeholder="Nome do arquivo..." class="flex-1 min-w-0 px-2.5 py-1 text-xs border border-outline-variant rounded-lg outline-none focus:border-on-surface focus:ring-1 focus:ring-on-surface bg-surface-container-lowest text-on-surface">
+                        <button id="gdrive-save-new-btn" type="button" class="py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-neutral-800 text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs shrink-0">
+                            Salvar
+                        </button>
+                    </div>
+                    <span class="text-[11px] text-on-surface-variant px-0.5">Ou selecione um arquivo para atualizar:</span>
+                </div>
+
+                <!-- Drive Files List (used for both Open and Overwrite selection) -->
+                <div id="gdrive-files-status" class="hidden text-center py-5 text-[11px] text-on-surface-variant"></div>
+                <div id="gdrive-files-list" class="flex flex-col gap-1.5 max-h-52 overflow-y-auto pr-1"></div>
+            </div>
+
+            <!-- View 4: Explicit Confirmation Dialog for Overwriting Existing Drive File -->
+            <div id="gdrive-overwrite-confirm-view" class="hidden flex-col gap-3">
+                <div class="flex flex-col gap-1.5 px-0.5">
+                    <p class="text-xs font-semibold text-on-surface leading-snug">Atualizar arquivo no Google Drive?</p>
+                    <p id="gdrive-overwrite-message" class="text-[11px] text-on-surface-variant leading-relaxed break-words"></p>
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/30">
+                    <button id="gdrive-overwrite-cancel-btn" type="button" class="py-1.5 px-3 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs">
+                        Cancelar
+                    </button>
+                    <button id="gdrive-overwrite-confirm-btn" type="button" class="py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-neutral-800 text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs flex items-center justify-center">
+                        Sobrescrever
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1386,16 +1787,150 @@
         <!-- Maximized Note Container (covers 80% of screen height) -->
         <div id="cozy-deep-card" class="relative z-10 w-full max-w-3xl flex flex-col rounded-2xl border border-black/10 shadow-2xl overflow-hidden transition-all duration-300" style="height: 80vh; max-height: 80vh; min-height: 80vh;">
             <!-- Minimalist Header Bar -->
-            <div id="cozy-deep-header" class="flex items-center justify-between px-6 py-3 border-b border-black/10 select-none">
-                <div class="flex items-center gap-2">
+            <div id="cozy-deep-header" class="flex items-center justify-between gap-3 px-6 py-3 border-b border-black/10 select-none">
+                <div class="flex items-center flex-wrap gap-2 min-w-0">
                     <span class="material-symbols-outlined text-[18px] text-black/50">sticky_note_2</span>
                     <span id="cozy-deep-title" class="text-xs font-semibold text-black/70 tracking-wide"></span>
+                    <span id="cozy-deep-deadline" class="hidden"></span>
                 </div>
                 <div class="flex items-center gap-2">
                     <button id="close-deep-note-btn" type="button" class="w-7 h-7 rounded-lg flex items-center justify-center text-black/50 hover:text-black hover:bg-black/10 transition-colors cursor-pointer" title="Minimizar (Esc)">
                         <span class="material-symbols-outlined text-[19px]">close_fullscreen</span>
                     </button>
                 </div>
+            </div>
+
+            <!-- Text Editing Toolbar Kit -->
+            <div id="cozy-deep-toolbar" class="relative z-20 flex items-center flex-wrap gap-0.5 sm:gap-1 px-4 sm:px-6 py-1.5 border-b border-black/10 bg-black/[0.03] select-none">
+                <!-- Histórico -->
+                <button type="button" class="deep-tool-btn" data-deep-action="undo" title="Desfazer texto (Ctrl+Z)">
+                    <span class="material-symbols-outlined text-[17px]">undo</span>
+                </button>
+                <button type="button" class="deep-tool-btn" data-deep-action="redo" title="Refazer texto (Ctrl+Y)">
+                    <span class="material-symbols-outlined text-[17px]">redo</span>
+                </button>
+
+                <div class="deep-tool-divider"></div>
+
+                <!-- Estilo de Bloco -->
+                <div class="relative">
+                    <button type="button" id="deep-block-btn" class="deep-tool-btn px-2 text-[11px] font-semibold" title="Estilo do bloco">
+                        <span id="deep-block-label">Texto</span>
+                        <span class="material-symbols-outlined text-[15px] opacity-60">keyboard_arrow_down</span>
+                    </button>
+                    <div id="deep-block-menu" class="deep-tool-dropdown">
+                        <button type="button" class="deep-tool-dropdown-item" data-deep-block="p">
+                            <span class="text-xs">Texto normal</span>
+                        </button>
+                        <button type="button" class="deep-tool-dropdown-item" data-deep-block="h1">
+                            <span class="text-sm font-bold">Título 1</span>
+                        </button>
+                        <button type="button" class="deep-tool-dropdown-item" data-deep-block="h2">
+                            <span class="text-[13px] font-semibold">Título 2</span>
+                        </button>
+                        <button type="button" class="deep-tool-dropdown-item" data-deep-block="blockquote">
+                            <span class="text-xs italic text-slate-600">Citação</span>
+                        </button>
+                        <button type="button" class="deep-tool-dropdown-item" data-deep-block="pre">
+                            <span class="text-xs font-code">Bloco de código</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tamanho da Fonte -->
+                <button type="button" class="deep-tool-btn" data-deep-action="fontDecrease" title="Diminuir tamanho do texto">
+                    <span class="material-symbols-outlined text-[17px]">text_decrease</span>
+                </button>
+                <span id="deep-font-size-badge" class="text-[10px] font-mono text-black/60 min-w-[28px] text-center select-none">14px</span>
+                <button type="button" class="deep-tool-btn" data-deep-action="fontIncrease" title="Aumentar tamanho do texto">
+                    <span class="material-symbols-outlined text-[17px]">text_increase</span>
+                </button>
+
+                <div class="deep-tool-divider"></div>
+
+                <!-- Formatação Inline -->
+                <button type="button" class="deep-tool-btn" data-deep-cmd="bold" title="Negrito (Ctrl+B)">
+                    <span class="material-symbols-outlined text-[17px]">format_bold</span>
+                </button>
+                <button type="button" class="deep-tool-btn" data-deep-cmd="italic" title="Itálico (Ctrl+I)">
+                    <span class="material-symbols-outlined text-[17px]">format_italic</span>
+                </button>
+                <button type="button" class="deep-tool-btn" data-deep-cmd="underline" title="Sublinhado (Ctrl+U)">
+                    <span class="material-symbols-outlined text-[17px]">format_underlined</span>
+                </button>
+                <button type="button" class="deep-tool-btn" data-deep-cmd="strikeThrough" title="Tachado">
+                    <span class="material-symbols-outlined text-[17px]">strikethrough_s</span>
+                </button>
+
+                <!-- Cor do Texto & Destaque -->
+                <div class="relative">
+                    <button type="button" id="deep-color-btn" class="deep-tool-btn flex-col gap-0 py-0.5" title="Cor do texto">
+                        <span class="material-symbols-outlined text-[16px] leading-none">format_color_text</span>
+                        <span id="deep-color-indicator" class="w-3.5 h-[2px] rounded-full bg-[#1e293b]"></span>
+                    </button>
+                    <div id="deep-color-menu" class="deep-tool-dropdown p-2 min-w-0">
+                        <span class="text-[10px] font-semibold text-on-surface-variant px-0.5 pb-1.5">Cor do texto</span>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" class="deep-swatch-btn" data-deep-forecolor="#1e293b" style="background-color: #1e293b; --swatch-bg: #1e293b;" title="Padrão"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-forecolor="#64748b" style="background-color: #64748b; --swatch-bg: #64748b;" title="Cinza"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-forecolor="#dc2626" style="background-color: #dc2626; --swatch-bg: #dc2626;" title="Vermelho"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-forecolor="#ea580c" style="background-color: #ea580c; --swatch-bg: #ea580c;" title="Laranja"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-forecolor="#16a34a" style="background-color: #16a34a; --swatch-bg: #16a34a;" title="Verde"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-forecolor="#2563eb" style="background-color: #2563eb; --swatch-bg: #2563eb;" title="Azul"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-forecolor="#9333ea" style="background-color: #9333ea; --swatch-bg: #9333ea;" title="Roxo"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <button type="button" id="deep-hilite-btn" class="deep-tool-btn flex-col gap-0 py-0.5" title="Marca-texto">
+                        <span class="material-symbols-outlined text-[16px] leading-none">format_color_fill</span>
+                        <span id="deep-hilite-indicator" class="w-3.5 h-[2px] rounded-full bg-transparent border border-black/20"></span>
+                    </button>
+                    <div id="deep-hilite-menu" class="deep-tool-dropdown p-2 min-w-0">
+                        <span class="text-[10px] font-semibold text-on-surface-variant px-0.5 pb-1.5">Marca-texto</span>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" class="deep-swatch-btn bg-white text-black/60" data-deep-hilite="transparent" style="background-color: #ffffff; --swatch-bg: #ffffff;" title="Sem destaque">
+                                <span class="material-symbols-outlined text-[13px]">block</span>
+                            </button>
+                            <button type="button" class="deep-swatch-btn" data-deep-hilite="#fef08a" style="background-color: #fef08a; --swatch-bg: #fef08a;" title="Amarelo"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-hilite="#bbf7d0" style="background-color: #bbf7d0; --swatch-bg: #bbf7d0;" title="Verde"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-hilite="#bae6fd" style="background-color: #bae6fd; --swatch-bg: #bae6fd;" title="Azul"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-hilite="#fbcfe8" style="background-color: #fbcfe8; --swatch-bg: #fbcfe8;" title="Rosa"></button>
+                            <button type="button" class="deep-swatch-btn" data-deep-hilite="#e9d5ff" style="background-color: #e9d5ff; --swatch-bg: #e9d5ff;" title="Roxo"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deep-tool-divider"></div>
+
+                <!-- Listas -->
+                <button type="button" class="deep-tool-btn" data-deep-cmd="insertUnorderedList" title="Lista com marcadores">
+                    <span class="material-symbols-outlined text-[17px]">format_list_bulleted</span>
+                </button>
+                <button type="button" class="deep-tool-btn" data-deep-cmd="insertOrderedList" title="Lista numerada">
+                    <span class="material-symbols-outlined text-[17px]">format_list_numbered</span>
+                </button>
+
+                <div class="deep-tool-divider"></div>
+
+                <!-- Alinhamento -->
+                <button type="button" class="deep-tool-btn" data-deep-cmd="justifyLeft" title="Alinhar à esquerda">
+                    <span class="material-symbols-outlined text-[17px]">format_align_left</span>
+                </button>
+                <button type="button" class="deep-tool-btn" data-deep-cmd="justifyCenter" title="Centralizar">
+                    <span class="material-symbols-outlined text-[17px]">format_align_center</span>
+                </button>
+                <button type="button" class="deep-tool-btn" data-deep-cmd="justifyRight" title="Alinhar à direita">
+                    <span class="material-symbols-outlined text-[17px]">format_align_right</span>
+                </button>
+
+                <div class="deep-tool-divider"></div>
+
+                <!-- Limpar Formatação -->
+                <button type="button" class="deep-tool-btn" data-deep-action="clearFormat" title="Limpar formatação">
+                    <span class="material-symbols-outlined text-[17px]">format_clear</span>
+                </button>
             </div>
 
             <!-- Deep Work Note Editor Area -->
@@ -1435,14 +1970,12 @@
 
     <!-- Reset Confirmation Slide-Up Window (Matches Property Inspector & Panel Style) -->
     <div id="db-reset-modal" class="fixed inset-0 z-[115] hidden items-center justify-center p-4 select-none">
-        <div id="db-reset-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-xs opacity-0"></div>
-        <div id="db-reset-card" class="relative z-10 w-80 max-w-[calc(100vw-32px)] bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-3.5 flex flex-col gap-3 text-on-surface">
+        <div id="db-reset-backdrop" class="absolute inset-0 opacity-0"></div>
+        <div id="db-reset-card" class="relative z-10 w-80 max-w-[calc(100vw-32px)] bg-white/95 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-xl p-3.5 flex flex-col gap-3 text-on-surface">
             <div class="flex items-center justify-between gap-1 border-b border-outline-variant/30 pb-1.5">
-                <div class="w-6 h-6 flex items-center justify-center text-outline shrink-0">
-                    <span class="material-symbols-outlined text-[17px]">restart_alt</span>
-                </div>
+                <div class="w-6 h-6 shrink-0"></div>
                 <div class="flex-1 h-6 px-1 flex items-center justify-center">
-                    <span class="text-[11px] font-semibold text-on-surface-variant">Resetar IndexedDB</span>
+                    <span class="text-[11px] font-semibold text-on-surface-variant">Resetar armazenamento</span>
                 </div>
                 <button id="close-db-reset-btn" type="button" class="text-outline hover:text-on-surface h-6 w-6 rounded hover:bg-surface-variant transition-colors flex items-center justify-center shrink-0 cursor-pointer" title="Fechar">
                     <span class="material-symbols-outlined text-[17px]">close</span>
@@ -1461,8 +1994,7 @@
                     <button id="cancel-db-reset-btn" type="button" class="py-1.5 px-3 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs">
                         Não resetar
                     </button>
-                    <button id="confirm-db-reset-btn" type="button" class="py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-neutral-800 text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[14px]">restart_alt</span>
+                    <button id="confirm-db-reset-btn" type="button" class="py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-neutral-800 text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs flex items-center justify-center">
                         <span>Resetar</span>
                     </button>
                 </div>
@@ -1482,12 +2014,10 @@
 
     <!-- Plugin Uninstall Confirmation Slide-Up Window (Matches Reset & Panel Style) -->
     <div id="plugin-uninstall-modal" class="fixed inset-0 z-[115] hidden items-center justify-center p-4 select-none">
-        <div id="plugin-uninstall-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-xs opacity-0"></div>
-        <div id="plugin-uninstall-card" class="relative z-10 w-80 max-w-[calc(100vw-32px)] bg-surface/90 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-2xl p-3.5 flex flex-col gap-3 text-on-surface">
+        <div id="plugin-uninstall-backdrop" class="absolute inset-0 opacity-0"></div>
+        <div id="plugin-uninstall-card" class="relative z-10 w-80 max-w-[calc(100vw-32px)] bg-white/95 backdrop-blur-2xl border border-outline-variant/80 rounded-2xl shadow-xl p-3.5 flex flex-col gap-3 text-on-surface">
             <div class="flex items-center justify-between gap-1 border-b border-outline-variant/30 pb-1.5">
-                <div class="w-6 h-6 flex items-center justify-center text-outline shrink-0">
-                    <span class="material-symbols-outlined text-[17px]">extension_off</span>
-                </div>
+                <div class="w-6 h-6 shrink-0"></div>
                 <div class="flex-1 h-6 px-1 flex items-center justify-center">
                     <span class="text-[11px] font-semibold text-on-surface-variant">Desinstalar Extensão</span>
                 </div>
@@ -1505,12 +2035,11 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/30">
-                    <button id="cancel-plugin-uninstall-btn" type="button" class="py-1.5 px-3 rounded-lg border border-outline-variant text-[11px] font-semibold hover:bg-surface-variant text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs">
-                        Cancelar
+                    <button id="cancel-plugin-uninstall-btn" type="button" class="py-1.5 px-3 rounded-lg border border-outline-variant text-[11px] font-semibold uppercase hover:bg-surface-variant text-on-surface transition-colors cursor-pointer active:scale-95 shadow-2xs">
+                        CANCELAR
                     </button>
-                    <button id="confirm-plugin-uninstall-btn" type="button" class="py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-neutral-800 text-on-primary text-[11px] font-semibold transition-colors cursor-pointer active:scale-95 shadow-xs flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[14px]">delete</span>
-                        <span>Desinstalar</span>
+                    <button id="confirm-plugin-uninstall-btn" type="button" class="py-1.5 px-3 rounded-lg bg-primary border border-primary hover:bg-neutral-800 text-on-primary text-[11px] font-semibold uppercase transition-colors cursor-pointer active:scale-95 shadow-xs flex items-center justify-center">
+                        <span>DESINSTALAR</span>
                     </button>
                 </div>
             </div>
@@ -1602,6 +2131,7 @@
         const dbProjectsCount = document.getElementById('db-projects-count');
         const dbProjectsList = document.getElementById('db-projects-list');
         const dbExportAllBtn = document.getElementById('db-export-all-btn');
+        const dbOpenAllBtn = document.getElementById('db-open-all-btn');
         const dbImportFileInput = document.getElementById('db-import-file-input');
         const dbResetAllBtn = document.getElementById('db-reset-all-btn');
 
@@ -1626,6 +2156,7 @@
         const newProjectNameView = document.getElementById('new-project-name-view');
         const btnChoiceCreateLocal = document.getElementById('btn-choice-create-local');
         const btnChoiceOpenJson = document.getElementById('btn-choice-open-json');
+        const btnChoiceOpenDrive = document.getElementById('btn-choice-open-drive');
         const topbarImportFileInput = document.getElementById('topbar-import-file-input');
         const newProjectNameInput = document.getElementById('new-project-name-input');
         const newProjectConfirmBtn = document.getElementById('new-project-confirm-btn');
@@ -1667,8 +2198,6 @@
         const cozyDragHandle = document.getElementById('cozy-drag-handle');
         const cozyDeleteBtn = document.getElementById('cozy-delete-btn');
         const cozyDuplicateBtn = document.getElementById('cozy-duplicate-btn');
-        const cozyFontSlider = document.getElementById('cozy-font-slider');
-        const cozyFontSizeLabel = document.getElementById('cozy-font-size-label');
         const cozyBtnConcluido = document.getElementById('cozy-btn-concluido');
         const cozyBtnPrazo = document.getElementById('cozy-btn-prazo');
 
@@ -1677,6 +2206,8 @@
         const cozyDeepBackdrop = document.getElementById('cozy-deep-backdrop');
         const cozyDeepCard = document.getElementById('cozy-deep-card');
         const cozyDeepTitle = document.getElementById('cozy-deep-title');
+        const cozyDeepDeadline = document.getElementById('cozy-deep-deadline');
+        const cozyDeepToolbar = document.getElementById('cozy-deep-toolbar');
         const cozyDeepEditor = document.getElementById('cozy-deep-editor');
         const closeDeepNoteBtn = document.getElementById('close-deep-note-btn');
 
@@ -1713,6 +2244,82 @@
             const hours = String(d.getHours()).padStart(2, '0');
             const minutes = String(d.getMinutes()).padStart(2, '0');
             return `${day}/${month}/${year} às ${hours}:${minutes}`;
+        }
+
+        function formatDeadlineRemaining(dateString) {
+            if (!dateString) return null;
+            const d = new Date(dateString);
+            if (isNaN(d.getTime())) return null;
+
+            const diffMs = d.getTime() - Date.now();
+            const isOverdue = diffMs <= 0;
+            const absMs = Math.abs(diffMs);
+            const totalMinutes = Math.floor(absMs / 60000);
+
+            if (isOverdue) {
+                let overdueText = '';
+                if (totalMinutes < 1) {
+                    overdueText = 'Prazo vencido agora';
+                } else {
+                    const days = Math.floor(totalMinutes / 1440);
+                    const hours = Math.floor((totalMinutes % 1440) / 60);
+                    const minutes = totalMinutes % 60;
+                    if (days > 0) {
+                        overdueText = `Atrasado há ${days === 1 ? '1 dia' : `${days} dias`}${hours > 0 ? ` e ${hours}h` : ''}`;
+                    } else if (hours > 0) {
+                        overdueText = `Atrasado há ${hours}h${minutes > 0 ? ` ${minutes}min` : ''}`;
+                    } else {
+                        overdueText = `Atrasado há ${minutes === 1 ? '1 min' : `${minutes} min`}`;
+                    }
+                }
+                return {
+                    isOverdue: true,
+                    label: overdueText,
+                    formatted: formatDeadlineDateTime(dateString)
+                };
+            }
+
+            let remainingText = '';
+            if (totalMinutes < 1) {
+                remainingText = 'Falta menos de 1 min';
+            } else {
+                const days = Math.floor(totalMinutes / 1440);
+                const hours = Math.floor((totalMinutes % 1440) / 60);
+                const minutes = totalMinutes % 60;
+                if (days > 0) {
+                    remainingText = `${days === 1 ? 'Falta 1 dia' : `Faltam ${days} dias`}${hours > 0 ? ` e ${hours}h` : ''}`;
+                } else if (hours > 0) {
+                    remainingText = `${hours === 1 ? 'Falta 1h' : `Faltam ${hours}h`}${minutes > 0 ? ` ${minutes}min` : ''}`;
+                } else {
+                    remainingText = minutes === 1 ? 'Falta 1 min' : `Faltam ${minutes} min`;
+                }
+            }
+
+            return {
+                isOverdue: false,
+                label: remainingText,
+                formatted: formatDeadlineDateTime(dateString)
+            };
+        }
+
+        function updateDeepNoteDeadlineUI(stickyElem) {
+            if (!cozyDeepDeadline) return;
+            const deadline = stickyElem && stickyElem.dataset ? stickyElem.dataset.deadline : '';
+            const info = formatDeadlineRemaining(deadline);
+            if (!info) {
+                cozyDeepDeadline.className = 'hidden';
+                cozyDeepDeadline.innerHTML = '';
+                cozyDeepDeadline.removeAttribute('title');
+                return;
+            }
+            if (info.isOverdue) {
+                cozyDeepDeadline.className = 'inline-flex items-center gap-1 text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 border border-rose-200/80';
+                cozyDeepDeadline.innerHTML = `<span class="material-symbols-outlined text-[14px] text-rose-600">error</span><span>Prazo: ${info.label}</span>`;
+            } else {
+                cozyDeepDeadline.className = 'inline-flex items-center gap-1 text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-black/5 text-slate-800 border border-black/10';
+                cozyDeepDeadline.innerHTML = `<span class="material-symbols-outlined text-[14px] text-sky-700">schedule</span><span>Prazo: ${info.label}</span>`;
+            }
+            cozyDeepDeadline.title = `Prazo limite: ${info.formatted}`;
         }
 
         function updateStickyDeadlineUI(sticky) {
@@ -2209,6 +2816,7 @@
             updateCompletedBadge();
             updateDeadlinesBadge();
             renderDeadlinesPanel();
+            updateQuickAddButtonAttention();
             autoSave();
             playCompletionCelebration(hasAnyDeadline);
         }
@@ -2490,14 +3098,14 @@
                     sticky.dataset.deadline = item.deadline;
                 }
 
-                const fontClass = item.fontFamily === 'sans' ? 'font-ui-body' : 'font-handwriting';
+                const fontClass = getStickyFontClass(item.fontFamily);
 
                 sticky.innerHTML = `
                     <div class="sticky-drag-bar flex items-center justify-between pb-1 border-b border-black/10 cursor-move mb-2">
                         <span class="material-symbols-outlined text-xs text-black/40">drag_handle</span>
                         <span class="sticky-date text-[10px] font-mono font-medium text-black/50 select-none pointer-events-none">${formatNoteDate(stickyCreatedAt)}</span>
                     </div>
-                    <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" contenteditable="true" style="font-size: ${item.fontSize || 14}px;">${item.text}</div>
+                    <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" style="font-size: ${item.fontSize || 14}px;">${item.text}</div>
                     <div class="resize-handle br"></div>
                 `;
 
@@ -2517,6 +3125,7 @@
             renderCompletedPanel();
             updateDeadlinesBadge();
             renderDeadlinesPanel();
+            updateQuickAddButtonAttention();
             autoSave();
             showToast('Nota restaurada no caderno!');
         }
@@ -2843,15 +3452,31 @@
             stageWrapper.style.transform = `translate(${state.stageOffsetX}px, ${state.stageOffsetY}px) scale(${state.zoom})`;
         }
 
+        function updateQuickAddButtonAttention() {
+            if (!quickAddBtn) return;
+            const targetStages = state.expandedStageId
+                ? state.stages.filter(s => s.id === state.expandedStageId)
+                : state.stages;
+            const hasNotes = targetStages.some(s => s.surfaceEl && s.surfaceEl.querySelector('.sticky-item'));
+            quickAddBtn.classList.toggle('quick-add-gentle-shake', !hasNotes);
+        }
+
         function updateStageInfo() {
             document.title = `${state.currentProjectName || 'ANOTADO'} · ANOTADO`;
+            const lastStageId = state.stages.length > 0 ? state.stages[state.stages.length - 1].id : null;
             state.stages.forEach(s => {
                 const delBtn = s.cardEl ? s.cardEl.querySelector('.delete-note-btn') : null;
                 if (delBtn) {
                     const shouldHide = state.stages.length <= 1 && state.expandedStageId !== s.id;
                     delBtn.classList.toggle('hidden', shouldHide);
                 }
+                if (s.addSheetBtnEl) {
+                    const showAddSheet = s.id === lastStageId && state.expandedStageId !== s.id;
+                    s.addSheetBtnEl.classList.toggle('hidden', !showAddSheet);
+                    s.addSheetBtnEl.classList.toggle('flex', showAddSheet);
+                }
             });
+            updateQuickAddButtonAttention();
             if (typeof renderTopbarProjects === 'function') {
                 renderTopbarProjects();
             }
@@ -3213,7 +3838,7 @@
             header.innerHTML = `
                 <div class="flex items-center gap-2 min-w-0">
                     <div class="note-title-wrapper flex items-center gap-1.5 cursor-pointer hover:bg-surface-variant px-2 py-1 rounded transition-colors group shrink-0">
-                        <span class="note-title-text font-semibold text-on-surface">${defaultName}</span>
+                        <span class="note-title-text text-[14px] font-bold text-on-surface">${defaultName}</span>
                         <span class="material-symbols-outlined text-[13px] text-outline opacity-40 group-hover:opacity-100">edit</span>
                     </div>
                     <div class="note-title-edit-box hidden items-center gap-1 shrink-0">
@@ -3225,10 +3850,10 @@
                             <span class="material-symbols-outlined text-[15px]">close</span>
                         </button>
                     </div>
-                    <span class="active-badge hidden text-[9px] uppercase tracking-wider bg-primary text-on-primary px-1.5 py-0.5 rounded-full font-bold shrink-0">Ativa</span>
+                    <span class="active-badge hidden text-[11px] uppercase tracking-wider bg-primary text-on-primary px-1.5 py-0.5 rounded-full font-bold shrink-0">Ativa</span>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                    <span class="note-dim-badge text-[11px] font-mono text-outline">${noteWidth} × ${height}</span>
+                    <span class="note-dim-badge text-[13px] font-bold font-mono text-outline">${noteWidth} × ${height}</span>
                     <button class="delete-note-btn text-outline hover:text-error transition-colors p-0.5 rounded cursor-pointer" title="Excluir folha"><span class="material-symbols-outlined text-sm">close</span></button>
                 </div>
             `;
@@ -3266,11 +3891,24 @@
                 </div>
             `;
 
+            // Add sheet button on the right side near the top of the stage
+            const addSheetBtn = document.createElement('button');
+            addSheetBtn.type = 'button';
+            addSheetBtn.className = 'stage-add-sheet-btn hidden absolute top-[42px] left-[calc(100%+10px)] items-center justify-center py-3 px-2 rounded-xl border border-dashed border-outline-variant/70 hover:border-outline hover:bg-surface-variant/50 active:scale-[0.99] transition-all duration-200 cursor-pointer select-none text-on-surface-variant hover:text-on-surface shadow-xs group z-20';
+            addSheetBtn.title = 'Inserir nova folha';
+            addSheetBtn.innerHTML = `
+                <div class="flex flex-col items-center gap-1.5 transition-transform duration-200 group-hover:translate-x-0.5">
+                    <span class="material-symbols-outlined text-[19px] transition-transform duration-200 group-hover:scale-110">add</span>
+                    <span class="flex flex-col items-center text-[13px] font-bold leading-[1.2] uppercase"><span>N</span><span>O</span><span>V</span><span>A</span><span class="h-1.5" aria-hidden="true"></span><span>F</span><span>O</span><span>L</span><span>H</span><span>A</span></span>
+                </div>
+            `;
+
             surface.appendChild(canvas);
             surface.appendChild(expandBtn);
             card.appendChild(header);
             card.appendChild(surface);
             card.appendChild(expandBar);
+            card.appendChild(addSheetBtn);
             stagesContainer.appendChild(card);
 
             const stageObj = {
@@ -3285,6 +3923,7 @@
                 canvasEl: canvas,
                 expandBtnEl: expandBtn,
                 expandBarEl: expandBar,
+                addSheetBtnEl: addSheetBtn,
                 activeBadge: header.querySelector('.active-badge')
             };
 
@@ -3305,6 +3944,14 @@
                 e.stopPropagation();
                 setActiveStage(id);
                 growStage(stageObj, 300);
+            };
+
+            addSheetBtn.onpointerdown = (e) => {
+                e.stopPropagation();
+            };
+            addSheetBtn.onclick = (e) => {
+                e.stopPropagation();
+                createNote();
             };
             updateStageExpandBar(stageObj);
 
@@ -3549,7 +4196,7 @@
                     <span class="material-symbols-outlined text-xs text-black/40">drag_handle</span>
                     <span class="sticky-date text-[10px] font-mono font-medium text-black/50 select-none pointer-events-none">${formatNoteDate(noteCreatedAt)}</span>
                 </div>
-                <div class="sticky-content font-handwriting text-lg text-slate-800 outline-none flex-1 leading-snug" contenteditable="true" placeholder="Escreva aqui...">${text}</div>
+                <div class="sticky-content font-handwriting text-lg text-slate-800 outline-none flex-1 leading-snug" placeholder="Escreva aqui...">${text}</div>
                 <div class="resize-handle br"></div>
             `;
 
@@ -3582,6 +4229,7 @@
             selectElement(sticky);
             updateDeadlinesBadge();
             renderDeadlinesPanel();
+            updateQuickAddButtonAttention();
             autoSave();
             return sticky;
         }
@@ -3602,7 +4250,32 @@
             }
         }
 
+        function getStickyFontClass(fontFamily) {
+            if (fontFamily === 'sans') return 'font-ui-body';
+            if (fontFamily === 'code') return 'font-code';
+            return 'font-handwriting';
+        }
+
+        function applyDeepEditorFont(fontFamily) {
+            if (!cozyDeepEditor) return;
+            cozyDeepEditor.classList.remove('font-handwriting', 'font-ui-body', 'font-code');
+            cozyDeepEditor.classList.add(getStickyFontClass(fontFamily));
+        }
+
+        function applyDeepEditorFontSize(fontSize) {
+            const numeric = Math.min(28, Math.max(11, Number(fontSize) || 14));
+            if (cozyDeepEditor) {
+                cozyDeepEditor.style.fontSize = `${numeric + 4}px`;
+            }
+            const badge = document.getElementById('deep-font-size-badge');
+            if (badge) {
+                badge.textContent = `${numeric}px`;
+            }
+        }
+
         let deepPreEditSnapshot = null;
+        let deepInitialHtml = '';
+        let deepDeadlineInterval = null;
         function openDeepNoteFocus(stickyElem) {
             if (!stickyElem) return;
             deepPreEditSnapshot = getProjectDataJSON();
@@ -3613,28 +4286,37 @@
             if (cozyDeepTitle) {
                 cozyDeepTitle.textContent = formatNoteDateTime(createdAt);
             }
+            updateDeepNoteDeadlineUI(stickyElem);
+            clearInterval(deepDeadlineInterval);
+            if (stickyElem.dataset.deadline) {
+                deepDeadlineInterval = setInterval(() => {
+                    if (state.deepFocusedSticky) {
+                        updateDeepNoteDeadlineUI(state.deepFocusedSticky);
+                    }
+                }, 15000);
+            }
 
             const color = stickyElem.dataset.color || stickyElem.style.backgroundColor || '#fef9c3';
             const fontFamily = stickyElem.dataset.fontFamily || 'handwriting';
+            const fontSize = stickyElem.dataset.fontSize || '14';
             const contentEl = stickyElem.querySelector('.sticky-content');
             const htmlContent = contentEl ? contentEl.innerHTML : '';
+            deepInitialHtml = htmlContent;
 
             // Apply note color to maximized card
             if (cozyDeepCard) {
                 cozyDeepCard.style.backgroundColor = color;
             }
 
-            // Set typography
+            // Set typography & size
             if (cozyDeepEditor) {
-                if (fontFamily === 'sans') {
-                    cozyDeepEditor.classList.remove('font-handwriting');
-                    cozyDeepEditor.classList.add('font-ui-body');
-                } else {
-                    cozyDeepEditor.classList.remove('font-ui-body');
-                    cozyDeepEditor.classList.add('font-handwriting');
-                }
+                applyDeepEditorFont(fontFamily);
+                applyDeepEditorFontSize(fontSize);
                 cozyDeepEditor.innerHTML = htmlContent;
             }
+
+            closeAllDeepToolbarDropdowns();
+            updateDeepToolbarState();
 
             // Open cozy deep focus modal
             if (cozyDeepModal) {
@@ -3653,26 +4335,30 @@
                         sel.removeAllRanges();
                         sel.addRange(range);
                     } catch (_) {}
+                    updateDeepToolbarState();
                 }
             }, 80);
         }
 
         function closeDeepNoteFocus() {
             if (!state.deepFocusedSticky) return;
+            clearInterval(deepDeadlineInterval);
+            deepDeadlineInterval = null;
+            closeAllDeepToolbarDropdowns();
 
             // Final sync back to target note
             const contentEl = state.deepFocusedSticky.querySelector('.sticky-content');
             if (contentEl && cozyDeepEditor) {
-                const prevHtml = contentEl.innerHTML;
                 const newHtml = cozyDeepEditor.innerHTML;
                 contentEl.innerHTML = newHtml;
-                if (deepPreEditSnapshot && prevHtml !== newHtml) {
+                if (deepPreEditSnapshot && deepInitialHtml !== newHtml) {
                     undoStack.push({ snapshot: deepPreEditSnapshot, description: 'Alteração de texto no modo foco', type: 'edit', timestamp: Date.now() });
                     if (undoStack.length > MAX_UNDO_HISTORY) undoStack.shift();
                     updateUndoUI();
                 }
             }
             deepPreEditSnapshot = null;
+            deepInitialHtml = '';
             updateStickyTruncation(state.deepFocusedSticky);
             autoSave();
 
@@ -3735,11 +4421,6 @@
                 cozyInspector.classList.remove('cozy-closed');
                 cozyInspector.classList.add('cozy-open');
 
-                const refElem = nextPrimary || unique[0];
-                const fontSize = refElem.dataset.fontSize || '14';
-                if (cozyFontSlider) cozyFontSlider.value = fontSize;
-                if (cozyFontSizeLabel) cozyFontSizeLabel.textContent = `${fontSize}px`;
-
                 if (cozyDeleteBtn) {
                     cozyDeleteBtn.title = unique.length > 1 ? `Excluir ${unique.length} itens` : 'Excluir item';
                 }
@@ -3785,27 +4466,6 @@
         function makeDraggable(element) {
             const resizeHandle = element.querySelector('.resize-handle.br');
             const content = element.querySelector('.sticky-content');
-
-            let preEditContent = '';
-            let preEditSnapshot = null;
-            if (content) {
-                content.addEventListener('focus', () => {
-                    content.classList.add('is-editing');
-                    preEditContent = content.innerHTML;
-                    preEditSnapshot = getProjectDataJSON();
-                });
-                content.addEventListener('blur', () => {
-                    content.classList.remove('is-editing');
-                    updateStickyTruncation(element);
-                    if (preEditSnapshot && content.innerHTML !== preEditContent) {
-                        undoStack.push({ snapshot: preEditSnapshot, description: 'Alteração de texto na nota', type: 'edit', timestamp: Date.now() });
-                        if (undoStack.length > MAX_UNDO_HISTORY) undoStack.shift();
-                        updateUndoUI();
-                    }
-                    preEditSnapshot = null;
-                    autoSave();
-                });
-            }
 
             let isDragging = false;
             let startPointerX = 0;
@@ -3859,7 +4519,6 @@
                     initTop: parseFloat(el.style.top) || 0
                 }));
                 isDragging = false;
-                const clickedContent = !!e.target.closest('.sticky-content');
 
                 function onMove(me) {
                     const dist = Math.hypot(me.clientX - startPointerX, me.clientY - startPointerY);
@@ -3902,28 +4561,6 @@
                             }
                             if (wasSingleAlreadySelected) {
                                 handleSelectedNoteClick(element);
-                            }
-                            if (clickedContent && content && !state.deepFocusedSticky && (!cozyDeepModal || cozyDeepModal.classList.contains('hidden'))) {
-                                content.focus();
-                                try {
-                                    const sel = window.getSelection();
-                                    if (document.caretPositionFromPoint) {
-                                        const pos = document.caretPositionFromPoint(ue.clientX, ue.clientY);
-                                        if (pos && content.contains(pos.offsetNode)) {
-                                            const range = document.createRange();
-                                            range.setStart(pos.offsetNode, pos.offset);
-                                            range.collapse(true);
-                                            sel.removeAllRanges();
-                                            sel.addRange(range);
-                                        }
-                                    } else if (document.caretRangeFromPoint) {
-                                        const range = document.caretRangeFromPoint(ue.clientX, ue.clientY);
-                                        if (range && content.contains(range.startContainer)) {
-                                            sel.removeAllRanges();
-                                            sel.addRange(range);
-                                        }
-                                    }
-                                } catch (_) {}
                             }
                         }
                     }
@@ -4084,7 +4721,7 @@
         window.addEventListener('contextmenu', (e) => e.preventDefault());
         window.addEventListener('pointerdown', (e) => {
             if (e.button !== 1 && e.button !== 2) return;
-            if (e.target.closest('#floating-toolbar') || e.target.closest('#plugin-context-menu') || e.target.closest('#cozy-inspector') || e.target.closest('#save-modal') || e.target.closest('#quick-add-note') || e.target.closest('#collapsed-toolbar-btn') || e.target.closest('#db-manage-modal') || e.target.closest('#db-inspect-modal') || e.target.closest('#db-reset-modal') || e.target.closest('#plugin-uninstall-modal') || e.target.closest('#completed-modal') || e.target.closest('#deadlines-modal') || e.target.closest('#undo-modal') || e.target.closest('#plugin-store-modal') || e.target.closest('#plugin-host-container')) return;
+            if (e.target.closest('#floating-toolbar') || e.target.closest('#plugin-context-menu') || e.target.closest('#cozy-inspector') || e.target.closest('#save-modal') || e.target.closest('#gdrive-modal') || e.target.closest('#quick-add-note') || e.target.closest('#collapsed-toolbar-btn') || e.target.closest('#db-manage-modal') || e.target.closest('#db-inspect-modal') || e.target.closest('#db-reset-modal') || e.target.closest('#plugin-uninstall-modal') || e.target.closest('#completed-modal') || e.target.closest('#deadlines-modal') || e.target.closest('#undo-modal') || e.target.closest('#plugin-store-modal') || e.target.closest('#plugin-host-container')) return;
 
             e.preventDefault();
             workspace.classList.add('panning');
@@ -4122,6 +4759,7 @@
             if (target.closest('.note-header')) return false;
             if (target.closest('.stage-expand-btn')) return false;
             if (target.closest('.stage-expand-bar')) return false;
+            if (target.closest('.stage-add-sheet-btn')) return false;
             if (target.closest('#cozy-inspector')) return false;
             if (target.closest('#floating-toolbar')) return false;
             if (target.closest('#collapsed-toolbar-btn')) return false;
@@ -4138,6 +4776,7 @@
             if (target.closest('#plugin-context-menu')) return false;
             if (target.closest('#plugin-host-container')) return false;
             if (target.closest('#save-modal')) return false;
+            if (target.closest('#gdrive-modal')) return false;
             if (target.closest('header')) return false;
             if (target.closest('#topbar-actions-bar')) return false;
             if (target.closest('#new-project-popover')) return false;
@@ -4153,11 +4792,12 @@
         window.addEventListener('pointerdown', (e) => {
             if (e.button !== 0) return;
             if (state.deepFocusedSticky) return;
-            if (!toolbar.contains(e.target)) {
+            if (!toolbar.contains(e.target) && !(pluginContextMenu && pluginContextMenu.contains(e.target))) {
                 hideAllDropdowns();
             }
             if (!isFreeCanvasTarget(e.target)) return;
             if (saveModal && !saveModal.classList.contains('hidden')) return;
+            if (gdriveModal && !gdriveModal.classList.contains('hidden')) return;
             if (dbInspectModal && !dbInspectModal.classList.contains('hidden')) return;
             if (dbResetModal && !dbResetModal.classList.contains('hidden')) return;
             if (pluginUninstallModal && !pluginUninstallModal.classList.contains('hidden')) return;
@@ -5149,6 +5789,7 @@
             }
             updateDeadlinesBadge();
             renderDeadlinesPanel();
+            updateQuickAddButtonAttention();
             autoSave();
         }
 
@@ -5179,6 +5820,7 @@
             selectElement(null);
             updateDeadlinesBadge();
             renderDeadlinesPanel();
+            updateQuickAddButtonAttention();
             autoSave();
         }
 
@@ -5229,13 +5871,13 @@
                     sticky.dataset.deadline = item.deadline;
                 }
 
-                const fontClass = item.fontFamily === 'sans' ? 'font-ui-body' : 'font-handwriting';
+                const fontClass = getStickyFontClass(item.fontFamily);
                 sticky.innerHTML = `
                     <div class="sticky-drag-bar flex items-center justify-between pb-1 border-b border-black/10 cursor-move mb-2">
                         <span class="material-symbols-outlined text-xs text-black/40">drag_handle</span>
                         <span class="sticky-date text-[10px] font-mono font-medium text-black/50 select-none pointer-events-none">${formatNoteDate(noteCreatedAt)}</span>
                     </div>
-                    <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" contenteditable="true" placeholder="Escreva aqui..." style="font-size: ${item.fontSize || 14}px;">${item.text}</div>
+                    <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" placeholder="Escreva aqui..." style="font-size: ${item.fontSize || 14}px;">${item.text}</div>
                     <div class="resize-handle br"></div>
                 `;
 
@@ -5254,6 +5896,7 @@
                 selectElements(created);
                 updateDeadlinesBadge();
                 renderDeadlinesPanel();
+                updateQuickAddButtonAttention();
                 autoSave();
             }
             return created;
@@ -5294,39 +5937,6 @@
                 }
             };
         });
-
-        let preFontSnapshot = null;
-        cozyFontSlider.addEventListener('pointerdown', () => {
-            preFontSnapshot = getProjectDataJSON();
-        });
-        cozyFontSlider.oninput = (e) => {
-            const selected = getSelectedElements();
-            if (selected.length > 0) {
-                const size = e.target.value;
-                cozyFontSizeLabel.textContent = `${size}px`;
-                selected.forEach(el => {
-                    const content = el.querySelector('.sticky-content');
-                    if (content) content.style.fontSize = `${size}px`;
-                    el.dataset.fontSize = size;
-                    updateStickyTruncation(el);
-                });
-                autoSave();
-            }
-        };
-        cozyFontSlider.onchange = () => {
-            if (preFontSnapshot) {
-                const count = getSelectedElements().length;
-                undoStack.push({
-                    snapshot: preFontSnapshot,
-                    description: count > 1 ? `Alteração de fonte em ${count} notas` : 'Alteração no tamanho da fonte',
-                    type: 'edit',
-                    timestamp: Date.now()
-                });
-                if (undoStack.length > MAX_UNDO_HISTORY) undoStack.shift();
-                updateUndoUI();
-                preFontSnapshot = null;
-            }
-        };
 
         if (cozyBtnConcluido) {
             cozyBtnConcluido.onclick = () => {
@@ -5773,18 +6383,275 @@
             }
         });
 
-        // Cozy Deep Note Focus Listeners
-        if (cozyDeepEditor) {
-            cozyDeepEditor.addEventListener('input', () => {
-                if (state.deepFocusedSticky) {
-                    const contentEl = state.deepFocusedSticky.querySelector('.sticky-content');
-                    if (contentEl) {
-                        contentEl.innerHTML = cozyDeepEditor.innerHTML;
+        // Cozy Deep Note Focus Listeners & Text Editing Toolkit
+        let savedDeepSelectionRange = null;
+
+        function saveDeepSelection() {
+            if (!cozyDeepEditor) return null;
+            const sel = window.getSelection();
+            if (!sel || sel.rangeCount === 0) return null;
+            const range = sel.getRangeAt(0);
+            if (!cozyDeepEditor.contains(range.commonAncestorContainer)) return null;
+            savedDeepSelectionRange = range.cloneRange();
+            return savedDeepSelectionRange;
+        }
+
+        function restoreDeepSelection() {
+            if (!cozyDeepEditor) return;
+            cozyDeepEditor.focus();
+            if (savedDeepSelectionRange) {
+                try {
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(savedDeepSelectionRange);
+                } catch (_) {}
+            }
+        }
+
+        function syncDeepEditorToSticky() {
+            if (!state.deepFocusedSticky || !cozyDeepEditor) return;
+            const contentEl = state.deepFocusedSticky.querySelector('.sticky-content');
+            if (contentEl) {
+                contentEl.innerHTML = cozyDeepEditor.innerHTML;
+            }
+            autoSave();
+        }
+
+        function closeAllDeepToolbarDropdowns() {
+            if (!cozyDeepToolbar) return;
+            cozyDeepToolbar.querySelectorAll('.deep-tool-dropdown.show').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        }
+
+        function hasOpenDeepToolbarDropdown() {
+            return Boolean(cozyDeepToolbar && cozyDeepToolbar.querySelector('.deep-tool-dropdown.show'));
+        }
+
+        function positionDeepDropdown(menu) {
+            if (!menu || !cozyDeepCard) return;
+            menu.classList.remove('right-aligned');
+            const cardRect = cozyDeepCard.getBoundingClientRect();
+            const menuRect = menu.getBoundingClientRect();
+            if (menuRect.right > cardRect.right - 8) {
+                menu.classList.add('right-aligned');
+            }
+        }
+
+        function toggleDeepDropdown(menu) {
+            if (!menu) return;
+            const wasOpen = menu.classList.contains('show');
+            saveDeepSelection();
+            closeAllDeepToolbarDropdowns();
+            if (!wasOpen) {
+                menu.classList.add('show');
+                positionDeepDropdown(menu);
+            }
+        }
+
+        function execDeepCommand(cmd, value = null) {
+            if (!cozyDeepEditor) return;
+            cozyDeepEditor.focus();
+            try {
+                if (cmd === 'foreColor' || cmd === 'hiliteColor' || cmd === 'backColor') {
+                    document.execCommand('styleWithCSS', false, true);
+                }
+                document.execCommand(cmd, false, value);
+            } catch (_) {}
+            syncDeepEditorToSticky();
+            updateDeepToolbarState();
+        }
+
+        function updateDeepToolbarState() {
+            if (!cozyDeepToolbar || !cozyDeepEditor || !state.deepFocusedSticky) return;
+
+            const cmdButtons = cozyDeepToolbar.querySelectorAll('[data-deep-cmd]');
+            cmdButtons.forEach(btn => {
+                const cmd = btn.dataset.deepCmd;
+                let isActive = false;
+                try {
+                    isActive = document.queryCommandState(cmd);
+                } catch (_) {}
+                btn.classList.toggle('is-active', Boolean(isActive));
+            });
+
+            // Block format label
+            const blockLabel = document.getElementById('deep-block-label');
+            let currentBlock = 'p';
+            try {
+                const val = (document.queryCommandValue('formatBlock') || '').toLowerCase().replace(/[<>]/g, '');
+                if (['h1', 'h2', 'blockquote', 'pre', 'p'].includes(val)) {
+                    currentBlock = val;
+                }
+            } catch (_) {}
+            const blockNames = {
+                p: 'Texto',
+                h1: 'Título 1',
+                h2: 'Título 2',
+                blockquote: 'Citação',
+                pre: 'Código'
+            };
+            if (blockLabel) {
+                blockLabel.textContent = blockNames[currentBlock] || 'Texto';
+            }
+            cozyDeepToolbar.querySelectorAll('[data-deep-block]').forEach(item => {
+                item.classList.toggle('is-active', item.dataset.deepBlock === currentBlock);
+            });
+
+            // Text color & highlight indicators
+            const colorIndicator = document.getElementById('deep-color-indicator');
+            if (colorIndicator) {
+                try {
+                    const fore = document.queryCommandValue('foreColor');
+                    if (fore) colorIndicator.style.backgroundColor = fore;
+                } catch (_) {}
+            }
+            const hiliteIndicator = document.getElementById('deep-hilite-indicator');
+            if (hiliteIndicator) {
+                try {
+                    const back = document.queryCommandValue('hiliteColor') || document.queryCommandValue('backColor');
+                    if (back && back !== 'transparent' && back !== 'rgba(0, 0, 0, 0)') {
+                        hiliteIndicator.style.backgroundColor = back;
+                    } else {
+                        hiliteIndicator.style.backgroundColor = 'transparent';
                     }
-                    autoSave();
+                } catch (_) {}
+            }
+        }
+
+        if (cozyDeepToolbar) {
+            cozyDeepToolbar.addEventListener('pointerdown', (e) => {
+                e.stopPropagation();
+                if (e.target.closest('button')) {
+                    e.preventDefault();
+                }
+            });
+
+            cozyDeepToolbar.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                const cmdBtn = e.target.closest('[data-deep-cmd]');
+                if (cmdBtn) {
+                    closeAllDeepToolbarDropdowns();
+                    execDeepCommand(cmdBtn.dataset.deepCmd);
+                    return;
+                }
+
+                const actionBtn = e.target.closest('[data-deep-action]');
+                if (actionBtn) {
+                    const action = actionBtn.dataset.deepAction;
+                    closeAllDeepToolbarDropdowns();
+                    if (action === 'undo') {
+                        execDeepCommand('undo');
+                    } else if (action === 'redo') {
+                        execDeepCommand('redo');
+                    } else if (action === 'clearFormat') {
+                        execDeepCommand('removeFormat');
+                        execDeepCommand('formatBlock', 'div');
+                    } else if (action === 'fontDecrease' || action === 'fontIncrease') {
+                        if (state.deepFocusedSticky) {
+                            const curr = Number(state.deepFocusedSticky.dataset.fontSize) || 14;
+                            const next = action === 'fontIncrease' ? Math.min(28, curr + 2) : Math.max(11, curr - 2);
+                            state.deepFocusedSticky.dataset.fontSize = String(next);
+                            const contentEl = state.deepFocusedSticky.querySelector('.sticky-content');
+                            if (contentEl) contentEl.style.fontSize = `${next}px`;
+                            applyDeepEditorFontSize(next);
+                            autoSave();
+                        }
+                    }
+                    return;
+                }
+
+                const blockBtn = e.target.closest('#deep-block-btn');
+                if (blockBtn) {
+                    toggleDeepDropdown(document.getElementById('deep-block-menu'));
+                    return;
+                }
+
+                const blockItem = e.target.closest('[data-deep-block]');
+                if (blockItem) {
+                    const tag = blockItem.dataset.deepBlock;
+                    closeAllDeepToolbarDropdowns();
+                    restoreDeepSelection();
+                    execDeepCommand('formatBlock', tag === 'p' ? 'div' : tag);
+                    return;
+                }
+
+                const colorBtn = e.target.closest('#deep-color-btn');
+                if (colorBtn) {
+                    toggleDeepDropdown(document.getElementById('deep-color-menu'));
+                    return;
+                }
+
+                const foreColorItem = e.target.closest('[data-deep-forecolor]');
+                if (foreColorItem) {
+                    const hex = foreColorItem.dataset.deepForecolor;
+                    closeAllDeepToolbarDropdowns();
+                    restoreDeepSelection();
+                    execDeepCommand('foreColor', hex);
+                    return;
+                }
+
+                const hiliteBtn = e.target.closest('#deep-hilite-btn');
+                if (hiliteBtn) {
+                    toggleDeepDropdown(document.getElementById('deep-hilite-menu'));
+                    return;
+                }
+
+                const hiliteItem = e.target.closest('[data-deep-hilite]');
+                if (hiliteItem) {
+                    const hex = hiliteItem.dataset.deepHilite;
+                    closeAllDeepToolbarDropdowns();
+                    restoreDeepSelection();
+                    execDeepCommand('hiliteColor', hex);
+                    return;
                 }
             });
         }
+
+        if (cozyDeepCard) {
+            cozyDeepCard.addEventListener('pointerdown', (e) => {
+                if (!e.target.closest('#cozy-deep-toolbar')) {
+                    closeAllDeepToolbarDropdowns();
+                }
+            });
+        }
+
+        if (cozyDeepEditor) {
+            cozyDeepEditor.addEventListener('input', () => {
+                syncDeepEditorToSticky();
+                updateDeepToolbarState();
+            });
+            cozyDeepEditor.addEventListener('keyup', updateDeepToolbarState);
+            cozyDeepEditor.addEventListener('mouseup', updateDeepToolbarState);
+            cozyDeepEditor.addEventListener('focus', updateDeepToolbarState);
+            cozyDeepEditor.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+                    const key = e.key.toLowerCase();
+                    if (key === 'b') {
+                        e.preventDefault();
+                        execDeepCommand('bold');
+                        return;
+                    }
+                    if (key === 'i') {
+                        e.preventDefault();
+                        execDeepCommand('italic');
+                        return;
+                    }
+                    if (key === 'u') {
+                        e.preventDefault();
+                        execDeepCommand('underline');
+                        return;
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('selectionchange', () => {
+            if (state.deepFocusedSticky && cozyDeepEditor && document.activeElement === cozyDeepEditor) {
+                updateDeepToolbarState();
+            }
+        });
 
         if (closeDeepNoteBtn) {
             closeDeepNoteBtn.addEventListener('click', (e) => {
@@ -5866,6 +6733,10 @@
                     closePluginContextMenu();
                     return;
                 }
+                if (gdriveModal && !gdriveModal.classList.contains('hidden')) {
+                    closeGdriveModal();
+                    return;
+                }
                 if (pluginUninstallModal && !pluginUninstallModal.classList.contains('hidden')) {
                     closePluginUninstallModal();
                     return;
@@ -5907,6 +6778,10 @@
                     return;
                 }
                 if (state.deepFocusedSticky) {
+                    if (hasOpenDeepToolbarDropdown()) {
+                        closeAllDeepToolbarDropdowns();
+                        return;
+                    }
                     closeDeepNoteFocus();
                     return;
                 }
@@ -6399,14 +7274,14 @@
                                     const stickyCreatedAt = Number(stk.createdAt) || Date.now();
                                     sticky.dataset.createdAt = String(stickyCreatedAt);
 
-                                    const fontClass = stk.fontFamily === 'sans' ? 'font-ui-body' : 'font-handwriting';
+                                    const fontClass = getStickyFontClass(stk.fontFamily);
 
                                     sticky.innerHTML = `
                                         <div class="sticky-drag-bar flex items-center justify-between pb-1 border-b border-black/10 cursor-move mb-2">
                                             <span class="material-symbols-outlined text-xs text-black/40">drag_handle</span>
                                             <span class="sticky-date text-[10px] font-mono font-medium text-black/50 select-none pointer-events-none">${formatNoteDate(stickyCreatedAt)}</span>
                                         </div>
-                                        <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" contenteditable="true" style="font-size: ${stk.fontSize || 14}px;">${stk.text}</div>
+                                        <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" style="font-size: ${stk.fontSize || 14}px;">${stk.text}</div>
                                         <div class="resize-handle br"></div>
                                     `;
 
@@ -6469,14 +7344,14 @@
                                     const stickyCreatedAt = Number(stk.createdAt) || Date.now();
                                     sticky.dataset.createdAt = String(stickyCreatedAt);
 
-                                    const fontClass = stk.fontFamily === 'sans' ? 'font-ui-body' : 'font-handwriting';
+                                    const fontClass = getStickyFontClass(stk.fontFamily);
 
                                     sticky.innerHTML = `
                                         <div class="sticky-drag-bar flex items-center justify-between pb-1 border-b border-black/10 cursor-move mb-2">
                                             <span class="material-symbols-outlined text-xs text-black/40">drag_handle</span>
                                             <span class="sticky-date text-[10px] font-mono font-medium text-black/50 select-none pointer-events-none">${formatNoteDate(stickyCreatedAt)}</span>
                                         </div>
-                                        <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" contenteditable="true" style="font-size: ${stk.fontSize || 14}px;">${stk.text}</div>
+                                        <div class="sticky-content ${fontClass} text-lg text-slate-800 outline-none flex-1 leading-snug" style="font-size: ${stk.fontSize || 14}px;">${stk.text}</div>
                                         <div class="resize-handle br"></div>
                                     `;
 
@@ -6608,7 +7483,7 @@
                 const item = document.createElement('div');
                 item.className = `flex items-center justify-between p-2.5 rounded-xl border transition-all ${
                     isActive
-                        ? 'border-on-surface bg-[#e8edf7] ring-1 ring-on-surface shadow-xs'
+                        ? 'border-on-surface bg-[#d5dff2] ring-1 ring-on-surface shadow-xs'
                         : 'border-outline-variant/70 bg-surface-container-lowest hover:bg-[#f2f5fa] hover:border-outline-variant shadow-2xs'
                 }`;
 
@@ -6939,86 +7814,91 @@
             URL.revokeObjectURL(url);
         }
 
+        async function importProjectsFromParsedData(parsed) {
+            let projectsToImport = [];
+
+            if (Array.isArray(parsed)) {
+                projectsToImport = parsed;
+            } else if (parsed && parsed.projects && Array.isArray(parsed.projects)) {
+                projectsToImport = parsed.projects;
+            } else if (parsed && parsed.stages && Array.isArray(parsed.stages)) {
+                // Single project JSON
+                projectsToImport = [parsed];
+            } else if (parsed && (parsed.title || parsed.name || parsed.content || parsed.html)) {
+                const projName = parsed.name || parsed.title || 'Arquivo Importado';
+                projectsToImport = [{
+                    id: `proj_${Date.now()}`,
+                    name: projName,
+                    noteCounter: 1,
+                    activeStageId: 1,
+                    zoom: 0.6,
+                    stageOffsetX: 0,
+                    stageOffsetY: 0,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now(),
+                    stages: [{
+                        id: 1,
+                        name: projName,
+                        width: (parsed.width && parsed.width !== 800) ? parsed.width : getStageResponsiveWidth(),
+                        height: parsed.height || 1050,
+                        pattern: parsed.pattern || 'paper-lined',
+                        content: parsed.html || parsed.content || parsed.text || '',
+                        drawing: parsed.drawing || null,
+                        stickies: parsed.stickies || []
+                    }]
+                }];
+            }
+
+            if (projectsToImport.length === 0) {
+                return false;
+            }
+
+            const existingProjects = await getAllProjectsFromDB();
+            let firstImportedId = null;
+
+            for (const p of projectsToImport) {
+                if (!p.id) p.id = `proj_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+                let baseName = p.name || p.title || 'Projeto Importado';
+                let targetName = baseName;
+
+                let conflict = existingProjects.some(existing => existing.name.toLowerCase() === targetName.toLowerCase());
+                if (conflict) {
+                    const acceptRename = confirm(`O projeto "${targetName}" já existe no IndexedDB.\n\nDeseja aceitar renomeá-lo automaticamente?`);
+                    if (acceptRename) {
+                        let suffix = 1;
+                        while (existingProjects.some(existing => existing.name.toLowerCase() === `${baseName} (${suffix})`.toLowerCase())) {
+                            suffix++;
+                        }
+                        targetName = `${baseName} (${suffix})`;
+                    } else {
+                        continue; // Skip importing this project if user declined rename
+                    }
+                }
+
+                p.name = targetName;
+                if (!p.createdAt) p.createdAt = getProjectOrderTime(p) || Date.now();
+                p.updatedAt = Date.now();
+                await saveProjectToDB(p);
+                existingProjects.push(p);
+                if (!firstImportedId) firstImportedId = p.id;
+            }
+
+            state.projectsCache = await getAllProjectsFromDB();
+            if (firstImportedId) {
+                await switchProject(firstImportedId);
+            }
+            renderTopbarProjects();
+            renderDbModalProjects();
+            return Boolean(firstImportedId);
+        }
+
         async function importProjectsJSON(file) {
             if (!file) return;
             const reader = new FileReader();
             reader.onload = async (e) => {
                 try {
                     const parsed = JSON.parse(e.target.result);
-                    let projectsToImport = [];
-
-                    if (Array.isArray(parsed)) {
-                        projectsToImport = parsed;
-                    } else if (parsed && parsed.projects && Array.isArray(parsed.projects)) {
-                        projectsToImport = parsed.projects;
-                    } else if (parsed && parsed.stages && Array.isArray(parsed.stages)) {
-                        // Single project JSON
-                        projectsToImport = [parsed];
-                    } else if (parsed && (parsed.title || parsed.name || parsed.content || parsed.html)) {
-                        const projName = parsed.name || parsed.title || 'Arquivo Importado';
-                        projectsToImport = [{
-                            id: `proj_${Date.now()}`,
-                            name: projName,
-                            noteCounter: 1,
-                            activeStageId: 1,
-                            zoom: 0.6,
-                            stageOffsetX: 0,
-                            stageOffsetY: 0,
-                            createdAt: Date.now(),
-                            updatedAt: Date.now(),
-                            stages: [{
-                                id: 1,
-                                name: projName,
-                                width: (parsed.width && parsed.width !== 800) ? parsed.width : getStageResponsiveWidth(),
-                                height: parsed.height || 1050,
-                                pattern: parsed.pattern || 'paper-lined',
-                                content: parsed.html || parsed.content || parsed.text || '',
-                                drawing: parsed.drawing || null,
-                                stickies: parsed.stickies || []
-                            }]
-                        }];
-                    }
-
-                    if (projectsToImport.length === 0) {
-                        return;
-                    }
-
-                    const existingProjects = await getAllProjectsFromDB();
-                    let firstImportedId = null;
-
-                    for (const p of projectsToImport) {
-                        if (!p.id) p.id = `proj_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-                        let baseName = p.name || p.title || 'Projeto Importado';
-                        let targetName = baseName;
-
-                        let conflict = existingProjects.some(existing => existing.name.toLowerCase() === targetName.toLowerCase());
-                        if (conflict) {
-                            const acceptRename = confirm(`O projeto "${targetName}" já existe no IndexedDB.\n\nDeseja aceitar renomeá-lo automaticamente?`);
-                            if (acceptRename) {
-                                let suffix = 1;
-                                while (existingProjects.some(existing => existing.name.toLowerCase() === `${baseName} (${suffix})`.toLowerCase())) {
-                                    suffix++;
-                                }
-                                targetName = `${baseName} (${suffix})`;
-                            } else {
-                                continue; // Skip importing this project if user declined rename
-                            }
-                        }
-
-                        p.name = targetName;
-                        if (!p.createdAt) p.createdAt = getProjectOrderTime(p) || Date.now();
-                        p.updatedAt = Date.now();
-                        await saveProjectToDB(p);
-                        existingProjects.push(p);
-                        if (!firstImportedId) firstImportedId = p.id;
-                    }
-
-                    state.projectsCache = await getAllProjectsFromDB();
-                    if (firstImportedId) {
-                        await switchProject(firstImportedId);
-                    }
-                    renderTopbarProjects();
-                    renderDbModalProjects();
+                    await importProjectsFromParsedData(parsed);
                 } catch (err) {
                     console.error('Erro ao importar arquivo JSON:', err);
                 }
@@ -7238,6 +8118,14 @@
             };
         }
 
+        if (btnChoiceOpenDrive) {
+            btnChoiceOpenDrive.onclick = (e) => {
+                e.stopPropagation();
+                toggleNewProjectPopover(false);
+                openGdriveModal('open', { skipChoice: true });
+            };
+        }
+
         if (topbarImportFileInput) {
             topbarImportFileInput.onchange = (e) => {
                 if (e.target.files && e.target.files[0]) {
@@ -7383,7 +8271,533 @@
             closeDbInspectBtn.onclick = () => closeDbInspectModal();
         }
 
-        dbExportAllBtn.onclick = () => exportAllProjectsJSON();
+        // ==========================================
+        // Local / Google Drive Modal Flow
+        // ==========================================
+        const gdriveModal = document.getElementById('gdrive-modal');
+        const gdriveModalBackdrop = document.getElementById('gdrive-modal-backdrop');
+        const gdriveModalTitle = document.getElementById('gdrive-modal-title');
+        const gdriveBackBtn = document.getElementById('gdrive-back-btn');
+        const closeGdriveModalBtn = document.getElementById('close-gdrive-modal-btn');
+        const gdriveChoiceView = document.getElementById('gdrive-choice-view');
+        const gdriveChoiceLocalBtn = document.getElementById('gdrive-choice-local-btn');
+        const gdriveChoiceLocalIcon = document.getElementById('gdrive-choice-local-icon');
+        const gdriveChoiceLocalTitle = document.getElementById('gdrive-choice-local-title');
+        const gdriveChoiceLocalDesc = document.getElementById('gdrive-choice-local-desc');
+        const gdriveChoiceDriveBtn = document.getElementById('gdrive-choice-drive-btn');
+        const gdriveChoiceDriveIcon = document.getElementById('gdrive-choice-drive-icon');
+        const gdriveChoiceDriveDesc = document.getElementById('gdrive-choice-drive-desc');
+        const gdriveAuthView = document.getElementById('gdrive-auth-view');
+        const gdriveAuthSubtitle = document.getElementById('gdrive-auth-subtitle');
+        const gdriveSigninBtn = document.getElementById('gdrive-signin-btn');
+        const gdriveAuthError = document.getElementById('gdrive-auth-error');
+        const gdriveMainView = document.getElementById('gdrive-main-view');
+        const gdriveUserName = document.getElementById('gdrive-user-name');
+        const gdriveUserEmail = document.getElementById('gdrive-user-email');
+        const gdriveRefreshBtn = document.getElementById('gdrive-refresh-btn');
+        const gdriveLogoutBtn = document.getElementById('gdrive-logout-btn');
+        const gdriveSaveSection = document.getElementById('gdrive-save-section');
+        const gdriveScopeCurrentBtn = document.getElementById('gdrive-scope-current-btn');
+        const gdriveScopeAllBtn = document.getElementById('gdrive-scope-all-btn');
+        const gdriveFilenameInput = document.getElementById('gdrive-filename-input');
+        const gdriveSaveNewBtn = document.getElementById('gdrive-save-new-btn');
+        const gdriveFilesStatus = document.getElementById('gdrive-files-status');
+        const gdriveFilesList = document.getElementById('gdrive-files-list');
+        const gdriveOverwriteConfirmView = document.getElementById('gdrive-overwrite-confirm-view');
+        const gdriveOverwriteMessage = document.getElementById('gdrive-overwrite-message');
+        const gdriveOverwriteCancelBtn = document.getElementById('gdrive-overwrite-cancel-btn');
+        const gdriveOverwriteConfirmBtn = document.getElementById('gdrive-overwrite-confirm-btn');
+
+        const gdriveState = {
+            mode: 'open', // 'open' | 'save'
+            skipChoice: false,
+            saveScope: 'current', // 'current' | 'all'
+            needsAuth: true,
+            isLoading: false,
+            files: [],
+            pendingOverwrite: null
+        };
+
+        function getDriveBridge() {
+            return window.AnotadoGoogleDrive || null;
+        }
+
+        function setGdriveView(viewName, showBack = false) {
+            [gdriveChoiceView, gdriveAuthView, gdriveMainView, gdriveOverwriteConfirmView].forEach(v => {
+                if (!v) return;
+                v.classList.add('hidden');
+                v.classList.remove('flex');
+            });
+            const target = viewName === 'choice'
+                ? gdriveChoiceView
+                : viewName === 'auth'
+                    ? gdriveAuthView
+                    : viewName === 'confirm'
+                        ? gdriveOverwriteConfirmView
+                        : gdriveMainView;
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('flex');
+            }
+            if (gdriveBackBtn) {
+                gdriveBackBtn.classList.toggle('hidden', !showBack);
+                gdriveBackBtn.classList.toggle('flex', showBack);
+            }
+        }
+
+        function updateGdriveScopeButtons() {
+            const isCurrent = gdriveState.saveScope === 'current';
+            if (gdriveScopeCurrentBtn) {
+                gdriveScopeCurrentBtn.className = isCurrent
+                    ? 'flex-1 py-1.5 px-2.5 rounded-lg border border-primary bg-primary text-on-primary text-[11px] font-semibold transition-colors cursor-pointer'
+                    : 'flex-1 py-1.5 px-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-variant text-[11px] font-semibold transition-colors cursor-pointer';
+            }
+            if (gdriveScopeAllBtn) {
+                gdriveScopeAllBtn.className = !isCurrent
+                    ? 'flex-1 py-1.5 px-2.5 rounded-lg border border-primary bg-primary text-on-primary text-[11px] font-semibold transition-colors cursor-pointer'
+                    : 'flex-1 py-1.5 px-2.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-variant text-[11px] font-semibold transition-colors cursor-pointer';
+            }
+            if (gdriveFilenameInput) {
+                if (isCurrent) {
+                    const safeName = (state.currentProjectName || 'Projeto').replace(/[\\/:*?"<>|]/g, '_');
+                    gdriveFilenameInput.value = `${safeName}.json`;
+                } else {
+                    gdriveFilenameInput.value = `anotado_backup_projetos_${new Date().toISOString().slice(0, 10)}.json`;
+                }
+            }
+        }
+
+        async function buildDriveExportPayload() {
+            if (gdriveState.saveScope === 'current') {
+                const currentData = getProjectDataJSON();
+                return JSON.stringify(currentData, null, 2);
+            }
+            const allProjects = await getAllProjectsFromDB();
+            return JSON.stringify({
+                app: 'ANOTADO',
+                exportedAt: new Date().toISOString(),
+                projects: allProjects
+            }, null, 2);
+        }
+
+        function formatDriveFileDate(isoStr) {
+            if (!isoStr) return '';
+            const d = new Date(isoStr);
+            if (isNaN(d.getTime())) return '';
+            const pad = n => String(n).padStart(2, '0');
+            return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        }
+
+        function formatDriveFileSize(bytesStr) {
+            const bytes = Number(bytesStr);
+            if (!bytes || isNaN(bytes)) return '';
+            if (bytes < 1024) return `${bytes} B`;
+            if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+            return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+        }
+
+        function requestDriveOverwriteConfirmation(file) {
+            gdriveState.pendingOverwrite = file;
+            if (gdriveOverwriteMessage) {
+                gdriveOverwriteMessage.textContent = `O arquivo "${file.name}" já existe no seu Google Drive. Deseja sobrescrever o conteúdo dele com os dados atuais?`;
+            }
+            setGdriveView('confirm', true);
+        }
+
+        function renderDriveFilesList() {
+            if (!gdriveFilesList || !gdriveFilesStatus) return;
+            gdriveFilesList.innerHTML = '';
+
+            if (gdriveState.isLoading) {
+                gdriveFilesStatus.textContent = 'Carregando arquivos do Google Drive...';
+                gdriveFilesStatus.classList.remove('hidden');
+                return;
+            }
+
+            if (!gdriveState.files || gdriveState.files.length === 0) {
+                gdriveFilesStatus.textContent = gdriveState.mode === 'save'
+                    ? 'Nenhum arquivo salvo pelo ANOTADO no Drive ainda.'
+                    : 'Nenhum arquivo do ANOTADO encontrado no seu Google Drive.';
+                gdriveFilesStatus.classList.remove('hidden');
+                return;
+            }
+
+            gdriveFilesStatus.classList.add('hidden');
+            gdriveState.files.forEach(file => {
+                const row = document.createElement('button');
+                row.type = 'button';
+                row.className = 'flex items-center justify-between gap-2 p-2.5 rounded-xl border border-outline-variant/70 bg-surface-container-lowest hover:bg-surface-container-low transition-colors text-left cursor-pointer w-full';
+
+                const metaParts = [formatDriveFileDate(file.modifiedTime), formatDriveFileSize(file.size)].filter(Boolean).join(' · ');
+                const actionLabel = gdriveState.mode === 'save' ? 'Atualizar' : 'Abrir';
+
+                row.innerHTML = `
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                        <span class="material-symbols-outlined text-[18px] text-on-surface-variant shrink-0">description</span>
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-xs font-semibold text-on-surface truncate">${file.name}</span>
+                            <span class="text-[10px] text-on-surface-variant truncate">${metaParts || 'Arquivo JSON'}</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-semibold uppercase px-2 py-1 rounded-md border border-outline-variant/70 text-on-surface shrink-0">${actionLabel}</span>
+                `;
+
+                row.onclick = async () => {
+                    if (gdriveState.isLoading) return;
+                    if (gdriveState.mode === 'save') {
+                        requestDriveOverwriteConfirmation(file);
+                    } else {
+                        await handleOpenDriveFile(file);
+                    }
+                };
+                gdriveFilesList.appendChild(row);
+            });
+        }
+
+        async function loadDriveView() {
+            const bridge = getDriveBridge();
+            if (!bridge) {
+                if (gdriveAuthError) {
+                    gdriveAuthError.textContent = 'Integração com Google Drive ainda carregando. Tente novamente.';
+                    gdriveAuthError.classList.remove('hidden');
+                }
+                setGdriveView('auth', !gdriveState.skipChoice);
+                return;
+            }
+
+            const token = await bridge.getAccessToken();
+            const user = bridge.getCurrentUser();
+            if (!token || !user) {
+                gdriveState.needsAuth = true;
+                if (gdriveAuthError) gdriveAuthError.classList.add('hidden');
+                setGdriveView('auth', !gdriveState.skipChoice);
+                return;
+            }
+
+            gdriveState.needsAuth = false;
+            if (gdriveUserName) gdriveUserName.textContent = user.displayName || 'Conta Google';
+            if (gdriveUserEmail) gdriveUserEmail.textContent = user.email || '';
+
+            if (gdriveSaveSection) {
+                const isSave = gdriveState.mode === 'save';
+                gdriveSaveSection.classList.toggle('hidden', !isSave);
+                gdriveSaveSection.classList.toggle('flex', isSave);
+                if (isSave) updateGdriveScopeButtons();
+            }
+
+            setGdriveView('main', !gdriveState.skipChoice);
+            await refreshDriveFilesList();
+        }
+
+        async function refreshDriveFilesList() {
+            const bridge = getDriveBridge();
+            if (!bridge) return;
+            gdriveState.isLoading = true;
+            renderDriveFilesList();
+
+            try {
+                gdriveState.files = await bridge.listDriveFiles();
+            } catch (err) {
+                if (err && err.name === 'AuthExpiredError') {
+                    gdriveState.needsAuth = true;
+                    if (gdriveAuthError) {
+                        gdriveAuthError.textContent = err.message;
+                        gdriveAuthError.classList.remove('hidden');
+                    }
+                    setGdriveView('auth', !gdriveState.skipChoice);
+                    return;
+                }
+                console.error('Erro ao listar arquivos do Google Drive:', err);
+                showToast('Erro ao carregar arquivos do Google Drive.', true);
+                gdriveState.files = [];
+            } finally {
+                gdriveState.isLoading = false;
+                renderDriveFilesList();
+            }
+        }
+
+        async function handleOpenDriveFile(file) {
+            const bridge = getDriveBridge();
+            if (!bridge || !file) return;
+            gdriveState.isLoading = true;
+            renderDriveFilesList();
+
+            try {
+                const parsed = await bridge.downloadDriveFile(file.id);
+                const imported = await importProjectsFromParsedData(parsed);
+                if (imported) {
+                    closeGdriveModal();
+                    if (dbManageModal) {
+                        dbManageModal.classList.add('hidden');
+                        dbManageModal.classList.remove('flex');
+                    }
+                    showToast(`Arquivo "${file.name}" carregado do Google Drive!`);
+                } else {
+                    showToast('O arquivo selecionado não contém projetos válidos.', true);
+                }
+            } catch (err) {
+                if (err && err.name === 'AuthExpiredError') {
+                    gdriveState.needsAuth = true;
+                    if (gdriveAuthError) {
+                        gdriveAuthError.textContent = err.message;
+                        gdriveAuthError.classList.remove('hidden');
+                    }
+                    setGdriveView('auth', !gdriveState.skipChoice);
+                    return;
+                }
+                console.error('Erro ao abrir arquivo do Google Drive:', err);
+                showToast('Erro ao abrir arquivo do Google Drive.', true);
+            } finally {
+                gdriveState.isLoading = false;
+                renderDriveFilesList();
+            }
+        }
+
+        async function handleSaveNewDriveFile() {
+            const bridge = getDriveBridge();
+            if (!bridge || gdriveState.isLoading) return;
+            const rawName = (gdriveFilenameInput ? gdriveFilenameInput.value : '').trim();
+            if (!rawName) {
+                showToast('Informe um nome para o arquivo.', true);
+                return;
+            }
+            const normalizedName = rawName.toLowerCase().endsWith('.json') ? rawName : `${rawName}.json`;
+            const existingMatch = gdriveState.files.find(
+                f => f.name && f.name.toLowerCase() === normalizedName.toLowerCase()
+            );
+            if (existingMatch) {
+                requestDriveOverwriteConfirmation(existingMatch);
+                return;
+            }
+
+            gdriveState.isLoading = true;
+            if (gdriveSaveNewBtn) gdriveSaveNewBtn.disabled = true;
+            renderDriveFilesList();
+
+            try {
+                const payload = await buildDriveExportPayload();
+                const created = await bridge.createDriveFile(normalizedName, payload);
+                closeGdriveModal();
+                showToast(`Salvo no Google Drive: ${created.name}`);
+            } catch (err) {
+                if (err && err.name === 'AuthExpiredError') {
+                    gdriveState.needsAuth = true;
+                    if (gdriveAuthError) {
+                        gdriveAuthError.textContent = err.message;
+                        gdriveAuthError.classList.remove('hidden');
+                    }
+                    setGdriveView('auth', !gdriveState.skipChoice);
+                    return;
+                }
+                console.error('Erro ao salvar no Google Drive:', err);
+                showToast('Erro ao salvar arquivo no Google Drive.', true);
+            } finally {
+                gdriveState.isLoading = false;
+                if (gdriveSaveNewBtn) gdriveSaveNewBtn.disabled = false;
+                renderDriveFilesList();
+            }
+        }
+
+        async function executeConfirmedOverwrite() {
+            const bridge = getDriveBridge();
+            const targetFile = gdriveState.pendingOverwrite;
+            if (!bridge || !targetFile) return;
+
+            if (gdriveOverwriteConfirmBtn) gdriveOverwriteConfirmBtn.disabled = true;
+            if (gdriveOverwriteCancelBtn) gdriveOverwriteCancelBtn.disabled = true;
+
+            try {
+                const payload = await buildDriveExportPayload();
+                const updated = await bridge.updateDriveFile(targetFile.id, targetFile.name, payload);
+                gdriveState.pendingOverwrite = null;
+                closeGdriveModal();
+                showToast(`Arquivo "${updated.name}" atualizado no Google Drive!`);
+            } catch (err) {
+                if (err && err.name === 'AuthExpiredError') {
+                    gdriveState.pendingOverwrite = null;
+                    gdriveState.needsAuth = true;
+                    if (gdriveAuthError) {
+                        gdriveAuthError.textContent = err.message;
+                        gdriveAuthError.classList.remove('hidden');
+                    }
+                    setGdriveView('auth', !gdriveState.skipChoice);
+                    return;
+                }
+                console.error('Erro ao atualizar arquivo no Google Drive:', err);
+                showToast('Erro ao atualizar arquivo no Google Drive.', true);
+            } finally {
+                if (gdriveOverwriteConfirmBtn) gdriveOverwriteConfirmBtn.disabled = false;
+                if (gdriveOverwriteCancelBtn) gdriveOverwriteCancelBtn.disabled = false;
+            }
+        }
+
+        let gdriveCloseTimer = null;
+
+        function openGdriveModal(mode, options = {}) {
+            if (!gdriveModal) return;
+            if (gdriveCloseTimer) {
+                clearTimeout(gdriveCloseTimer);
+                gdriveCloseTimer = null;
+            }
+            gdriveState.mode = mode === 'save' ? 'save' : 'open';
+            gdriveState.skipChoice = Boolean(options.skipChoice);
+            gdriveState.pendingOverwrite = null;
+
+            const isSave = gdriveState.mode === 'save';
+            if (gdriveModalTitle) {
+                gdriveModalTitle.textContent = isSave ? 'Salvar Projeto' : 'Abrir Projeto';
+            }
+            if (gdriveChoiceLocalIcon) gdriveChoiceLocalIcon.textContent = isSave ? 'download' : 'upload_file';
+            if (gdriveChoiceLocalTitle) gdriveChoiceLocalTitle.textContent = isSave ? 'Salvar no dispositivo (JSON)' : 'Abrir do dispositivo (JSON)';
+            if (gdriveChoiceLocalDesc) gdriveChoiceLocalDesc.textContent = isSave ? 'Baixar backup dos projetos em JSON' : 'Selecionar um arquivo JSON local';
+            if (gdriveChoiceDriveIcon) gdriveChoiceDriveIcon.textContent = isSave ? 'cloud_upload' : 'cloud_download';
+            if (gdriveChoiceDriveDesc) gdriveChoiceDriveDesc.textContent = isSave ? 'Salvar arquivo diretamente na sua conta Google Drive' : 'Carregar projeto salvo no seu Google Drive';
+
+            if (gdriveState.skipChoice) {
+                loadDriveView();
+            } else {
+                setGdriveView('choice', false);
+            }
+
+            gdriveModal.classList.remove('hidden', 'gdrive-open', 'gdrive-closing');
+            gdriveModal.classList.add('flex');
+            void gdriveModal.offsetHeight;
+            requestAnimationFrame(() => {
+                gdriveModal.classList.add('gdrive-open');
+            });
+        }
+
+        function closeGdriveModal() {
+            if (!gdriveModal || gdriveModal.classList.contains('hidden')) return;
+            if (gdriveCloseTimer) {
+                clearTimeout(gdriveCloseTimer);
+                gdriveCloseTimer = null;
+            }
+            gdriveState.pendingOverwrite = null;
+            gdriveModal.classList.remove('gdrive-open');
+            gdriveModal.classList.add('gdrive-closing');
+            gdriveCloseTimer = setTimeout(() => {
+                gdriveModal.classList.add('hidden');
+                gdriveModal.classList.remove('flex', 'gdrive-closing');
+                gdriveCloseTimer = null;
+            }, 310);
+        }
+
+        if (closeGdriveModalBtn) {
+            closeGdriveModalBtn.onclick = () => closeGdriveModal();
+        }
+        if (gdriveModalBackdrop) {
+            gdriveModalBackdrop.onclick = () => closeGdriveModal();
+        }
+        if (gdriveBackBtn) {
+            gdriveBackBtn.onclick = () => {
+                if (gdriveOverwriteConfirmView && !gdriveOverwriteConfirmView.classList.contains('hidden')) {
+                    gdriveState.pendingOverwrite = null;
+                    setGdriveView('main', !gdriveState.skipChoice);
+                    return;
+                }
+                setGdriveView('choice', false);
+            };
+        }
+        if (gdriveChoiceLocalBtn) {
+            gdriveChoiceLocalBtn.onclick = () => {
+                const mode = gdriveState.mode;
+                closeGdriveModal();
+                if (mode === 'save') {
+                    exportAllProjectsJSON();
+                } else if (dbImportFileInput) {
+                    dbImportFileInput.click();
+                }
+            };
+        }
+        if (gdriveChoiceDriveBtn) {
+            gdriveChoiceDriveBtn.onclick = () => loadDriveView();
+        }
+        if (gdriveSigninBtn) {
+            gdriveSigninBtn.onclick = async () => {
+                const bridge = getDriveBridge();
+                if (!bridge) return;
+                if (gdriveAuthError) gdriveAuthError.classList.add('hidden');
+                gdriveSigninBtn.disabled = true;
+                try {
+                    await bridge.googleSignIn();
+                    await loadDriveView();
+                } catch (err) {
+                    console.error('Falha ao entrar com Google:', err);
+                    if (gdriveAuthError) {
+                        gdriveAuthError.textContent = 'Não foi possível concluir o login com Google. Tente novamente.';
+                        gdriveAuthError.classList.remove('hidden');
+                    }
+                } finally {
+                    gdriveSigninBtn.disabled = false;
+                }
+            };
+        }
+        if (gdriveRefreshBtn) {
+            gdriveRefreshBtn.onclick = () => refreshDriveFilesList();
+        }
+        if (gdriveLogoutBtn) {
+            gdriveLogoutBtn.onclick = async () => {
+                const bridge = getDriveBridge();
+                if (!bridge) return;
+                await bridge.logout();
+                gdriveState.needsAuth = true;
+                gdriveState.files = [];
+                setGdriveView('auth', !gdriveState.skipChoice);
+            };
+        }
+        if (gdriveScopeCurrentBtn) {
+            gdriveScopeCurrentBtn.onclick = () => {
+                gdriveState.saveScope = 'current';
+                updateGdriveScopeButtons();
+            };
+        }
+        if (gdriveScopeAllBtn) {
+            gdriveScopeAllBtn.onclick = () => {
+                gdriveState.saveScope = 'all';
+                updateGdriveScopeButtons();
+            };
+        }
+        if (gdriveSaveNewBtn) {
+            gdriveSaveNewBtn.onclick = () => handleSaveNewDriveFile();
+        }
+        if (gdriveFilenameInput) {
+            gdriveFilenameInput.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSaveNewDriveFile();
+                }
+            };
+        }
+        if (gdriveOverwriteCancelBtn) {
+            gdriveOverwriteCancelBtn.onclick = () => {
+                gdriveState.pendingOverwrite = null;
+                setGdriveView('main', !gdriveState.skipChoice);
+            };
+        }
+        if (gdriveOverwriteConfirmBtn) {
+            gdriveOverwriteConfirmBtn.onclick = () => executeConfirmedOverwrite();
+        }
+
+        let driveAuthInitialized = false;
+        function ensureDriveAuthInit() {
+            if (driveAuthInitialized) return;
+            const bridge = getDriveBridge();
+            if (bridge && typeof bridge.initAuth === 'function') {
+                driveAuthInitialized = true;
+                bridge.initAuth(
+                    () => { gdriveState.needsAuth = false; },
+                    () => { gdriveState.needsAuth = true; }
+                );
+            }
+        }
+        window.addEventListener('DOMContentLoaded', ensureDriveAuthInit);
+        window.addEventListener('anotado-drive-ready', ensureDriveAuthInit);
+
+        dbExportAllBtn.onclick = () => openGdriveModal('save');
+        if (dbOpenAllBtn) {
+            dbOpenAllBtn.onclick = () => openGdriveModal('open');
+        }
         dbImportFileInput.onchange = (e) => {
             if (e.target.files && e.target.files[0]) {
                 importProjectsJSON(e.target.files[0]);
@@ -7490,6 +8904,7 @@
                 renderTopbarProjects();
                 updateDeadlinesBadge();
                 updateUndoUI();
+                updateQuickAddButtonAttention();
                 requestAnimationFrame(() => {
                     document.querySelectorAll('.sticky-item').forEach(updateStickyTruncation);
                 });
@@ -7498,6 +8913,7 @@
                 createNote(null, 1050, 'Anotação 1', 'paper-lined', '');
             }
             updateStageTransform();
+            updateQuickAddButtonAttention();
             await loadAndExecuteInstalledPlugins();
         }
 
@@ -7761,7 +9177,7 @@
             await saveInstalledPluginToDB(record);
 
             if (record.enabled) {
-                executePluginRecord(record, true);
+                executePluginRecord(record, false);
                 showToast(`Extensão "${displayName}" ativada!`);
             } else {
                 unmountPluginInstance(id);
@@ -7831,7 +9247,7 @@
 
             if (validPlugins.length > 0) {
                 const divider = document.createElement('div');
-                divider.className = 'w-px h-5 bg-outline-variant/80 rounded-full shrink-0 mx-0.5';
+                divider.className = 'toolbar-plugins-divider';
                 divider.dataset.toolbarPluginsDivider = 'true';
                 divider.setAttribute('aria-hidden', 'true');
                 toolbarContent.appendChild(divider);
@@ -8066,7 +9482,7 @@
             const installed = await getAllInstalledPluginsFromDB();
             for (const pluginRecord of installed) {
                 if (pluginRecord && pluginRecord.enabled !== false) {
-                    executePluginRecord(pluginRecord, true);
+                    executePluginRecord(pluginRecord, false);
                 }
             }
             renderToolbarPluginIcons(installed);
@@ -8567,6 +9983,238 @@
         }
 
         initApp();
+    </script>
+    <script type="module">
+        import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js';
+        import {
+            getAuth,
+            signInWithPopup,
+            GoogleAuthProvider,
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js';
+
+        const firebaseConfig = {
+            projectId: 'wffukuta',
+            appId: '1:99997454992:web:66e32abcf247825df13e15',
+            apiKey: 'AIzaSyDK4Vnd2cI8za3Ji9ze8m2PZWDlFbgS19c',
+            authDomain: 'wffukuta.firebaseapp.com',
+            storageBucket: 'wffukuta.firebasestorage.app',
+            messagingSenderId: '99997454992',
+            measurementId: '',
+            oAuthClientId: '99997454992-bh26llrtfkrd0bhkn31b158vukeeirhj.apps.googleusercontent.com',
+            recaptchaSiteKey: ''
+        };
+
+        const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+
+        const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const provider = new GoogleAuthProvider();
+        SCOPES.forEach((scope) => provider.addScope(scope));
+        provider.setCustomParameters({ prompt: 'select_account' });
+
+        let isSigningIn = false;
+        let cachedAccessToken = null;
+        let currentUser = null;
+
+        class AuthExpiredError extends Error {
+            constructor(message = 'Sessão do Google expirada. Faça login novamente.') {
+                super(message);
+                this.name = 'AuthExpiredError';
+            }
+        }
+
+        const initAuth = (onAuthSuccess, onAuthFailure) => {
+            return onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                if (user) {
+                    if (cachedAccessToken) {
+                        if (onAuthSuccess) onAuthSuccess(user, cachedAccessToken);
+                    } else if (!isSigningIn) {
+                        cachedAccessToken = null;
+                        if (onAuthFailure) onAuthFailure();
+                    }
+                } else {
+                    cachedAccessToken = null;
+                    if (onAuthFailure) onAuthFailure();
+                }
+            });
+        };
+
+        const googleSignIn = async () => {
+            try {
+                isSigningIn = true;
+                const result = await signInWithPopup(auth, provider);
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                if (!credential?.accessToken) {
+                    throw new Error('Não foi possível obter o token de acesso do Google.');
+                }
+
+                cachedAccessToken = credential.accessToken;
+                currentUser = result.user;
+                return { user: result.user, accessToken: cachedAccessToken };
+            } finally {
+                isSigningIn = false;
+            }
+        };
+
+        const getAccessToken = async () => cachedAccessToken;
+
+        const getCurrentUser = () => currentUser;
+
+        const clearAccessToken = () => {
+            cachedAccessToken = null;
+        };
+
+        const logout = async () => {
+            cachedAccessToken = null;
+            currentUser = null;
+            await signOut(auth);
+        };
+
+        async function requireToken() {
+            if (!cachedAccessToken) {
+                throw new AuthExpiredError('Faça login com sua conta Google para acessar o Google Drive.');
+            }
+            return cachedAccessToken;
+        }
+
+        async function handleDriveResponse(res) {
+            if (res.status === 401) {
+                cachedAccessToken = null;
+                throw new AuthExpiredError('Sua sessão do Google expirou. Entre novamente para continuar.');
+            }
+            if (!res.ok) {
+                let details = '';
+                try {
+                    const errJson = await res.json();
+                    details = errJson?.error?.message || '';
+                } catch {
+                    details = res.statusText;
+                }
+                throw new Error(details || `Erro na API do Google Drive (${res.status})`);
+            }
+            return res;
+        }
+
+        const listDriveFiles = async () => {
+            const token = await requireToken();
+            const query = encodeURIComponent(
+                "trashed = false and (mimeType = 'application/json' or name contains '.json')"
+            );
+            const url = `https://www.googleapis.com/drive/v3/files?q=${query}&fields=files(id,name,modifiedTime,size)&orderBy=modifiedTime%20desc&pageSize=50`;
+
+            const res = await handleDriveResponse(
+                await fetch(url, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+            );
+            const data = await res.json();
+            return Array.isArray(data.files) ? data.files : [];
+        };
+
+        const downloadDriveFile = async (fileId) => {
+            const token = await requireToken();
+            const url = `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?alt=media`;
+
+            const res = await handleDriveResponse(
+                await fetch(url, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+            );
+            const text = await res.text();
+            return JSON.parse(text);
+        };
+
+        function buildMultipartBody(metadata, content) {
+            const boundary = `anotado_drive_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+            const body =
+                `--${boundary}\r\n` +
+                'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+                `${JSON.stringify(metadata)}\r\n` +
+                `--${boundary}\r\n` +
+                'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+                `${content}\r\n` +
+                `--${boundary}--`;
+
+            return { boundary, body };
+        }
+
+        const createDriveFile = async (fileName, jsonContent) => {
+            const token = await requireToken();
+            const normalizedName = fileName.toLowerCase().endsWith('.json')
+                ? fileName
+                : `${fileName}.json`;
+
+            const metadata = {
+                name: normalizedName,
+                mimeType: 'application/json',
+                appProperties: { app: 'ANOTADO' }
+            };
+            const { boundary, body } = buildMultipartBody(metadata, jsonContent);
+
+            const res = await handleDriveResponse(
+                await fetch(
+                    'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,modifiedTime,size',
+                    {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': `multipart/related; boundary=${boundary}`
+                        },
+                        body
+                    }
+                )
+            );
+            return await res.json();
+        };
+
+        const updateDriveFile = async (fileId, fileName, jsonContent) => {
+            const token = await requireToken();
+            const normalizedName = fileName.toLowerCase().endsWith('.json')
+                ? fileName
+                : `${fileName}.json`;
+
+            const metadata = {
+                name: normalizedName,
+                mimeType: 'application/json',
+                appProperties: { app: 'ANOTADO' }
+            };
+            const { boundary, body } = buildMultipartBody(metadata, jsonContent);
+
+            const res = await handleDriveResponse(
+                await fetch(
+                    `https://www.googleapis.com/upload/drive/v3/files/${encodeURIComponent(fileId)}?uploadType=multipart&fields=id,name,modifiedTime,size`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': `multipart/related; boundary=${boundary}`
+                        },
+                        body
+                    }
+                )
+            );
+            return await res.json();
+        };
+
+        window.AnotadoGoogleDrive = {
+            SCOPES,
+            initAuth,
+            googleSignIn,
+            getAccessToken,
+            getCurrentUser,
+            clearAccessToken,
+            logout,
+            listDriveFiles,
+            downloadDriveFile,
+            createDriveFile,
+            updateDriveFile
+        };
+
+        window.dispatchEvent(new Event('anotado-drive-ready'));
     </script>
 </body>
 </html>
