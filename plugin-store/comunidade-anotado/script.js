@@ -231,6 +231,8 @@
             '.anotado-community .ac-supporters li { overflow-wrap:anywhere; color:var(--ac-muted); font-size:11px; }',
             '.anotado-community .ac-supporters li strong { color:var(--ac-ink); font-weight:800; }',
             '.anotado-community .ac-supporters li span { color:var(--ac-muted); }',
+            '.anotado-community .ac-supporter-progress { height:2px; margin-top:9px; overflow:hidden; border-radius:2px; background:var(--ac-line); }',
+            '.anotado-community .ac-supporter-progress-bar { width:0; height:100%; border-radius:inherit; background:var(--ac-muted); }',
             '.anotado-community .ac-donation { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px; border:1px solid var(--ac-line); border-radius:11px; }',
             '.anotado-community .ac-donation-copy { min-width:0; }',
             '.anotado-community .ac-donation-copy p, .anotado-community .ac-qr-caption { margin:0; color:var(--ac-muted); font-size:11px; }',
@@ -367,10 +369,17 @@
                 }
 
                 let currentIndex = -1;
+                let elapsed = 0;
+                let lastTick = Date.now();
+                let isHovered = false;
+                let rotationTimer = null;
+                const rotationDuration = 3000;
+                const hoverSpeed = 0.25;
 
                 function showRandomSupporter() {
                     if (!listElement.isConnected) {
-                        window.clearInterval(rotationTimer);
+                        if (rotationTimer !== null) window.clearInterval(rotationTimer);
+                        rotationTimer = null;
                         return;
                     }
 
@@ -381,17 +390,48 @@
                         }
                     }
                     currentIndex = nextIndex;
+                    elapsed = 0;
+                    lastTick = Date.now();
 
                     const supporter = supporters[currentIndex];
                     listElement.innerHTML = '<li><strong>' + escapeHTML(supporter.name) + '</strong>' +
                         (supporter.message ? '<span> — ' + escapeHTML(supporter.message) + '</span>' : '') +
+                        (supporters.length > 1
+                            ? '<div class="ac-supporter-progress" aria-hidden="true"><div class="ac-supporter-progress-bar" data-role="supporter-progress"></div></div>'
+                            : '') +
                         '</li>';
                 }
 
-                let rotationTimer = null;
+                listElement.addEventListener('mouseenter', function () {
+                    isHovered = true;
+                });
+                listElement.addEventListener('mouseleave', function () {
+                    isHovered = false;
+                });
+
                 showRandomSupporter();
                 if (supporters.length > 1) {
-                    rotationTimer = window.setInterval(showRandomSupporter, 3000);
+                    rotationTimer = window.setInterval(function () {
+                        if (!listElement.isConnected) {
+                            window.clearInterval(rotationTimer);
+                            rotationTimer = null;
+                            return;
+                        }
+
+                        const now = Date.now();
+                        const delta = Math.max(0, now - lastTick);
+                        lastTick = now;
+                        elapsed += delta * (isHovered ? hoverSpeed : 1);
+
+                        const progressBar = listElement.querySelector('[data-role="supporter-progress"]');
+                        if (progressBar) {
+                            progressBar.style.width = Math.min(100, (elapsed / rotationDuration) * 100) + '%';
+                        }
+
+                        if (elapsed >= rotationDuration) {
+                            showRandomSupporter();
+                        }
+                    }, 50);
                 }
             });
         }
